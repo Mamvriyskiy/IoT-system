@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <title>Управление устройствами</title>
+    <link rel="icon" type="image/png" href="images/favicon.ico"/>
+</head>
+<body>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+        }
+        .control-panel {
+            background-color: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .control-panel h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .control-panel button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .control-panel button:hover {
+            background-color: #007bff;
+        }
+    </style>
+    <div class="control-panel">
+        <h2>Управление устройствами</h2>
+        <button id="createDeviceBtn">Создать устройство</button>
+        <button id="deleteDeviceBtn">Удалить устройство</button>
+        <button id="createHistoryBtn">Запустить устройство</button>
+        <button id="getHistoryBtn">Получить историю устройства</button>
+    </div>
+
+    <script>
+        document.getElementById('createDeviceBtn').addEventListener('click', function() {
+            const nameDevice = prompt('Введите название устройства:');
+            if (nameDevice) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                //'Authorization': 'Bearer ' + jwt
+                console.log(JSON.stringify({ nameDevice }))
+                fetch('/api/device/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ name: nameDevice })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(nameDevice);
+                    //document.getElementById('homeName').innerText = data.name;
+                    alert('Устройство успешно добавлено!');
+                })
+                .catch(error => {
+                    alert('Ошибка добавления устройства: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('deleteDeviceBtn').addEventListener('click', function() {
+            const nameDevice = prompt('Введите название устройства:');
+            if (nameDevice) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                //'Authorization': 'Bearer ' + jwt
+                console.log(JSON.stringify({ nameDevice }))
+                fetch('/api/device/', {
+                    method: 'DELETE',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ name: nameDevice })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(nameDevice);
+                    //document.getElementById('homeName').innerText = data.name;
+                    alert('Устройство успешно удалено!');
+                })
+                .catch(error => {
+                    alert('Ошибка удаления устройства: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('createHistoryBtn').addEventListener('click', function() {
+            const nameDevice = prompt('Введите название устройства:');
+            if (nameDevice) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                //'Authorization': 'Bearer ' + jwt
+                console.log(JSON.stringify({ nameDevice }))
+                fetch('/api/history/', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ name: nameDevice })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(nameDevice);
+                    //document.getElementById('homeName').innerText = data.name;
+                    alert('Устройство запущено!');
+                })
+                .catch(error => {
+                    alert('Ошибка запуска устройства: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('getHistoryBtn').addEventListener('click', function() {
+            jwt = localStorage.getItem('jwt');
+            const nameDevice = prompt('Введите название устройства:');
+            console.log(nameDevice);
+            if (nameDevice) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                console.log(JSON.stringify({ nameDevice }))
+                fetch('/api/history/', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ name: nameDevice })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(nameDevice);
+                    //document.getElementById('homeName').innerText = data.name;
+                    alert('История устройства' + JSON.stringify(data));
+                })
+                .catch(error => {
+                    alert('Ошибка запуска устройства: ' + error.message);
+                });
+            }
+        });
+    </script>
+
+</body>
+</html>
