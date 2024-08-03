@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Привилегии доступа</title>
+    <link rel="icon" type="image/png" href="images/favicon.ico"/>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+        }
+        .control-panel {
+            background-color: white;
+            padding: 20px;
+            width: 300px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .control-panel h2 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .control-panel button {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        .control-panel button:hover {
+            background-color: #007bff;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="control-panel">
+        <h2>Привилегии доступа</h2>
+        <button id="addBtn">Добавтить пользователя</button>
+        <button id="deleteBtn">Удалить пользователя</button>
+        <button id="listBtn">Список пользователей</button>
+        <button id="updateBtn">Обновить уровень доступа</button>
+    </div>
+
+    <script>
+        document.getElementById('addBtn').addEventListener('click', function() {
+            const email = prompt('Введите почту пользователя:');
+            const level = prompt('Введите уровень досутпа:');
+            if (email && level) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                //'Authorization': 'Bearer ' + jwt
+                console.log(JSON.stringify({ accessLevel: level, email: email }))
+                fetch('/api/access/add', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ accessLevel: level, email: email })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert(homeName);
+                    //document.getElementById('homeName').innerText = data.name;
+                    alert('Дом успешно создан!');
+                })
+                .catch(error => {
+                    alert('Ошибка создания дома: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('deleteBtn').addEventListener('click', function() {
+            const email = prompt('Введите имя дома:');
+            if (email) {
+                jwt = localStorage.getItem('jwt');
+                console.log('Token ' + jwt);
+                fetch('/api/access/delete', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'Authorization': jwt
+                        },
+                        body: JSON.stringify({ email: email })
+                    })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success) {
+                        alert('Дом успешно удален!');
+                        document.getElementById('homeName').innerText = '';
+                    } else {
+                        alert('Ошибка удаления дома: ' + data.message);
+                    }
+                })
+                .catch(error => {
+                    alert('Ошибка удаления дома: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            const email = prompt('Введите почту пользователя:');
+            const newLevel = prompt('Введите новый уровень доступа:');
+            jwt = localStorage.getItem('jwt');
+            console.log('Token ' + jwt);
+            if (email && newLevel) {
+                // console.log(email, newLevel);
+                fetch('/api/access/level', {
+                    method: 'PUT',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    body: JSON.stringify({ email: email, accessLevel: newLevel })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    alert('Имя дома успешно обновлено!');
+                    document.getElementById('homeName').innerText = data.name;
+                })
+                .catch(error => {
+                    alert('Ошибка обновления имени дома: ' + error.message);
+                });
+            }
+        });
+
+        document.getElementById('listBtn').addEventListener('click', function() {
+            jwt = localStorage.getItem('jwt');
+            console.log('Token ' + jwt);
+            fetch('/api/access/getList', {
+                    method: 'GET',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': jwt
+                    },
+                    //body: JSON.stringify({ name: newHomeName })
+                })
+            .then(response => response.json())
+            .then(data => {
+
+                alert('Пользователи дома: ' + JSON.stringify(data));
+            })
+            .catch(error => {
+                alert('Ошибка получения списка пользователей: ' + error.message);
+            });
+        });
+    </script>
+
+</body>
+</html>

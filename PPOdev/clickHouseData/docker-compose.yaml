@@ -1,0 +1,24 @@
+version: "3.5"
+
+services:
+  clickhouse:
+    image: clickhouse/clickhouse-server:23.8.14.6
+    ports:
+      - "8123:8123"
+    volumes:
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/PPO/clickHouseData
+        target: /mnt
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready"]
+      interval: 1s
+      timeout: 3s
+      retries: 5
+
+  # server:
+  #   image: my-golang-server
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     clickhouse:
+  #       condition: service_healthy
