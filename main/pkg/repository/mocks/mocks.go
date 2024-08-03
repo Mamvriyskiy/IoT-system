@@ -7,7 +7,7 @@ package mock_repository
 import (
 	reflect "reflect"
 
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
 	gomock "github.com/golang/mock/gomock"
 )
 

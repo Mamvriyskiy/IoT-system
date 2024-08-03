@@ -5,8 +5,8 @@ import (
 	//"reflect"
 	"testing"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
 	"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"

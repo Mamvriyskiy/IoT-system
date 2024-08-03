@@ -1,7 +1,7 @@
 package repository
 
 import (
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 

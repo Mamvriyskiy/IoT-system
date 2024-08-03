@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Mamvriyskiy/shortLink/tree/develop/src/service"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/service"
+	"github.com/Mamvriyskiy/shortLink/src/service"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg/service"
 	jwt "github.com/dgrijalva/jwt-go"
 	
 )

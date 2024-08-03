@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"github.com/ClickHouse/clickhouse-go/v2"
 	//"github.com/jmoiron/sqlx"
-	//"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
+	//"github.com/Mamvriyskiy/DBCourse/main/logger"
 	//"github.com/ClickHouse/clickhouse-go"
 	// Импорт драйвера PostgreSQL для его регистрации.
 	_ "github.com/lib/pq"

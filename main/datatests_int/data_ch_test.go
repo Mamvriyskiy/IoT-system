@@ -6,8 +6,8 @@ import (
 	"testing"
 	"fmt"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repositoryCH"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg/repositoryCH"
 	//"github.com/jmoiron/sqlx"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"

@@ -3,7 +3,7 @@ package repository
 import (
 	"fmt"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
+	"github.com/Mamvriyskiy/DBCourse/main/logger"
 	"github.com/jmoiron/sqlx"
 
 	// Импорт драйвера PostgreSQL для его регистрации.

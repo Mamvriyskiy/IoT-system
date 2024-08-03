@@ -3,9 +3,9 @@ package tests_test
 import (
 	"testing"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	mocks_service "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository/mocks"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/service"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	mocks_service "github.com/Mamvriyskiy/DBCourse/main/pkg/repository/mocks"
+	"github.com/Mamvriyskiy/DBCourse/main/pkg/service"
 	"github.com/golang/mock/gomock"
 )
 
