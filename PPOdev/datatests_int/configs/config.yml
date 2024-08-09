@@ -1,8 +1,0 @@
-port: "8000"
-
-db: 
-  username: "Misfio32"
-  host: "localhost"
-  port: "5432"
-  dbname: "postgres"
-  sslmode: "disable"
