@@ -70,6 +70,8 @@ func (h *Handler) deleteHome(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, map[string]interface{}{})
+
 	logger.Log("Info", "", "A home has been deleted", nil)
 }
 
@@ -91,12 +93,12 @@ func (h *Handler) listHome(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	homeListUser, err := h.services.IHome.ListUserHome(int(intVal))
+	homeListUser, err := h.services.IHome.ListUserHome(int(intVal), nameHome)
 	if err != nil {
 		logger.Log("Error", "ListUserHome", "Error get user:", err, id.(int))
 		return
 	}
-
+	
 	c.JSON(http.StatusOK, getAllListHomeResponse{
 		Data: homeListUser,
 	})
@@ -118,24 +120,21 @@ func (h *Handler) updateHome(c *gin.Context) {
 		return
 	}
 
-	var intVal, val float64
-	if val, ok = id.(float64); ok {
+	var intVal float64
+	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
-
-	input.OwnerID = int(intVal)
-	if !ok {
-		logger.Log("Warning", "*.(int)", "Error convert to int", nil, id)
-		return
-	}
+	input.UserID = int(intVal) 
 
 	err = h.services.IHome.UpdateHome(input)
 	if err != nil {
 		logger.Log("Error", "UpdateHome", "Error update home:", err, "")
 		return
 	}
+
+	c.JSON(http.StatusOK, getAllListHomeResponse{})
 
 	logger.Log("Info", "", "A home has been update", nil)
 }

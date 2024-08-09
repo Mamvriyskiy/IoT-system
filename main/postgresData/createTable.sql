@@ -36,3 +36,7 @@ CREATE TABLE IF NOT EXISTS historyDevice (
 CREATE TABLE IF NOT EXISTS resetPswrd (
     resetCode varchar(6), clientID int, token text
 );
+
+CREATE TABLE IF NOT EXISTS clientHome (
+    homeID int, clientID int
+);

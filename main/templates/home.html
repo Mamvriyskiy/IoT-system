@@ -14,6 +14,10 @@
             height: 100vh;
             background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
         }
+        .wrapper {
+            display: flex;
+            gap: 20px;
+        }
         .control-panel {
             width: 300px;
             background-color: white;
@@ -38,25 +42,53 @@
         .control-panel button:hover {
             background-color: #007bff;
         }
+        .home-list-container {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .home-list-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .home-list {
+            padding: 0;
+            list-style-type: none;
+        }
+        .home-list li {
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
 
-    <div class="control-panel">
-        <h2>Управление домом</h2>
-        <button id="createBtn">Создать дом</button>
-        <button id="deleteBtn">Удалить дом</button>
-        <button id="updateBtn">Обновить имя дома</button>
-        <button id="listBtn">Список домов пользователя</button>
+    <div class="wrapper">
+        <div class="control-panel">
+            <h2>Управление домом</h2>
+            <button id="createBtn">Создать дом</button>
+            <button id="deleteBtn">Удалить дом</button>
+            <button id="updateBtn">Обновить имя дома</button>
+            <button id="listBtn">Список домов пользователя</button>
+        </div>
+
+        <div class="home-list-container">
+            <h3>Список домов</h3>
+            <ul id="home-list" class="home-list"></ul>
+        </div>
     </div>
 
     <script>
         document.getElementById('createBtn').addEventListener('click', function() {
             const homeName = prompt('Введите имя дома:');
             if (homeName) {
-                jwt = localStorage.getItem('jwt');
+                const jwt = localStorage.getItem('jwt');
                 console.log('Token ' + jwt);
-                //'Authorization': 'Bearer ' + jwt
                 fetch('/api/home/create', {
                     method: 'POST',
                     headers: {
@@ -67,8 +99,6 @@
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(homeName);
-                    //document.getElementById('homeName').innerText = data.name;
                     alert('Дом успешно создан!');
                 })
                 .catch(error => {
@@ -78,24 +108,20 @@
         });
 
         document.getElementById('deleteBtn').addEventListener('click', function() {
-            jwt = localStorage.getItem('jwt');
+            const homeName = prompt('Введите имя дома:');
+            const jwt = localStorage.getItem('jwt');
             console.log('Token ' + jwt);
             fetch('/api/home/delete', {
-                    method: 'DELETE',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': jwt
-                    },
-                    //body: JSON.stringify({ name: homeName })
-                })
+                method: 'DELETE',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': jwt
+                },
+                body: JSON.stringify({ name: homeName })
+            })
             .then(response => response.json())
             .then(data => {
-                if (data.success) {
-                    alert('Дом успешно удален!');
-                    document.getElementById('homeName').innerText = '';
-                } else {
-                    alert('Ошибка удаления дома: ' + data.message);
-                }
+                alert('Дом успешно удален!');
             })
             .catch(error => {
                 alert('Ошибка удаления дома: ' + error.message);
@@ -104,7 +130,7 @@
 
         document.getElementById('updateBtn').addEventListener('click', function() {
             const newHomeName = prompt('Введите новое имя дома:');
-            jwt = localStorage.getItem('jwt');
+            const jwt = localStorage.getItem('jwt');
             console.log('Token ' + jwt);
             if (newHomeName) {
                 fetch('/api/home/update', {
@@ -118,7 +144,6 @@
                 .then(response => response.json())
                 .then(data => {
                     alert('Имя дома успешно обновлено!');
-                    document.getElementById('homeName').innerText = data.name;
                 })
                 .catch(error => {
                     alert('Ошибка обновления имени дома: ' + error.message);
@@ -127,31 +152,29 @@
         });
 
         document.getElementById('listBtn').addEventListener('click', function() {
-            jwt = localStorage.getItem('jwt');
+            const jwt = localStorage.getItem('jwt');
             console.log('Token ' + jwt);
             fetch('/api/home/list', {
-                    method: 'GET',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': jwt
-                    },
-                    //body: JSON.stringify({ name: newHomeName })
-                })
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': jwt
+                },
+            })
             .then(response => response.json())
             .then(data => {
-                // const userList = data.users;
-                // const userListElement = document.createElement('ul');
-                // userList.forEach(user => {
-                //     const listItem = document.createElement('li');
-                //     listItem.textContent = user;
-                //     userListElement.appendChild(listItem);
-                // });
-                // document.body.appendChild(userListElement)
-                alert('Пользователи дома: ' + JSON.stringify(data));
-                //alert('Пользователи дома: ' + data.Data);
+                const homes = data.data;
+                const homeListElement = document.getElementById('home-list');
+                homeListElement.innerHTML = ''; // Очистка списка перед добавлением новых элементов
+
+                homes.forEach(home => {
+                    const li = document.createElement('li');
+                    li.textContent = home.name;
+                    homeListElement.appendChild(li);
+                });
             })
             .catch(error => {
-                alert('Ошибка получения списка пользователей: ' + error.message);
+                alert('Ошибка получения списка домов: ' + error.message);
             });
         });
     </script>

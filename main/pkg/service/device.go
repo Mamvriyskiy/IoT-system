@@ -33,11 +33,17 @@ func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, erro
 	device.TypeDevice = deviceTypes[UseCryptoRandIntn(len(deviceTypes))]
 	device.Status = statusValues[UseCryptoRandIntn(len(statusValues))]
 	device.Brand = brands[UseCryptoRandIntn(len(brands))]
-	device.PowerConsumption = UseCryptoRandIntn(100)
-	device.MinParameter = UseCryptoRandIntn(50)
-	device.MaxParameter = UseCryptoRandIntn(100)
 
-	return s.repo.CreateDevice(homeID, device)
+	character := pkg.DeviceCharacteristics{
+		Values: 123.45,
+	}
+
+	typeCharacter := pkg.TypeCharacter{
+		Type: "weight",
+		UnitMeasure: "kg",
+	}
+
+	return s.repo.CreateDevice(homeID, device, character, typeCharacter)
 }
 
 func (s *DeviceService) DeleteDevice(idDevice int, name string) error {

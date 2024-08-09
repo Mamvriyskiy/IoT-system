@@ -32,23 +32,30 @@ func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
 }
 
 func (r *HomePostgres) CreateHome(ownerID int, home pkg.Home) (int, error) {
-	var id int
+	var homeID int
 	query := fmt.Sprintf("INSERT INTO %s (ownerid, name) values ($1, $2) RETURNING homeID", "home")
 	row := r.db.QueryRow(query, ownerID, home.Name)
-	if err := row.Scan(&id); err != nil {
+	if err := row.Scan(&homeID); err != nil {
 		logger.Log("Error", "Scan", "Error insert into home:", err, ownerID, home.Name)
 		return 0, err
 	}
 
-	return id, nil
+	query2 := fmt.Sprintf("INSERT INTO clientHome (clientID, homeID) values($1, $2)")
+	_, err := r.db.Exec(query2, ownerID, homeID)
+	if err != nil {
+		logger.Log("Error", "Exec", "Error insert from clientHome:", err, homeID)
+		return 0, err
+	}
+
+	return homeID, nil
 }
 
-func (r *HomePostgres) DeleteHome(userID int) error {
+func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	const queryHomeID = `select h.homeID from home h where h.Name = $1 
+		and h.homeID in (select h.homeID from home h join accesshome a on h.homeId = a.homeID
+			join access a2 on a2.accessID = a.accessID 
+				join accessclient a3 on a3.accessID = a2.accessID where a3.clientID = $2);`
 
 	err := r.db.Get(&homeID, queryHomeID, userID)
 	if err != nil {
@@ -97,14 +104,15 @@ func (r *HomePostgres) DeleteHome(userID int) error {
 
 func (r *HomePostgres) UpdateHome(home pkg.Home) error {
 	var homeID int
-	queryHomeID := `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	//TODO: изменить
+	queryHomeID := `select h.homeID from home h where h.Name = $1 
+		and h.homeID in (select h.homeID from home h join accesshome a on h.homeId = a.homeID
+			join access a2 on a2.accessID = a.accessID 
+				join accessclient a3 on a3.accessID = a2.accessID where a3.clientID = $2);`
 
-	err := r.db.Get(&homeID, queryHomeID, home.OwnerID)
+	err := r.db.Get(&homeID, queryHomeID, home.Name, home.UserID)
 	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, home.OwnerID)
+		logger.Log("Error", "Get", "Error select from home:", err)
 		return err
 	}
 

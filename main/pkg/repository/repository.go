@@ -17,7 +17,7 @@ type IUserRepo interface {
 
 type IHomeRepo interface {
 	CreateHome(idUser int, home pkg.Home) (int, error)
-	DeleteHome(homeID int) error
+	DeleteHome(homeID int, homeName string) error
 	UpdateHome(home pkg.Home) error
 	GetHomeByID(homeID int) (pkg.Home, error)
 	ListUserHome(userID int) ([]pkg.Home, error)
@@ -33,7 +33,8 @@ type IAccessHomeRepo interface {
 }
 
 type IDeviceRepo interface {
-	CreateDevice(homeID int, device *pkg.Devices) (int, error)
+	CreateDevice(userID int, device *pkg.Devices, 
+		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error)
 	DeleteDevice(idDevice int, name string) error
 	GetDeviceByID(deviceID int) (pkg.Devices, error)
 }

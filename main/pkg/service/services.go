@@ -3,7 +3,6 @@ package service
 import (
 	"github.com/Mamvriyskiy/DBCourse/main/pkg"
 	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repositoryCH"
 )
 
 type IUser interface {
@@ -18,7 +17,7 @@ type IUser interface {
 
 type IHome interface {
 	CreateHome(idUser int, home pkg.Home) (int, error)
-	DeleteHome(homeID int) error
+	DeleteHome(homeID int, homeName string) error
 	UpdateHome(home pkg.Home) error
 	GetHomeByID(homeID int) (pkg.Home, error)
 	ListUserHome(userID int) ([]pkg.Home, error)
@@ -53,16 +52,6 @@ type Services struct {
 }
 
 func NewServicesPsql(repo *repository.Repository) *Services {
-	return &Services{
-		IUser:          NewUserService(repo.IUserRepo),
-		IHome:          NewHomeService(repo.IHomeRepo),
-		IAccessHome:    NewAccessHomeService(repo.IAccessHomeRepo),
-		IDevice:        NewDeviceService(repo.IDeviceRepo),
-		IHistoryDevice: NewHistoryDeviceService(repo.IHistoryDeviceRepo),
-	}
-}
-
-func NewServicesCH(repo *repositoryCH.Repository) *Services {
 	return &Services{
 		IUser:          NewUserService(repo.IUserRepo),
 		IHome:          NewHomeService(repo.IHomeRepo),
