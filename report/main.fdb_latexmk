@@ -1,11 +1,11 @@
 # Fdb version 4
-["biber main"] 1711344268 "main.bcf" "main.bbl" "main" 1711351743 0
-  "main.bcf" 1711351742 153024 bec465b71f9e0b494559764e321ac8a0 "pdflatex"
+["biber main"] 1711344268 "main.bcf" "main.bbl" "main" 1724075496 0
+  "main.bcf" 1724075496 153024 bec465b71f9e0b494559764e321ac8a0 "pdflatex"
   (generated)
   "main.bbl"
   "main.blg"
   (rewritten before read)
-["pdflatex"] 1711351737 "/Users/ivanmamvriyskiy/Desktop/DBCourse/report/main.tex" "main.pdf" "main" 1711351743 0
+["pdflatex"] 1724075492 "/Users/ivanmamvriyskiy/Desktop/DBCourse/report/main.tex" "main.pdf" "main" 1724075496 0
   "/Users/ivanmamvriyskiy/Desktop/DBCourse/report/main.tex" 1711307631 1094 6084e873bc9c0661ceec5d5cab84c05a ""
   "/Users/ivanmamvriyskiy/Library/texlive/2023/texmf-var/fonts/tfm/lh/lh-t2a/labx1440.tfm" 1695447825 3304 6a543c07045572737981351171e0505e ""
   "/Users/ivanmamvriyskiy/Library/texlive/2023/texmf-var/fonts/tfm/lh/lh-t2a/labx1728.tfm" 1695233227 3312 d199be9bd555944e2403193d58a0256a ""
@@ -312,18 +312,18 @@
   "/usr/local/texlive/2023/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1695230817 4623355 b8cad38412faebe1ce5b780a45db67bd ""
   "/usr/local/texlive/2023/texmf-var/web2c/pdftex/pdflatex.fmt" 1695230670 7883454 f719c209a822af6d6e7a94702d06bc5e ""
   "/usr/local/texlive/2023/texmf.cnf" 1678822455 577 1b2b1af17af2508fb20dd85783af4050 ""
-  "img/er.png" 1711310365 164126 5979466e87deec99d97092a1f9e53063 ""
+  "img/er.png" 1724075451 157564 51fa85be422dfe28efa1ee1bd3d2e61f ""
   "img/iot.png" 1711312035 127136 2c28fda225eee5ba46592f365ad33432 ""
-  "main.aux" 1711351742 1083 ac0ae744658591ec92f007bb9043e8a6 "pdflatex"
+  "main.aux" 1724075496 1083 cc68222ebc66c65f9b245d4586e07c30 "pdflatex"
   "main.bbl" 1711344271 0 d41d8cd98f00b204e9800998ecf8427e "biber main"
-  "main.out" 1711351742 3597 ec032a0eb884086657f1e98226930a52 "pdflatex"
-  "main.run.xml" 1711351742 2488 686bc03c711274d9b973b897d109f86f "pdflatex"
+  "main.out" 1724075496 3093 4693e4bec2072ad663bd87372d3c3437 "pdflatex"
+  "main.run.xml" 1724075496 2488 686bc03c711274d9b973b897d109f86f "pdflatex"
   "main.tex" 1711307631 1094 6084e873bc9c0661ceec5d5cab84c05a ""
-  "main.toc" 1711351742 1334 3c72a120f203e941838f2696383fa35e "pdflatex"
-  "parts/analytical.aux" 1711351742 7611 f4f3dc93ed3e575ea4c28ad66c778adb "pdflatex"
-  "parts/analytical.tex" 1711351737 12312 60c70fb25bf2d7f7a77bc25e15255a17 ""
-  "parts/intro.aux" 1711351741 5217 97f9a18802a1c949512a1b9657bc5a4f "pdflatex"
-  "parts/intro.tex" 1711306909 2578 04c31a59fb34f1694ec59a3ede5f87e0 ""
+  "main.toc" 1724075496 1216 6d23332065f1fd87730658f7d2291ae9 "pdflatex"
+  "parts/analytical.aux" 1724075496 7799 923ba9ab98520be5f333239e6d8ec31e "pdflatex"
+  "parts/analytical.tex" 1724075486 12502 afc4f116d62c1c062f770742ac5c2a0c ""
+  "parts/intro.aux" 1724075495 5217 97f9a18802a1c949512a1b9657bc5a4f "pdflatex"
+  "parts/intro.tex" 1724047888 2536 f95c73080d1a3106d796adccb8e37787 ""
   (generated)
   "main.aux"
   "main.bcf"
