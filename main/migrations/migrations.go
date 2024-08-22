@@ -22,5 +22,7 @@ func MigrationsDataBase() {
 	if err := pureDB.Exec(string(text)).Error; err != nil {
 		return nil, nil, fmt.Errorf("exec: %w", err)
 	}
+
+	
 }
 

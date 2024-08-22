@@ -35,7 +35,7 @@ func SetupTestDataBase() (testcontainers.Container, *gorm.DB, error) {
 	host, _ := dbContainer.Host(context.Background())
 	port, _ := dbContainer.MappedPort(context.Background(), "5432")
 
-		
+	
 
 	return dbContainer, pureDB, nil
 }
