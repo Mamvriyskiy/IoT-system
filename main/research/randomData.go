@@ -3,30 +3,49 @@ package main
 import (
 	"bufio"
 	"os"
+	"fmt"
+	"math/rand"
+	"time"
 )
 
-const (
-	START = 1000
-	MAXSIZE = 10000
-	STEP = 1000
-)
-
-// w := bufio.NewWriter(os.Stdout)
-// r := bufio.NewReader(os.Stdin)
-
-// name, err := r.ReadString('\\\\n') // считывание до первого переноса строки
-// if err != nil {
-// 	log.Fatal(err)
-// }
-// w.WriteString("Привет, " + name) // запись строки в объект w
-// w.Flush()
-
-func createRandomData() error {
+func CreateRandomDataClient() error {
 	for i := START; i <= MAXSIZE; i += STEP {
-		nameFile := fmt.Sprintf("research_data_%s", i)
+		nameFile := fmt.Sprintf("./mnt/research_data_%d.csv", i)
 		file, err := os.Create(nameFile)
+		if err != nil {
+			return err
+		}
+
+		w := bufio.NewWriter(file)
+		w.WriteString("password,login,email\n")
+		fmt.Println(nameFile, "created")
+		for j := 0; j < i - 1; j++ {
+			password := randStringRunes(15)
+			login := randStringRunes(10)
+			email := randStringRunes(10)
+			w.WriteString(fmt.Sprintf("%s,%s,%s\n", password, login, email))
+		}	
+		
+		w.WriteString(fmt.Sprintf("%s,%s,%s\n", "sfhkhtflkhbnghj", SEARCHLOGIN, "emadinaarl"))
+		fmt.Println(nameFile, "filled")
+
+		w.Flush()
 	}
-	//w := bufio.NewWriter()
+	
+	return nil
 }
 
+func init() {
+    rand.Seed(time.Now().UnixNano())
+}
+
+var letterRunes = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ")
+
+func randStringRunes(n int) string {
+    b := make([]rune, n)
+    for i := range b {
+        b[i] = letterRunes[rand.Intn(len(letterRunes))]
+    }
+    return string(b)
+}
 
