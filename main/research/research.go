@@ -4,7 +4,7 @@ import (
 	"context"
 	//"os"
 	//"github.com/jmoiron/sqlx"
-	"github.com/Mamvriyskiy/database_course/main/research/migration"
+	"github.com/Mamvriyskiy/database_course/main/research/migrations"
 	"github.com/Mamvriyskiy/database_course/main/containers"
 )
 
