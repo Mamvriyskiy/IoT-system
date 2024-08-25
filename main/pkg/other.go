@@ -1,9 +1,11 @@
 package pkg
 
 type ClientHome struct {
-	Username     string `db:"login"`
-	AccessStatus string `db:"accessstatus"`
-	AccessLevel  int    `db:"accesslevel"`
+	Home         string `db:"name" json:"name"`
+	Username     string `db:"login" json:"login"`
+	Email        string `db:"email" json:"email"`
+	AccessStatus string `db:"accessstatus" json:"accessstatus"`
+	AccessLevel  int    `db:"accesslevel" json:"accesslevel"`
 }
 
 type AddUserHome struct {
@@ -16,6 +18,7 @@ type AddHistory struct {
 	TimeWork         int     `db:"timework"         json:"timework"`
 	AverageIndicator float64 `db:"averageindicator" json:"average"`
 	EnergyConsumed   int     `db:"energyconsumed"   json:"energy"`
+	Home             string  `json:"home"`
 }
 
 type Email struct {

@@ -5,8 +5,8 @@ import (
 	"math/big"
 	"net/http"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -92,7 +92,7 @@ func (h *Handler) getDeviceHistory(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	input, err := h.services.IHistoryDevice.GetDeviceHistory(int(intVal), info.Name)
+	input, err := h.services.IHistoryDevice.GetDeviceHistory(int(intVal), info.Name, info.Home)
 	if err != nil {
 		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, id, info.Name)
 		return

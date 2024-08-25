@@ -12,3 +12,4 @@ type TypeCharacter struct {
 	Type        string     `db:"typecharacter"         json:"type"`
 	UnitMeasure string`db:"unitmeasure" json:"unitmeasure"`
 }
+

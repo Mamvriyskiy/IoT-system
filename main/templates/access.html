@@ -14,6 +14,10 @@
             height: 100vh;
             background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
         }
+        .wrapper {
+            display: flex;
+            gap: 20px;
+        }
         .control-panel {
             background-color: white;
             padding: 20px;
@@ -38,23 +42,53 @@
         .control-panel button:hover {
             background-color: #007bff;
         }
+        .user-list-container {
+            width: 300px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .user-list-container h3 {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .user-list {
+            padding: 0;
+            list-style-type: none;
+        }
+        .user-list li {
+            background-color: #f1f1f1;
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 4px;
+            text-align: center;
+        }
     </style>
 </head>
 <body>
+    <div class="wrapper">
+        <div class="control-panel">
+            <h2>Привилегии доступа</h2>
+            <button id="addBtn">Добавтить пользователя</button>
+            <button id="deleteBtn">Удалить пользователя</button>
+            <button id="listBtn">Список пользователей</button>
+            <button id="updateBtn">Обновить уровень доступа</button>
+        </div>
 
-    <div class="control-panel">
-        <h2>Привилегии доступа</h2>
-        <button id="addBtn">Добавтить пользователя</button>
-        <button id="deleteBtn">Удалить пользователя</button>
-        <button id="listBtn">Список пользователей</button>
-        <button id="updateBtn">Обновить уровень доступа</button>
+
+        <div class="user-list-container">
+            <h3>Список пользователей</h3>
+            <ul id="user-list" class="user-list"></ul>
+        </div>
     </div>
 
     <script>
         document.getElementById('addBtn').addEventListener('click', function() {
+            const home = prompt('Введите имя дома:');
             const email = prompt('Введите почту пользователя:');
             const level = prompt('Введите уровень досутпа:');
-            if (email && level) {
+            if (email && level && home) {
                 jwt = localStorage.getItem('jwt');
                 console.log('Token ' + jwt);
                 //'Authorization': 'Bearer ' + jwt
@@ -65,23 +99,23 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ accessLevel: level, email: email })
+                    body: JSON.stringify({ accesslevel: parseInt(level), email: email, home: home })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert(homeName);
                     //document.getElementById('homeName').innerText = data.name;
-                    alert('Дом успешно создан!');
+                    alert('Пользователь успешно добавлен!');
                 })
                 .catch(error => {
-                    alert('Ошибка создания дома: ' + error.message);
+                    alert('Ошибка добавления пользователя: ' + error.message);
                 });
             }
         });
 
         document.getElementById('deleteBtn').addEventListener('click', function() {
-            const email = prompt('Введите имя дома:');
-            if (email) {
+            const home = prompt('Введите имя дома:');
+            const email = prompt('Введите почту пользователя:');
+            if (email && home) {
                 jwt = localStorage.getItem('jwt');
                 console.log('Token ' + jwt);
                 fetch('/api/access/delete', {
@@ -90,29 +124,26 @@
                             'Content-Type': 'application/json',
                             'Authorization': jwt
                         },
-                        body: JSON.stringify({ email: email })
+                        body: JSON.stringify({ email: email, home: home })
                     })
                 .then(response => response.json())
                 .then(data => {
-                    if (data.success) {
-                        alert('Дом успешно удален!');
-                        document.getElementById('homeName').innerText = '';
-                    } else {
-                        alert('Ошибка удаления дома: ' + data.message);
-                    }
+                    alert('Пользователь успешно удален!');
+                        //document.getElementById('homeName').innerText = '';
                 })
                 .catch(error => {
-                    alert('Ошибка удаления дома: ' + error.message);
+                    alert('Ошибка удаления пользователя: ' + error.message);
                 });
             }
         });
 
         document.getElementById('updateBtn').addEventListener('click', function() {
+            const home = prompt('Введите дом:');
             const email = prompt('Введите почту пользователя:');
             const newLevel = prompt('Введите новый уровень доступа:');
             jwt = localStorage.getItem('jwt');
             console.log('Token ' + jwt);
-            if (email && newLevel) {
+            if (email && newLevel && home) {
                 // console.log(email, newLevel);
                 fetch('/api/access/level', {
                     method: 'PUT',
@@ -120,15 +151,15 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ email: email, accessLevel: newLevel })
+                    body: JSON.stringify({ email: email, accessLevel: parseInt(newLevel), home: home })
                 })
                 .then(response => response.json())
                 .then(data => {
-                    alert('Имя дома успешно обновлено!');
+                    alert('Уровень доступа успешно обновлен!');
                     document.getElementById('homeName').innerText = data.name;
                 })
                 .catch(error => {
-                    alert('Ошибка обновления имени дома: ' + error.message);
+                    alert('Ошибка обновления уровня доступа: ' + error.message);
                 });
             }
         });
@@ -146,8 +177,35 @@
                 })
             .then(response => response.json())
             .then(data => {
+                const users = data.data;
+                const userListElement = document.getElementById('user-list');
+                userListElement.innerHTML = ''; // Очистка списка перед добавлением новых элементов
 
-                alert('Пользователи дома: ' + JSON.stringify(data));
+                // Создаем таблицу
+                const table = document.createElement('table');
+                userListElement.appendChild(table);
+
+                // Создаем строку заголовков
+                const headerRow = document.createElement('tr');
+                const headerCells = ['Дом', 'Логин', 'Email', 'Статус', 'Уровень'];
+                headerCells.forEach(cellText => {
+                const th = document.createElement('th');
+                th.textContent = cellText;
+                headerRow.appendChild(th);
+                });
+                table.appendChild(headerRow);
+
+                // Добавляем данные в таблицу
+                users.forEach(user => {
+                const row = document.createElement('tr');
+                const cells = [user.name, user.login, user.email, user.accessstatus, user.accesslevel];
+                cells.forEach(cellText => {
+                    const td = document.createElement('td');
+                    td.textContent = cellText;
+                    row.appendChild(td);
+                });
+                    table.appendChild(row);
+                });
             })
             .catch(error => {
                 alert('Ошибка получения списка пользователей: ' + error.message);

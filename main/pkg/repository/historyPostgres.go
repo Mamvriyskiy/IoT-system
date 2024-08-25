@@ -3,9 +3,11 @@ package repository
 import (
 	"fmt"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"sync"
+	"time"
 )
 
 type DeviceHistoryPostgres struct {
@@ -20,11 +22,8 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	history pkg.AddHistory,
 ) (int, error) {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1));`
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, history.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err, userID)
 		return 0, err
@@ -37,6 +36,37 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	err = r.db.Get(&deviceID, querDeviceID, homeID, history.Name)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from device:", err, homeID, history.Name)
+		return 0, err
+	}
+
+	updateQuery := fmt.Sprintf(`UPDATE device SET status = 'Active' where deviceid = $1;`)
+	_, err = r.db.Exec(updateQuery, deviceID)
+	if err != nil {
+		logger.Log("Error", "Exec", "Error update device status:", err, homeID, history.Name)
+		return 0, err
+	}
+
+	queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
+	_, err = r.db.Exec(queryUpdateStatus, deviceID, "Active")
+	if err != nil {
+		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
+		return 0, err
+	}
+
+	wg := &sync.WaitGroup{}
+
+	wg.Add(1)
+	go func(i int) {
+		defer wg.Done()
+		time.Sleep(time.Duration(i) * time.Second)
+	}( history.TimeWork)
+	
+	wg.Wait()
+
+	queryUpdateStatus = fmt.Sprintf(`select update_status($1, $2);`)
+	_, err = r.db.Exec(queryUpdateStatus, deviceID, "Inactive")
+	if err != nil {
+		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
 		return 0, err
 	}
 
@@ -65,19 +95,15 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 		return 0, err
 	}
 
+
 	return id, nil
 }
 
 func (r *DeviceHistoryPostgres) GetDeviceHistory(userID int,
-	name string,
-) ([]pkg.DevicesHistory, error) {
+	name, home string) ([]pkg.DevicesHistory, error) {
 	var homeID int
-	queryHomeID := `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid
-			where clientid = $1));`
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err, userID)
 		return nil, err

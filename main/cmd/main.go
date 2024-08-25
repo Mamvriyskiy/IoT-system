@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/handler"
-	//"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repositoryCH"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/handler"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/migrations"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
@@ -27,37 +27,37 @@ func main() {
 	logger.Log("Info", "", "Load env", nil)
 
 	db, err := repository.NewPostgresDB(&repository.Config{
-	// 	Host:     viper.GetString("db.host"),
-	// 	Port:     viper.GetString("db.port"),
-	// 	Username: viper.GetString("db.username"),
-	// 	Password: os.Getenv("DB_PASSWORD"),
-	// 	DBName:   viper.GetString("db.dbname"),
-	// 	SSLMode:  viper.GetString("db.sslmode"),
-	// })
-
-	// db, err := repositoryCH.NewClickHouseDB(&repositoryCH.Config{
-	// 	Host:     viper.GetString("db.host"),
-	// 	Port:     viper.GetString("db.port"),
-	// 	Username: viper.GetString("db.username"),
-	// 	Password: os.Getenv("DB_PASSWORD"),
-	// 	DBName:   viper.GetString("db.dbname"),
-	// 	SSLMode:  viper.GetString("db.sslmode"),
-	// })
+		Host:     viper.GetString("db.host"),
+		Port:     viper.GetString("db.port"),
+		Username: viper.GetString("db.username"),
+		Password: os.Getenv("DB_PASSWORD"),
+		DBName:   viper.GetString("db.dbname"),
+		SSLMode:  viper.GetString("db.sslmode"),
+	})
 
 	if err != nil {
 		logger.Log("Error", "initCongig", "Error config DB:", err, "")
 		return
 	}
+
+	err = migrations.MigrationsDataBaseUp(db)
+
+	if err != nil {
+		logger.Log("Error", "MigrationsDataBaseUp", "Error migrations:", err, "")
+		return
+	}
+
+	// defer func() {
+	// 	err = migrations.MigrationsDataBaseDown(db)
+	// 	if err != nil {
+	// 		logger.Log("Error", "MigrationsDataBaseDown", "Error migrations:", err, "")
+	// 	}
+	// }()
 	
-	//repos := repository.NewRepository(db)
 
-	repos := repositoryCH.NewRepository(db)
-	services := service.NewServices(repos)
+	repos := repository.NewRepository(db)
+	services := service.NewServicesPsql(repos)
 	handlers := handler.NewHandler(services)
-
-	// repos := repositoryCH.NewRepositoryCH(db)
-	// services := service.NewServicesCH(repos)
-	// handlers := handler.NewHandler(services)
 
 	logger.Log("Info", "", "The connection to the database is established", nil)
 

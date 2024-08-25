@@ -4,10 +4,10 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Mamvriyskiy/shortLink/tree/develop/src/service"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg/service"
 	jwt "github.com/dgrijalva/jwt-go"
-	
+	"github.com/gin-gonic/gin"
 )
 
 const signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
@@ -142,6 +142,7 @@ func (h *Handler) InitRouters() *gin.Engine {
 
 	devices := api.Group("/device")
 	devices.POST("/", h.createDevice)
+	devices.PUT("/", h.getListDevice)
 	devices.DELETE("/", h.deleteDevice)
 
 	deviceHistory := api.Group("/history")

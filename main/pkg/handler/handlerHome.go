@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +28,7 @@ func (h *Handler) createHome(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	homeID, err := h.services.IHome.CreateHome(int(intVal), input)
+	homeID, err := h.services.IHome.CreateHome(input)
 	if err != nil {
 		logger.Log("Error", "CreateHome", "Error create home:", err, intVal, input)
 		return
@@ -57,6 +57,12 @@ func (h *Handler) deleteHome(c *gin.Context) {
 		return
 	}
 
+	var input pkg.Home
+	if err := c.BindJSON(&input); err != nil {
+		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
+		return
+	}
+
 	var intVal float64
 	if val, ok := id.(float64); ok {
 		intVal = val
@@ -64,11 +70,13 @@ func (h *Handler) deleteHome(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	err := h.services.IHome.DeleteHome(int(intVal))
+	err := h.services.IHome.DeleteHome(int(intVal), input.Name)
 	if err != nil {
 		logger.Log("Error", "DeleteHome", "Error delete home:", err, id.(int))
 		return
 	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{})
 
 	logger.Log("Info", "", "A home has been deleted", nil)
 }
@@ -111,31 +119,28 @@ func (h *Handler) updateHome(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Home
+	var input pkg.UpdateNameHome
 	err := c.BindJSON(&input)
 	if err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
-	var intVal, val float64
-	if val, ok = id.(float64); ok {
+	var intVal float64
+	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
-
-	input.OwnerID = int(intVal)
-	if !ok {
-		logger.Log("Warning", "*.(int)", "Error convert to int", nil, id)
-		return
-	}
+	input.UserID = int(intVal)
 
 	err = h.services.IHome.UpdateHome(input)
 	if err != nil {
 		logger.Log("Error", "UpdateHome", "Error update home:", err, "")
 		return
 	}
+
+	c.JSON(http.StatusOK, getAllListHomeResponse{})
 
 	logger.Log("Info", "", "A home has been update", nil)
 }

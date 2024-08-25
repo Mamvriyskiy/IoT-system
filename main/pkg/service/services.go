@@ -1,9 +1,8 @@
 package service
 
 import (
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repositoryCH"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type IUser interface {
@@ -17,17 +16,17 @@ type IUser interface {
 }
 
 type IHome interface {
-	CreateHome(idUser int, home pkg.Home) (int, error)
-	DeleteHome(homeID int) error
-	UpdateHome(home pkg.Home) error
+	CreateHome(home pkg.Home) (int, error)
+	DeleteHome(homeID int, homeName string) error
+	UpdateHome(home pkg.UpdateNameHome) error
 	GetHomeByID(homeID int) (pkg.Home, error)
 	ListUserHome(userID int) ([]pkg.Home, error)
 }
 
 type IAccessHome interface {
-	AddUser(userID, accessLevel int, email string) (int, error)
-	DeleteUser(idUser int, email string) error
-	UpdateLevel(idUser int, access pkg.AddUserHome) error
+	AddUser(userID int, access pkg.Access) (int, error)
+	DeleteUser(idUser int, access pkg.Access) error
+	UpdateLevel(idUser int, updateAccess pkg.Access) error
 	UpdateStatus(idUser int, access pkg.AccessHome) error
 	GetListUserHome(homeID int) ([]pkg.ClientHome, error)
 	AddOwner(userID, homeID int) (int, error)
@@ -35,13 +34,14 @@ type IAccessHome interface {
 
 type IDevice interface {
 	CreateDevice(homeID int, device *pkg.Devices) (int, error)
-	DeleteDevice(idDevice int, name string) error
+	DeleteDevice(idDevice int, name, home string) error
 	GetDeviceByID(deviceID int) (pkg.Devices, error)
+	GetListDevices(userID int) ([]pkg.Devices, error)
 }
 
 type IHistoryDevice interface {
 	CreateDeviceHistory(deviceID int, history pkg.AddHistory) (int, error)
-	GetDeviceHistory(userID int, name string) ([]pkg.DevicesHistory, error)
+	GetDeviceHistory(userID int, name, home string) ([]pkg.DevicesHistory, error)
 }
 
 type Services struct {
@@ -53,16 +53,6 @@ type Services struct {
 }
 
 func NewServicesPsql(repo *repository.Repository) *Services {
-	return &Services{
-		IUser:          NewUserService(repo.IUserRepo),
-		IHome:          NewHomeService(repo.IHomeRepo),
-		IAccessHome:    NewAccessHomeService(repo.IAccessHomeRepo),
-		IDevice:        NewDeviceService(repo.IDeviceRepo),
-		IHistoryDevice: NewHistoryDeviceService(repo.IHistoryDeviceRepo),
-	}
-}
-
-func NewServicesCH(repo *repositoryCH.Repository) *Services {
 	return &Services{
 		IUser:          NewUserService(repo.IUserRepo),
 		IHome:          NewHomeService(repo.IHomeRepo),

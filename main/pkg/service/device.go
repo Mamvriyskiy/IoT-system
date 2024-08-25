@@ -4,8 +4,8 @@ import (
 	"crypto/rand"
 	"math/big"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type DeviceService struct {
@@ -19,10 +19,14 @@ func NewDeviceService(repo repository.IDeviceRepo) *DeviceService {
 func UseCryptoRandIntn(max int) int {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(max)))
 	if err != nil {
-		// handle error
+		//TODO: error
 		return 0
 	}
 	return int(n.Int64())
+}
+
+func (s *DeviceService) GetListDevices(userID int) ([]pkg.Devices, error) {
+	return s.repo.GetListDevices(userID)
 }
 
 func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, error) {
@@ -33,15 +37,21 @@ func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, erro
 	device.TypeDevice = deviceTypes[UseCryptoRandIntn(len(deviceTypes))]
 	device.Status = statusValues[UseCryptoRandIntn(len(statusValues))]
 	device.Brand = brands[UseCryptoRandIntn(len(brands))]
-	device.PowerConsumption = UseCryptoRandIntn(100)
-	device.MinParameter = UseCryptoRandIntn(50)
-	device.MaxParameter = UseCryptoRandIntn(100)
 
-	return s.repo.CreateDevice(homeID, device)
+	character := pkg.DeviceCharacteristics{
+		Values: 123.45,
+	}
+
+	typeCharacter := pkg.TypeCharacter{
+		Type: "weight",
+		UnitMeasure: "kg",
+	}
+
+	return s.repo.CreateDevice(homeID, device, character, typeCharacter)
 }
 
-func (s *DeviceService) DeleteDevice(idDevice int, name string) error {
-	return s.repo.DeleteDevice(idDevice, name)
+func (s *DeviceService) DeleteDevice(idDevice int, name, home string) error {
+	return s.repo.DeleteDevice(idDevice, name, home)
 }
 
 func (s *DeviceService) GetDeviceByID(deviceID int) (pkg.Devices, error) {

@@ -1,8 +1,8 @@
 package service
 
 import (
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type HomeService struct {
@@ -13,15 +13,16 @@ func NewHomeService(repo repository.IHomeRepo) *HomeService {
 	return &HomeService{repo: repo}
 }
 
-func (s *HomeService) CreateHome(idUser int, home pkg.Home) (int, error) {
-	return s.repo.CreateHome(idUser, home)
+func (s *HomeService) CreateHome(home pkg.Home) (int, error) {
+	home.GeographCoords = 12345
+	return s.repo.CreateHome(home)
 }
 
-func (s *HomeService) DeleteHome(homeID int) error {
-	return s.repo.DeleteHome(homeID)
+func (s *HomeService) DeleteHome(homeID int, homeName string) error {
+	return s.repo.DeleteHome(homeID, homeName)
 }
 
-func (s *HomeService) UpdateHome(home pkg.Home) error {
+func (s *HomeService) UpdateHome(home pkg.UpdateNameHome) error {
 	return s.repo.UpdateHome(home)
 }
 

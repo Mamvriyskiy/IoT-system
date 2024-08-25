@@ -1,7 +1,7 @@
 package repository
 
 import (
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,31 +16,33 @@ type IUserRepo interface {
 }
 
 type IHomeRepo interface {
-	CreateHome(idUser int, home pkg.Home) (int, error)
-	DeleteHome(homeID int) error
-	UpdateHome(home pkg.Home) error
+	CreateHome(home pkg.Home) (int, error)
+	DeleteHome(homeID int, homeName string) error
+	UpdateHome(home pkg.UpdateNameHome) error
 	GetHomeByID(homeID int) (pkg.Home, error)
 	ListUserHome(userID int) ([]pkg.Home, error)
 }
 
 type IAccessHomeRepo interface {
-	AddUser(userID, accessLevel int, email string) (int, error)
-	DeleteUser(idUser int, email string) error
-	UpdateLevel(idUser int, access pkg.AddUserHome) error
+	AddUser(userID int, access pkg.Access) (int, error)
+	DeleteUser(idUser int, access pkg.Access) error
+	UpdateLevel(userID int, updateAccess pkg.Access) error
 	UpdateStatus(idUser int, access pkg.AccessHome) error
-	GetListUserHome(idHome int) ([]pkg.ClientHome, error)
+	GetListUserHome(userID int) ([]pkg.ClientHome, error)
 	AddOwner(userID, homeID int) (int, error)
 }
 
 type IDeviceRepo interface {
-	CreateDevice(homeID int, device *pkg.Devices) (int, error)
-	DeleteDevice(idDevice int, name string) error
+	CreateDevice(userID int, device *pkg.Devices, 
+		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error)
+	DeleteDevice(idDevice int, name, home string) error
 	GetDeviceByID(deviceID int) (pkg.Devices, error)
+	GetListDevices(userID int) ([]pkg.Devices, error)
 }
 
 type IHistoryDeviceRepo interface {
 	CreateDeviceHistory(userID int, history pkg.AddHistory) (int, error)
-	GetDeviceHistory(userID int, name string) ([]pkg.DevicesHistory, error)
+	GetDeviceHistory(userID int, name, home string) ([]pkg.DevicesHistory, error)
 }
 
 type Repository struct {

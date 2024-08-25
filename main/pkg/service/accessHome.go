@@ -1,8 +1,8 @@
 package service
 
 import (
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type AccessHomeService struct {
@@ -17,16 +17,16 @@ func (s *AccessHomeService) AddOwner(userID, homeID int) (int, error) {
 	return s.repo.AddOwner(userID, homeID)
 }
 
-func (s *AccessHomeService) AddUser(userID, accessLevel int, email string) (int, error) {
-	return s.repo.AddUser(userID, accessLevel, email)
+func (s *AccessHomeService) AddUser(userID int, access pkg.Access) (int, error) {
+	return s.repo.AddUser(userID, access)
 }
 
-func (s *AccessHomeService) DeleteUser(idUser int, email string) error {
-	return s.repo.DeleteUser(idUser, email)
+func (s *AccessHomeService) DeleteUser(idUser int, access pkg.Access) error {
+	return s.repo.DeleteUser(idUser, access)
 }
 
-func (s *AccessHomeService) UpdateLevel(idUser int, access pkg.AddUserHome) error {
-	return s.repo.UpdateLevel(idUser, access)
+func (s *AccessHomeService) UpdateLevel(idUser int, updateAccess pkg.Access) error {
+	return s.repo.UpdateLevel(idUser, updateAccess)
 }
 
 func (s *AccessHomeService) UpdateStatus(idUser int, access pkg.AccessHome) error {

@@ -8,9 +8,9 @@ import (
 	"fmt"
 	"net/smtp"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 	jwt "github.com/dgrijalva/jwt-go"
 )
 

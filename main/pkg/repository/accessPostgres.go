@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/logger"
-	pkg "git.iu7.bmstu.ru/mis21u869/PPO/-/tree/lab3/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -16,23 +16,20 @@ func NewAccessHomePostgres(db *sqlx.DB) *AccessHomePostgres {
 	return &AccessHomePostgres{db: db}
 }
 
-func (r *AccessHomePostgres) AddUser(userID, accessLevel int, email string) (int, error) {
+func (r *AccessHomePostgres) AddUser(userID int, access pkg.Access) (int, error) {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 	
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, access.Home)
 	if err != nil {
-		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, userID)
+		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, access.Home, userID)
 		return 0, err
 	}
 
 	var id int
 	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel) 
 		values ($1, $2) RETURNING accessID`, "access")
-	row := r.db.QueryRow(query, "active", accessLevel)
+	row := r.db.QueryRow(query, "active", access.AccessLevel)
 	err = row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into access:", err, &id)
@@ -41,9 +38,9 @@ func (r *AccessHomePostgres) AddUser(userID, accessLevel int, email string) (int
 
 	var newUserID int
 	queryUserID := `select c.clientID from client c where email = $1;`
-	err = r.db.Get(&newUserID, queryUserID, email)
+	err = r.db.Get(&newUserID, queryUserID, access.Email)
 	if err != nil {
-		logger.Log("Error", "Get", "Error get newUserID:", err, &newUserID, queryUserID, email)
+		logger.Log("Error", "Get", "Error get newUserID:", err, &newUserID, queryUserID, access.Email)
 		return 0, err
 	}
 
@@ -97,16 +94,13 @@ func (r *AccessHomePostgres) AddOwner(userID, homeID int) (int, error) {
 	return id, nil
 }
 
-func (r *AccessHomePostgres) UpdateLevel(idUser int, access pkg.AddUserHome) error {
+func (r *AccessHomePostgres) UpdateLevel(userID int, updateAccess pkg.Access) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, idUser)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, updateAccess.Home)
 	if err != nil {
-		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, idUser)
+		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, updateAccess.Home, userID)
 		return err
 	}
 
@@ -119,7 +113,7 @@ func (r *AccessHomePostgres) UpdateLevel(idUser int, access pkg.AddUserHome) err
 			JOIN accesshome ah ON ah.accessid = ac.accessid
 		WHERE c.email = $2 AND ah.homeid = $3
 	);`
-	_, err = r.db.Exec(query, access.AccessLevel, access.Email, homeID)
+	_, err = r.db.Exec(query, updateAccess.AccessLevel, updateAccess.Email, homeID)
 
 	return err
 }
@@ -136,14 +130,16 @@ func (r *AccessHomePostgres) UpdateStatus(idUser int, access pkg.AccessHome) err
 	return err
 }
 
-func (r *AccessHomePostgres) GetListUserHome(idHome int) ([]pkg.ClientHome, error) {
+func (r *AccessHomePostgres) GetListUserHome(userID int) ([]pkg.ClientHome, error) {
 	var lists []pkg.ClientHome
-	query := `select c.login, a.accesslevel, a.accessstatus from client c 
-				join accessclient ac on c.clientid = ac.clientid
-					join access a on a.accessid = ac.accessid 
-						join accesshome ah on ah.accessid = a.accessid 
-							where ah.homeid = $1;`
-	err := r.db.Select(&lists, query, idHome)
+	query := `SELECT h.name, c.login, c.email, a.accesslevel, a.accessstatus
+FROM client c 
+	JOIN accessclient ac ON c.clientid = ac.clientid
+		JOIN access a ON a.accessid = ac.accessid
+			JOIN accesshome ah ON ah.accessid = a.accessid
+					JOIN home h ON h.homeid = ah.homeid
+						WHERE ah.homeid IN (SELECT a.homeid FROM accesshome a WHERE a.accessid IN (SELECT a.accessid FROM accessclient a WHERE clientid = $1));`
+	err := r.db.Select(&lists, query, userID)
 	if err != nil {
 		logger.Log("Error", "Select", "Error select ClientHome:", err, "")
 		return nil, err
@@ -152,23 +148,34 @@ func (r *AccessHomePostgres) GetListUserHome(idHome int) ([]pkg.ClientHome, erro
 	return lists, nil
 }
 
-func (r *AccessHomePostgres) DeleteUser(userID int, email string) error {
+func (r *AccessHomePostgres) DeleteUser(userID int, access pkg.Access) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, access.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, "")
 		return err
 	}
 
-	query := `delete from access where accessid = 
+	var accessID int
+	queryAccessID := `select a.accessid from access a where a.accessid =
 	(select accessid from accesshome 
-		where homeid = $1 and accessid = (select accessid from accessclient ac
+		where homeid = $1 and accessid in (select accessid from accessclient ac
 			join client c on c.clientid = ac.clientid where c.email = $2));`
-	_, err = r.db.Exec(query, homeID, email)
+	err = r.db.Get(&accessID, queryAccessID, homeID, access.Email)
+	if err != nil {
+		logger.Log("Error", "Get", "Error get AccessID:", err, "")
+		return err
+	}
+
+	queryDeleteAccessID := `delete from accessclient where accessid = $1`
+	_, err = r.db.Exec(queryDeleteAccessID, accessID)
+
+	queryDeleteAccessClientID := `delete from accesshome where accessid = $1`
+	_, err = r.db.Exec(queryDeleteAccessClientID, accessID)
+
+	queryDeleteAccessHomeID := `delete from access where accessid = $1`
+	_, err = r.db.Exec(queryDeleteAccessHomeID, accessID)
 
 	return err
 }
