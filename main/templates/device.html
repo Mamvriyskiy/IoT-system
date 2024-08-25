@@ -137,6 +137,7 @@
         });
 
         document.getElementById('createDeviceBtn').addEventListener('click', function() {
+            const nameHome = prompt('Введите имя дома:');
             const nameDevice = prompt('Введите название устройства:');
             if (nameDevice) {
                 jwt = localStorage.getItem('jwt');
@@ -149,7 +150,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ name: nameDevice })
+                    body: JSON.stringify({ home: nameHome, name: nameDevice })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -164,6 +165,7 @@
         });
 
         document.getElementById('deleteDeviceBtn').addEventListener('click', function() {
+            const nameHome = prompt('Введите имя дома:');
             const nameDevice = prompt('Введите название устройства:');
             if (nameDevice) {
                 jwt = localStorage.getItem('jwt');
@@ -176,7 +178,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ name: nameDevice })
+                    body: JSON.stringify({ home: nameHome, name: nameDevice })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -191,6 +193,7 @@
         });
 
         document.getElementById('createHistoryBtn').addEventListener('click', function() {
+            const nameHome = prompt('Введите имя дома:');
             const nameDevice = prompt('Введите название устройства:');
             if (nameDevice) {
                 jwt = localStorage.getItem('jwt');
@@ -203,7 +206,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ name: nameDevice })
+                    body: JSON.stringify({ home: nameHome, name: nameDevice })
                 })
                 .then(response => response.json())
                 .then(data => {
@@ -219,6 +222,7 @@
 
         document.getElementById('getHistoryBtn').addEventListener('click', function() {
             jwt = localStorage.getItem('jwt');
+            const nameHome = prompt('Введите имя дома:');
             const nameDevice = prompt('Введите название устройства:');
             console.log(nameDevice);
             if (nameDevice) {
@@ -233,7 +237,7 @@
                         'Content-Type': 'application/json',
                         'Authorization': jwt
                     },
-                    body: JSON.stringify({ name: nameDevice })
+                    body: JSON.stringify({ home: nameHome, name: nameDevice })
                 })
                 .then(response => response.json())
                 .then(data => {

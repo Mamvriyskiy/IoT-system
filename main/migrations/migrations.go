@@ -1,28 +1,57 @@
 package migrations
 
 import (
+	"os"
+	"fmt"
+	"github.com/jmoiron/sqlx"
 	"github.com/pressly/goose"
 )
 
-func MigrationsDataBase() {
-	sqlDB, err := pureDB.DB()
+func MigrationsTestDataBase(connDB *sqlx.DB, dataFile string) error {
+	err := connDB.Ping()
 	if err != nil {
-		return nil, nil, fmt.Errorf("get db: %w", err)
+		return fmt.Errorf("get db: %w", err)
 	}
 
-	if err = goose.Up(sqlDB, "../../../deployments/migrations/test_migrations"); err != nil {
-		return nil, nil, fmt.Errorf("up migrations: %w", err)
+	if err = goose.Up(connDB.DB, "../migrations/testMigrationsSQL/"); err != nil {
+		return fmt.Errorf("up migrations: %w", err)
 	}
 
-	text, err := os.ReadFile("../../containers/data.sql")
+	text, err := os.ReadFile(dataFile)
 	if err != nil {
-		return nil, nil, fmt.Errorf("read file: %w", err)
+		return fmt.Errorf("read file: %w", err)
 	}
 
-	if err := pureDB.Exec(string(text)).Error; err != nil {
-		return nil, nil, fmt.Errorf("exec: %w", err)
+	if _, err := connDB.Exec(string(text)); err != nil {
+		return fmt.Errorf("exec: %w", err)
 	}
 
-	
+	return nil
 }
 
+func MigrationsDataBaseUp(connDB *sqlx.DB) error {
+	err := connDB.Ping()
+	if err != nil {
+		return fmt.Errorf("get db: %w", err)
+	}
+
+	if err = goose.Up(connDB.DB, "./migrations/defaultMigrationsSQL/"); err != nil {
+		return fmt.Errorf("up migrations: %w", err)
+	}
+
+	return nil
+}
+
+
+func MigrationsDataBaseDown(connDB *sqlx.DB) error {
+	err := connDB.Ping()
+	if err != nil {
+		return fmt.Errorf("get db: %w", err)
+	}
+
+	if err = goose.Down(connDB.DB, "./migrations/defaultMigrations/"); err != nil {
+		return fmt.Errorf("up migrations: %w", err)
+	}
+
+	return nil
+}

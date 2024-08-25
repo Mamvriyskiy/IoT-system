@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg/service"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
 )

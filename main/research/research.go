@@ -30,6 +30,7 @@ const (
 	MAXSIZE = 100000
 	STEP = 10000
 	SEARCHLOGIN = "gfkdnikald"
+	REAPEAT = 1000
 )
 
 func main() {
@@ -81,7 +82,7 @@ func goResearch(connDB *sqlx.DB) error {
 
 func searchWithoutIndex(connDB *sqlx.DB) error {
 	var result int64
-	for i := 0; i < 30; i++ {
+	for i := 0; i < REAPEAT; i++ {
 		start := C.getThreadCpuTimeNs()
 		row := connDB.QueryRow(`SELECT login FROM client WHERE login = $1`, SEARCHLOGIN)
 		finish := C.getThreadCpuTimeNs()
@@ -97,13 +98,13 @@ func searchWithoutIndex(connDB *sqlx.DB) error {
 		}
 	}
 
-	fmt.Println("Result time:", result / 30)
+	fmt.Println("Result time:", result / REAPEAT)
 	return nil
 }
 
 func searchIndex(connDB *sqlx.DB) error {
 	var result int64
-	for i := 0; i < 100; i++ {
+	for i := 0; i < REAPEAT; i++ {
 		start := C.getThreadCpuTimeNs()
 		row := connDB.QueryRow(`SELECT login FROM client WHERE login = $1`, SEARCHLOGIN)
 		finish := C.getThreadCpuTimeNs()
@@ -119,6 +120,6 @@ func searchIndex(connDB *sqlx.DB) error {
 		}
 	}
 
-	fmt.Println("Result time Index:", result / 100)
+	fmt.Println("Result time Index:", result / REAPEAT)
 	return nil
 }

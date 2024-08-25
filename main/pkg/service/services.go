@@ -1,8 +1,8 @@
 package service
 
 import (
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type IUser interface {
@@ -16,7 +16,7 @@ type IUser interface {
 }
 
 type IHome interface {
-	CreateHome(idUser int, home pkg.Home) (int, error)
+	CreateHome(home pkg.Home) (int, error)
 	DeleteHome(homeID int, homeName string) error
 	UpdateHome(home pkg.UpdateNameHome) error
 	GetHomeByID(homeID int) (pkg.Home, error)
@@ -34,14 +34,14 @@ type IAccessHome interface {
 
 type IDevice interface {
 	CreateDevice(homeID int, device *pkg.Devices) (int, error)
-	DeleteDevice(idDevice int, name string) error
+	DeleteDevice(idDevice int, name, home string) error
 	GetDeviceByID(deviceID int) (pkg.Devices, error)
 	GetListDevices(userID int) ([]pkg.Devices, error)
 }
 
 type IHistoryDevice interface {
 	CreateDeviceHistory(deviceID int, history pkg.AddHistory) (int, error)
-	GetDeviceHistory(userID int, name string) ([]pkg.DevicesHistory, error)
+	GetDeviceHistory(userID int, name, home string) ([]pkg.DevicesHistory, error)
 }
 
 type Services struct {

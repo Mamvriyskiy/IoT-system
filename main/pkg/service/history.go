@@ -1,8 +1,8 @@
 package service
 
 import (
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type HistoryDeviceService struct {
@@ -20,7 +20,6 @@ func (s *HistoryDeviceService) CreateDeviceHistory(deviceID int,
 }
 
 func (s *HistoryDeviceService) GetDeviceHistory(userID int,
-	name string,
-) ([]pkg.DevicesHistory, error) {
-	return s.repo.GetDeviceHistory(userID, name)
+	name, home string) ([]pkg.DevicesHistory, error) {
+	return s.repo.GetDeviceHistory(userID, name, home)
 }

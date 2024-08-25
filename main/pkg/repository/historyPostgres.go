@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 	"sync"
 	"time"
@@ -22,11 +22,8 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	history pkg.AddHistory,
 ) (int, error) {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1));`
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, history.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err, userID)
 		return 0, err
@@ -103,15 +100,10 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 }
 
 func (r *DeviceHistoryPostgres) GetDeviceHistory(userID int,
-	name string,
-) ([]pkg.DevicesHistory, error) {
+	name, home string) ([]pkg.DevicesHistory, error) {
 	var homeID int
-	queryHomeID := `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid
-			where clientid = $1));`
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err, userID)
 		return nil, err

@@ -4,8 +4,8 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -95,11 +95,13 @@ func (h *Handler) deleteDevice(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	err := h.services.IDevice.DeleteDevice(int(intVal), input.Name)
+	err := h.services.IDevice.DeleteDevice(int(intVal), input.Name, input.Home)
 	if err != nil {
 		logger.Log("Error", "DeleteDevice", "Error delete device:", err, id, input.Name)
 		return
 	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{})
 
 	logger.Log("Info", "", "A device has been deleted", nil)
 }

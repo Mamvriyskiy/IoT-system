@@ -4,8 +4,8 @@ import (
 	"crypto/rand"
 	"math/big"
 
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type DeviceService struct {
@@ -50,8 +50,8 @@ func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, erro
 	return s.repo.CreateDevice(homeID, device, character, typeCharacter)
 }
 
-func (s *DeviceService) DeleteDevice(idDevice int, name string) error {
-	return s.repo.DeleteDevice(idDevice, name)
+func (s *DeviceService) DeleteDevice(idDevice int, name, home string) error {
+	return s.repo.DeleteDevice(idDevice, name, home)
 }
 
 func (s *DeviceService) GetDeviceByID(deviceID int) (pkg.Devices, error) {

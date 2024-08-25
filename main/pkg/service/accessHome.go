@@ -1,8 +1,8 @@
 package service
 
 import (
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 )
 
 type AccessHomeService struct {

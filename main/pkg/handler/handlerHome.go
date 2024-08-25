@@ -3,8 +3,8 @@ package handler
 import (
 	"net/http"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -28,7 +28,7 @@ func (h *Handler) createHome(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 	}
 
-	homeID, err := h.services.IHome.CreateHome(int(intVal), input)
+	homeID, err := h.services.IHome.CreateHome(input)
 	if err != nil {
 		logger.Log("Error", "CreateHome", "Error create home:", err, intVal, input)
 		return

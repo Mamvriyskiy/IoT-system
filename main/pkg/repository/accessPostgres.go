@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -18,11 +18,9 @@ func NewAccessHomePostgres(db *sqlx.DB) *AccessHomePostgres {
 
 func (r *AccessHomePostgres) AddUser(userID int, access pkg.Access) (int, error) {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-		where h.name = $1 and h.homeid in (select a.homeid from accesshome a 
-			where a.accessid in (select a.accessid from accessclient a where clientid = $2));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 	
-	err := r.db.Get(&homeID, queryHomeID, access.Home, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, access.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, access.Home, userID)
 		return 0, err
@@ -98,11 +96,9 @@ func (r *AccessHomePostgres) AddOwner(userID, homeID int) (int, error) {
 
 func (r *AccessHomePostgres) UpdateLevel(userID int, updateAccess pkg.Access) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-		where h.name = $1 and h.homeid in (select a.homeid from accesshome a 
-			where a.accessid in (select a.accessid from accessclient a where clientid = $2));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, updateAccess.Home, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, updateAccess.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, queryHomeID, updateAccess.Home, userID)
 		return err
@@ -154,10 +150,8 @@ FROM client c
 
 func (r *AccessHomePostgres) DeleteUser(userID int, access pkg.Access) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-		where h.name = $1 and h.homeid in (select a.homeid from accesshome a 
-			where a.accessid in (select a.accessid from accessclient a where clientid = $2));`
-	err := r.db.Get(&homeID, queryHomeID, access.Home, userID)
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, access.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, "")
 		return err

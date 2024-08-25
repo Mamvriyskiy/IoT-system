@@ -3,12 +3,12 @@ package main
 import (
 	"os"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/handler"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/repository"
-	//"github.com/Mamvriyskiy/DBCourse/main/pkg/repositoryCH"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/handler"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg/service"
+	"github.com/Mamvriyskiy/database_course/main/migrations"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
 )
@@ -39,6 +39,20 @@ func main() {
 		logger.Log("Error", "initCongig", "Error config DB:", err, "")
 		return
 	}
+
+	err = migrations.MigrationsDataBaseUp(db)
+
+	if err != nil {
+		logger.Log("Error", "MigrationsDataBaseUp", "Error migrations:", err, "")
+		return
+	}
+
+	// defer func() {
+	// 	err = migrations.MigrationsDataBaseDown(db)
+	// 	if err != nil {
+	// 		logger.Log("Error", "MigrationsDataBaseDown", "Error migrations:", err, "")
+	// 	}
+	// }()
 	
 
 	repos := repository.NewRepository(db)

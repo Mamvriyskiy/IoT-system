@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -31,21 +31,14 @@ func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
 	return homeList, nil
 }
 
-func (r *HomePostgres) CreateHome(ownerID int, home pkg.Home) (int, error) {
+func (r *HomePostgres) CreateHome(home pkg.Home) (int, error) {
 	var homeID int
-	query := fmt.Sprintf("INSERT INTO %s (ownerid, name) values ($1, $2) RETURNING homeID", "home")
-	row := r.db.QueryRow(query, ownerID, home.Name)
+	query := fmt.Sprintf("INSERT INTO %s (coords, name) values ($1, $2) RETURNING homeID", "home")
+	row := r.db.QueryRow(query, home.GeographCoords, home.Name)
 	if err := row.Scan(&homeID); err != nil {
-		logger.Log("Error", "Scan", "Error insert into home:", err, ownerID, home.Name)
+		logger.Log("Error", "Scan", "Error insert into home:", err, home.GeographCoords, home.Name)
 		return 0, err
 	}
-
-	// query2 := fmt.Sprintf("INSERT INTO clientHome (clientID, homeID) values($1, $2)")
-	// _, err := r.db.Exec(query2, ownerID, homeID)
-	// if err != nil {
-	// 	logger.Log("Error", "Exec", "Error insert from clientHome:", err, homeID)
-	// 	return 0, err
-	// }
 
 	return homeID, nil
 }
@@ -53,12 +46,9 @@ func (r *HomePostgres) CreateHome(ownerID int, home pkg.Home) (int, error) {
 func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 	var homeID int
 	
-	const queryHomeID = `select h.homeID from home h where h.Name = $1 
-		and h.homeID in (select h.homeID from home h join accesshome a on h.homeId = a.homeID
-			join access a2 on a2.accessID = a.accessID 
-				join accessclient a3 on a3.accessID = a2.accessID where a3.clientID = $2);`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, nameHome, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, nameHome)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err, userID)
 		return err
@@ -92,25 +82,14 @@ func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 		return err
 	}
 
-	// query4 := `DELETE FROM home
-	// 	WHERE homeid = $1;`
-	// _, err = r.db.Exec(query4, homeID)
-	// if err != nil {
-	// 	logger.Log("Error", "Exec", "Error delete from home:", err, homeID)
-	// 	return err
-	// }
-
 	return err
 }
 
 func (r *HomePostgres) UpdateHome(home pkg.UpdateNameHome) error {
 	var homeID int
-	const queryHomeID = `select h.homeID from home h where h.Name = $1 
-		and h.homeID in (select h.homeID from home h join accesshome a on h.homeId = a.homeID
-			join access a2 on a2.accessID = a.accessID 
-				join accessclient a3 on a3.accessID = a2.accessID where a3.clientID = $2);`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, home.LastName, home.UserID)
+	err := r.db.Get(&homeID, queryHomeID, home.UserID, 4, home.LastName)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from home:", err)
 		return err

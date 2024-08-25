@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -22,7 +22,7 @@ func (r *DevicePostgres) GetListDevices(userID int) ([]pkg.Devices, error) {
 		where dh.homeid in (select h.homeid from home h 
 	where h.homeid in (select a.homeid from accesshome a 
 		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4))));`
+			JOIN access ac ON a.accessid = ac.accessid where clientid = $1))));`
 
 	var deviceList []pkg.Devices
 	err := r.db.Select(&deviceList, queryHomeID, userID)
@@ -30,7 +30,6 @@ func (r *DevicePostgres) GetListDevices(userID int) ([]pkg.Devices, error) {
 		logger.Log("Error", "Select", "Error get list devices:", err, userID)
 		return []pkg.Devices{}, err
 	}
-	// fmt.Println(deviceList)
 
 	return deviceList, nil 
 }
@@ -38,12 +37,9 @@ func (r *DevicePostgres) GetListDevices(userID int) ([]pkg.Devices, error) {
 func (r *DevicePostgres) CreateDevice(userID int, device *pkg.Devices, 
 		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error) {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, device.Home, 4)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, userID)
 		return 0, err
@@ -85,14 +81,11 @@ func (r *DevicePostgres) CreateDevice(userID int, device *pkg.Devices,
 	return id, nil
 }
 
-func (r *DevicePostgres) DeleteDevice(userID int, name string) error {
+func (r *DevicePostgres) DeleteDevice(userID int, name, home string) error {
 	var homeID int
-	const queryHomeID = `select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1 AND accessLevel = 4));`
+	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, userID)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, userID)
 		return err

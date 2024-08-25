@@ -3,8 +3,8 @@ package repository
 import (
 	"fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	pkg "github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
 )
 
@@ -33,7 +33,7 @@ func (r *UserPostgres) GetUser(login, password string) (pkg.User, error) {
 	var user pkg.User
 	query := fmt.Sprintf("SELECT clientid from %s where login = $1 and password = $2", "client")
 	err := r.db.Get(&user, query, login, password)
-
+	
 	return user, err
 }
 

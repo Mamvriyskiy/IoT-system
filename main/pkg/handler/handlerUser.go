@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -75,11 +75,9 @@ func (h *Handler) signUp(c *gin.Context) {
 
 	id, err := h.services.IUser.CreateUser(input)
 	if err != nil {
-		// *TODO log
+		logger.Log("Error", "h.services.IUser.CreateUser(input)", "Error create user:", err, input)
 		return
 	}
-
-	// c.Next()
 
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"id": id,
@@ -102,7 +100,7 @@ func (h *Handler) signIn(c *gin.Context) {
 
 	token, err := h.services.IUser.GenerateToken(input.Username, input.Password)
 	if err != nil {
-		// *TODO log
+		logger.Log("Error", "GenerateToken", "Error GenerateToken:", err, input)
 		return
 	}
 

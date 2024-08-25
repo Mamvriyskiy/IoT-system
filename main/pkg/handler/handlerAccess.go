@@ -4,8 +4,8 @@ import (
 	"net/http"
 	// "fmt"
 
-	"github.com/Mamvriyskiy/DBCourse/main/logger"
-	"github.com/Mamvriyskiy/DBCourse/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/logger"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
 )
 
@@ -131,6 +131,8 @@ func (h *Handler) updateStatus(c *gin.Context) {
 		return
 	}
 
+	c.JSON(http.StatusOK, map[string]interface{}{})
+
 	logger.Log("Info", "", "A status has been update", nil)
 }
 
@@ -157,8 +159,6 @@ func (h *Handler) getListUserHome(c *gin.Context) {
 		logger.Log("Error", "GetListUserHome", "Error get access:", err, int(intVal))
 		return
 	}
-
-	// fmt.Println(listUser)
 
 	c.JSON(http.StatusOK, getAllListUserResponse{
 		Data: listUser,
