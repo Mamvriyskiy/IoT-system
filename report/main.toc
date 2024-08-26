@@ -1,6 +1,0 @@
-\babel@toc {russian}{}\relax 
-\contentsline {chapter}{Введение}{3}{chapter*.3}%
-\contentsline {chapter}{СПИСОК ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ}{3}{chapter*.3}%
-\contentsline {chapter}{Приложение А}{4}{chapter*.4}%
-\contentsline {chapter}{Приложение Б}{5}{chapter*.5}%
-\contentsline {chapter}{Приложение В}{7}{chapter*.6}%
