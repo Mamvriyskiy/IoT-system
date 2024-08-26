@@ -3,6 +3,8 @@
 
 \def\labelitemi{---}
 
+\bibliography{biblio}
+
 \begin{document}
 	
     \makecourseworktitle
@@ -15,8 +17,17 @@
 
 	\setcounter{page}{2}
     \maketableofcontents
-	\include{parts/intro}
+    
+    \include{parts/intro}
 	\include{parts/analytical}
     \include{parts/construction}
     \include{parts/techn}
+    \include{parts/research}
+    \include{parts/end}
+
+    \makebibliography
+
+    \include{parts/prila}
+    \include{parts/prilb}
+    \include{parts/prilv}
 \end{document}
