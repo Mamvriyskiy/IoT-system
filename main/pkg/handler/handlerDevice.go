@@ -26,14 +26,29 @@ func (h *Handler) getListDevice(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка устройств",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	listDevices, err := h.services.IDevice.GetListDevices(int(intVal))
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
 		logger.Log("Error", "GetListDevices", "Error get list devices:", err, id)
 		return
 	}
+
+	if listDevices == nil || len(listDevices) == 0 {
+		c.JSON(http.StatusNotFound, getAllListDevices{
+		})
+		return 
+	}
+
+	logger.Log("Info", "ListDev:", "Error get list devices:", nil, listDevices, len(listDevices))
 
 	c.JSON(http.StatusOK, getAllListDevices{
 		Data: listDevices,
@@ -59,11 +74,18 @@ func (h *Handler) createDevice(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания устройства",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	idDevice, err := h.services.IDevice.CreateDevice(int(intVal), &input)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания устройства",
+		})
 		logger.Log("Error", "CreateDevice", "Error create device:", err, id, &input)
 		return
 	}
@@ -92,11 +114,18 @@ func (h *Handler) deleteDevice(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка удаления устройства",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	err := h.services.IDevice.DeleteDevice(int(intVal), input.Name, input.Home)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка удаления устройства",
+		})
 		logger.Log("Error", "DeleteDevice", "Error delete device:", err, id, input.Name)
 		return
 	}

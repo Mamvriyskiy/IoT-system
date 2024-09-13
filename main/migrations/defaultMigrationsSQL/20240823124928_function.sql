@@ -12,7 +12,11 @@ BEGIN
   END IF;
 
   IF current_status = 'active' AND newStatus = 'active' THEN
-    RETURN -1; 
+    RETURN -2; 
+  END IF;
+
+  IF current_status = 'inactive' AND newStatus = 'inactive' THEN
+    RETURN -3; 
   END IF;
 
   UPDATE device

@@ -49,7 +49,7 @@ func MigrationsDataBaseDown(connDB *sqlx.DB) error {
 		return fmt.Errorf("get db: %w", err)
 	}
 
-	if err = goose.Down(connDB.DB, "./migrations/defaultMigrations/"); err != nil {
+	if err = goose.Down(connDB.DB, "./migrations/defaultMigrationsSQL/"); err != nil {
 		return fmt.Errorf("up migrations: %w", err)
 	}
 

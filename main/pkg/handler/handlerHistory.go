@@ -46,17 +46,25 @@ func (h *Handler) createDeviceHistory(c *gin.Context) {
 		TimeWork:         generateRandomInt(101),
 		AverageIndicator: generateRandomFloat(100),
 		EnergyConsumed:   generateRandomInt(101),
+		Home:             input.Home,
 	}
 
 	var intVal float64
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания истории",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	idHistory, err := h.services.IHistoryDevice.CreateDeviceHistory(int(intVal), history)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания истории",
+		})
 		logger.Log("Error", "CreateDeviceHistory", "Error create history:", err, id, history)
 		return
 	}
@@ -89,11 +97,18 @@ func (h *Handler) getDeviceHistory(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения истории",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	input, err := h.services.IHistoryDevice.GetDeviceHistory(int(intVal), info.Name, info.Home)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения истории",
+		})
 		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, id, info.Name)
 		return
 	}

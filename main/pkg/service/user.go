@@ -43,13 +43,17 @@ func (s *UserService) CheckUser(user pkg.User) (id int, err error) {
 		return -1, err
 	}
 
-	user, err = s.repo.GetUser(user.Username, user.Password)
+	user, err = s.repo.GetUser(user.Email, user.Password)
 	if err != nil {
 		logger.Log("Error", "GetUser", "Error get user:", err, user.Username, user.Password)
 		return id, err
 	}
 
 	return user.ID, err
+}
+
+func (s *UserService) GetUserByEmail(email string) (int, error) {
+	return s.repo.GetUserByEmail(email)
 }
 
 type markerClaims struct {

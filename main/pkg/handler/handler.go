@@ -54,6 +54,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			// В реальном приложении, возможно, это будет случайный секретный ключ.
 			return []byte(signingKey), nil
 		})
+		
 		// Проверить наличие ошибок при парсинге токена
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized", "detail:": err.Error()})

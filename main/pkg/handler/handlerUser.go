@@ -73,8 +73,17 @@ func (h *Handler) signUp(c *gin.Context) {
 		return
 	}
 
+	if count, err := h.services.IUser.GetUserByEmail(input.Email); err != nil || count != 0 {
+		logger.Log("Info", "CheckUser(user pkg.User)", fmt.Sprintf("User already register: %s", input.Email), nil)
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Пользователь уже зарегистрирован",
+		})
+		return
+	}
+
 	id, err := h.services.IUser.CreateUser(input)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "h.services.IUser.CreateUser(input)", "Error create user:", err, input)
 		return
 	}
@@ -88,9 +97,11 @@ func (h *Handler) signUp(c *gin.Context) {
 
 type signInInput struct {
 	Password string `json:"password"`
-	Username string `json:"login"`
+	Email string `json:"email"`
 }
 
+// Протаскивать ошибку из сервера и БД, ее номер
+// Создать собственные ошибки
 func (h *Handler) signIn(c *gin.Context) {
 	var input signInInput
 	if err := c.BindJSON(&input); err != nil {
@@ -98,15 +109,18 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
-	token, err := h.services.IUser.GenerateToken(input.Username, input.Password)
+	status := 0
+	token, err := h.services.IUser.GenerateToken(input.Email, input.Password)
 	if err != nil {
+		status = http.StatusNotFound
+		c.JSON(http.StatusNotFound, map[string]interface{}{})
 		logger.Log("Error", "GenerateToken", "Error GenerateToken:", err, input)
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
+	c.JSON(status, map[string]interface{}{
 		"token": token,
 	})
 
-	logger.Log("Info", "", fmt.Sprintf("User %s ganied access", input.Username), nil)
+	logger.Log("Info", "", fmt.Sprintf("User %s ganied access", input.Email), nil)
 }

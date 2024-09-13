@@ -72,19 +72,19 @@
 <body>
     <div class="container">
         <h1>Войти</h1>
-        <input type="text" id="login" placeholder="login" required>
-        <input type="password" id="password" placeholder="Password" required>
-        <button onclick="login()">Login</button>
-        <button class="register-button" onclick="register()">Register</button>
+        <input type="text" id="login" placeholder="Почта" required>
+        <input type="password" id="password" placeholder="Пароль" required>
+        <button onclick="login()">Войти</button>
+        <button class="register-button" onclick="register()">Регистрация</button>
         <button onclick="reset()">Сменить пароль</button>
     </div>
     <script>
         function login() {
-            const login = document.getElementById('login').value;
+            const email = document.getElementById('login').value;
             const password = document.getElementById('password').value;
 
-            if (!login || !password) {
-                alert('Please fill in both fields');
+            if (!email || !password) {
+                alert('Заполните поля');
                 return;
             }
 
@@ -93,19 +93,27 @@
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ login, password })
+                body: JSON.stringify({ email, password })
             })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.errors || 'Неизвестная ошибка');
+                    });
+                }
+                return response.json();  // Если все ок, парсим JSON
+            })
             .then(data => {
+                console.log(data.token)
                 if (data.token) {
                     localStorage.setItem('jwt', data.token);
                     console.log('Authorization token:', data.token);
                     window.location.href = '/app/menu';
                 } else {
-                    alert('Login failed');
+                    alert('Ошибка авторизации');
                 }
             })
-            .catch(error => console.error('Error:', error));
+            .catch(error => alert('Пользователь не найден'));
         }
 
         function register() {
