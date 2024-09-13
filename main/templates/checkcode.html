@@ -77,9 +77,9 @@
             }
 
             var urlParams = new URLSearchParams(window.location.search);
+            console.log(urlParams)
 
             if (urlParams.has('token')) {
-                // Получаем значение параметра "name" из URL
                 var token = urlParams.get('token');
             } else {
                 alert('Нет доступа');

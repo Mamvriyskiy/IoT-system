@@ -17,7 +17,7 @@ func NewDevicePostgres(db *sqlx.DB) *DevicePostgres {
 }
 
 func (r *DevicePostgres) GetListDevices(userID int) ([]pkg.Devices, error) {
-	const queryHomeID = `select d.name from device d 
+	const queryHomeID = `select d.name, d.status from device d 
 	where d.deviceid in (select dh.deviceid from devicehome dh 
 		where dh.homeid in (select h.homeid from home h 
 	where h.homeid in (select a.homeid from accesshome a 
@@ -39,7 +39,7 @@ func (r *DevicePostgres) CreateDevice(userID int, device *pkg.Devices,
 	var homeID int
 	const queryHomeID = `select * from getHomeID($1, $2, $3);`
 
-	err := r.db.Get(&homeID, queryHomeID, userID, device.Home, 4)
+	err := r.db.Get(&homeID, queryHomeID, userID, 4, device.Home)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get homeID:", err, &homeID, userID)
 		return 0, err
@@ -60,8 +60,6 @@ func (r *DevicePostgres) CreateDevice(userID int, device *pkg.Devices,
 
 	query1 := fmt.Sprintf("INSERT INTO %s (homeID, deviceId) VALUES ($1, $2)", "deviceHome")
 	_ = r.db.QueryRow(query1, homeID, id)
-
-	//character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter typecharacter
 	
 	var characterID int
 	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure)

@@ -13,6 +13,7 @@ type IUser interface {
 	ChangePassword(password, token string) error
 	CheckCode(code, token string) error
 	SendCode(email pkg.Email) error
+	GetUserByEmail(email string) (int, error)
 }
 
 type IHome interface {

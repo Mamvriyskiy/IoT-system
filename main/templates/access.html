@@ -43,7 +43,7 @@
             background-color: #007bff;
         }
         .user-list-container {
-            width: 300px;
+            width: 400px;
             background-color: white;
             padding: 20px;
             border-radius: 5px;
@@ -101,7 +101,14 @@
                     },
                     body: JSON.stringify({ accesslevel: parseInt(level), email: email, home: home })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.errors || 'Неизвестная ошибка');
+                        });
+                    }
+                    return response.json();  // Если все ок, парсим JSON
+                })
                 .then(data => {
                     //document.getElementById('homeName').innerText = data.name;
                     alert('Пользователь успешно добавлен!');
@@ -126,7 +133,14 @@
                         },
                         body: JSON.stringify({ email: email, home: home })
                     })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.errors || 'Неизвестная ошибка');
+                        });
+                    }
+                    return response.json();  // Если все ок, парсим JSON
+                })
                 .then(data => {
                     alert('Пользователь успешно удален!');
                         //document.getElementById('homeName').innerText = '';
@@ -153,7 +167,14 @@
                     },
                     body: JSON.stringify({ email: email, accessLevel: parseInt(newLevel), home: home })
                 })
-                .then(response => response.json())
+                .then(response => {
+                    if (!response.ok) {
+                        return response.json().then(data => {
+                            throw new Error(data.errors || 'Неизвестная ошибка');
+                        });
+                    }
+                    return response.json();  // Если все ок, парсим JSON
+                })
                 .then(data => {
                     alert('Уровень доступа успешно обновлен!');
                     document.getElementById('homeName').innerText = data.name;
@@ -175,7 +196,14 @@
                     },
                     //body: JSON.stringify({ name: newHomeName })
                 })
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.errors || 'Неизвестная ошибка');
+                    });
+                }
+                return response.json();  // Если все ок, парсим JSON
+            })
             .then(data => {
                 const users = data.data;
                 const userListElement = document.getElementById('user-list');

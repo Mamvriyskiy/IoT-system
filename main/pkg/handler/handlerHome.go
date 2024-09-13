@@ -25,17 +25,27 @@ func (h *Handler) createHome(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания дома",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	homeID, err := h.services.IHome.CreateHome(input)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка создания дома",
+		})
 		logger.Log("Error", "CreateHome", "Error create home:", err, intVal, input)
 		return
 	}
 
 	_, err = h.services.IAccessHome.AddOwner(int(intVal), homeID)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка добавления хозяина дома",
+		})
 		logger.Log("Error", "AddOwner", "Error add owner:", err, intVal, homeID)
 		return
 	}
@@ -67,11 +77,18 @@ func (h *Handler) deleteHome(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusInternalServerError, map[string]string{
+			"errors": "Ошибка обновления",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	err := h.services.IHome.DeleteHome(int(intVal), input.Name)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]string{
+			"errors": "дом не найден",
+		})
 		logger.Log("Error", "DeleteHome", "Error delete home:", err, id.(int))
 		return
 	}
@@ -96,11 +113,18 @@ func (h *Handler) listHome(c *gin.Context) {
 	if val, ok := id.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка домов",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	homeListUser, err := h.services.IHome.ListUserHome(int(intVal))
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка домов",
+		})
 		logger.Log("Error", "ListUserHome", "Error get user:", err, id.(int))
 		return
 	}
@@ -131,11 +155,18 @@ func (h *Handler) updateHome(c *gin.Context) {
 		intVal = val
 	} else {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		c.JSON(http.StatusInternalServerError, map[string]string{
+			"errors": "Ошибка обновления",
+		})
+		return
 	}
 	input.UserID = int(intVal)
 
 	err = h.services.IHome.UpdateHome(input)
 	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"errors": "дом не найден",
+		})
 		logger.Log("Error", "UpdateHome", "Error update home:", err, "")
 		return
 	}

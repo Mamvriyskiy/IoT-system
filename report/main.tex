@@ -3,6 +3,8 @@
 
 \def\labelitemi{---}
 
+\bibliography{biblio}
+
 \begin{document}
 	
     \makecourseworktitle
@@ -13,10 +15,21 @@
     {Гаврилова~Ю.~М.} % ФИО научного руководителя
     {} % ФИО консультанта (необязательный аргумент; если консультантов несколько, их необходимо разделить запятой)
 
-	\setcounter{page}{2}
+    \setcounter{page}{3}
+    \include{parts/referat}
     \maketableofcontents
-	\include{parts/intro}
+    
+    \include{parts/intro}
 	\include{parts/analytical}
     \include{parts/construction}
     \include{parts/techn}
+    \include{parts/research}
+    \include{parts/end}
+
+    \makebibliography
+
+    \include{parts/prila}
+    \include{parts/prilb}
+    \include{parts/prilv}
+    \include{parts/prilg}
 \end{document}

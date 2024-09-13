@@ -26,13 +26,20 @@ func (h *Handler) addUser(c *gin.Context) {
 	if val, ok := userID.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка добавления пользователя",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	idAccess, err := h.services.IAccessHome.AddUser(int(intVal), access)
 	if err != nil {
 		logger.Log("Error", "AddUser", "Error create access:",
 			err, int(intVal), access.AccessLevel, access.Email)
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка добавления пользователя",
+		})
 		return
 	}
 
@@ -60,11 +67,18 @@ func (h *Handler) deleteUser(c *gin.Context) {
 	if val, ok := userID.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка удаления пользователя",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	err := h.services.IAccessHome.DeleteUser(int(intVal), input)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка удаления пользователя",
+		})
 		logger.Log("Error", "DeleteUser", "Error delete access:", err, int(intVal), input)
 		return
 	}
@@ -91,12 +105,19 @@ func (h *Handler) updateLevel(c *gin.Context) {
 	if val, ok := userID.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка обновления пользователя",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	err := h.services.IAccessHome.UpdateLevel(int(intVal), update)
 	if err != nil {
 		logger.Log("Error", "UpdateLevel", "Error update access:", err, intVal, update)
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка обновления пользователя",
+		})
 		return
 	}
 
@@ -122,11 +143,18 @@ func (h *Handler) updateStatus(c *gin.Context) {
 	if val, ok := userID.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return 
 	}
 
 	err := h.services.IAccessHome.UpdateStatus(int(intVal), input)
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
 		logger.Log("Error", "UpdateStatus", "Error update access:", err, userID, input)
 		return
 	}
@@ -151,11 +179,18 @@ func (h *Handler) getListUserHome(c *gin.Context) {
 	if val, ok := userID.(float64); ok {
 		intVal = val
 	} else {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
 	}
 
 	listUser, err := h.services.IAccessHome.GetListUserHome(int(intVal))
 	if err != nil {
+		c.JSON(http.StatusOK, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
 		logger.Log("Error", "GetListUserHome", "Error get access:", err, int(intVal))
 		return
 	}

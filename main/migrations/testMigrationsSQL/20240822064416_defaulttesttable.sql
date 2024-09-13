@@ -19,7 +19,7 @@ CREATE TABLE IF NOT EXISTS accessHome (accessID int, homeID int);
 
 CREATE TABLE IF NOT EXISTS home (
     homeID SERIAL,
-    ownerID int,
+    coords int,
     name varchar(20)
 );
 
