@@ -78,7 +78,7 @@ func (h *Handler) deleteHome(c *gin.Context) {
 		intVal = val
 	} else {
 		c.JSON(http.StatusInternalServerError, map[string]string{
-			"errors": "Ошибка обновления",
+			"errors": "Ошибка удаления",
 		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 		return

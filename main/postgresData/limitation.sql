@@ -35,7 +35,7 @@ ALTER TABLE accessClient
 
 ALTER TABLE home
     ALTER COLUMN name SET NOT NULL,
-    ALTER COLUMN ownerID SET NOT NULL;
+    ALTER COLUMN coords SET NOT NULL;
 
 ALTER TABLE home 
     ADD CHECK (name != ''),
@@ -105,7 +105,3 @@ ALTER TABLE DeviceCharacteristics
     ADD PRIMARY KEY (characterid),
     ADD FOREIGN KEY (deviceID) REFERENCES device (deviceID) ON DELETE CASCADE,
     ADD FOREIGN KEY (typecharacterid) REFERENCES TypeCharacter (typecharacterid) ON DELETE CASCADE;
-
-ALTER TABLE clientHome 
-    ADD FOREIGN KEY (clientID) REFERENCES client (clientID) ON DELETE CASCADE,
-    ADD FOREIGN KEY (homeID) REFERENCES home (homeID) ON DELETE CASCADE;

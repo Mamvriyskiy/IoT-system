@@ -18,11 +18,8 @@ func NewDevicePostgres(db *sqlx.DB) *DevicePostgres {
 
 func (r *DevicePostgres) GetListDevices(userID int) ([]pkg.Devices, error) {
 	const queryHomeID = `select d.name, d.status from device d 
-	where d.deviceid in (select dh.deviceid from devicehome dh 
-		where dh.homeid in (select h.homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = $1))));`
+	where d.homeid in (select a.homeid from access a
+		where a.clientid = $1);`
 
 	var deviceList []pkg.Devices
 	err := r.db.Select(&deviceList, queryHomeID, userID)
@@ -47,19 +44,16 @@ func (r *DevicePostgres) CreateDevice(userID int, device *pkg.Devices,
 
 	var id int
 	query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, 
-		Brand)
-			values ($1, $2, $3, $4) RETURNING deviceID`, "device")
+		Brand, homeid)
+			values ($1, $2, $3, $4, $5) RETURNING deviceID`, "device")
 	row := r.db.QueryRow(query, device.Name, device.TypeDevice,
-		device.Status, device.Brand)
+		"Inactive", device.Brand, homeID)
 
 	err = row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into device:", err, &id)
 		return 0, err
 	}
-
-	query1 := fmt.Sprintf("INSERT INTO %s (homeID, deviceId) VALUES ($1, $2)", "deviceHome")
-	_ = r.db.QueryRow(query1, homeID, id)
 	
 	var characterID int
 	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure)
@@ -90,8 +84,7 @@ func (r *DevicePostgres) DeleteDevice(userID int, name, home string) error {
 	}
 	var deviceID int
 	queryDeviceID := `select d.deviceid from device d 
-	join devicehome d2 on d.deviceid = d2.deviceid 
-		where d2.homeid = $1 and d.name = $2;`
+		where d.homeid = $1 and d.name = $2;`
 	err = r.db.Get(&deviceID, queryDeviceID, homeID, name)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get deviceID:", err, &deviceID, homeID, name)

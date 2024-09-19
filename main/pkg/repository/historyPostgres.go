@@ -6,8 +6,8 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
-	"sync"
-	"time"
+	// "sync"
+	// "time"
 )
 
 type DeviceHistoryPostgres struct {
@@ -31,9 +31,8 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 
 	fmt.Println("HomeID", homeID)
 	var deviceID int
-	const querDeviceID = `select d.deviceid from device d join 
-		devicehome dh on d.deviceid = dh.deviceid 
-			where dh.homeid = $1 and d.name = $2;`
+	const querDeviceID = `select d.deviceid from device d
+			where d.homeid = $1 and d.name = $2;`
 	err = r.db.Get(&deviceID, querDeviceID, homeID, history.Name)
 	if err != nil {
 		logger.Log("Error", "Get", "Error select from device:", err, homeID, history.Name)
@@ -42,25 +41,26 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 
 	var result int
 	queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
-	err = r.db.Get(&result, queryUpdateStatus, deviceID, "Active")
+	err = r.db.Get(&result, queryUpdateStatus, deviceID, "active")
 	if err != nil {
 		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
 		return 0, err
 	}
 
+	fmt.Println(result)
 	if result == -2 {
-		return -2, fmt.Errorf("%s", "Устройство работает")
+		return -2, err
 	}
 
-	wg := &sync.WaitGroup{}
+	// wg := &sync.WaitGroup{}
 
-	wg.Add(1)
-	go func(i int) {
-		defer wg.Done()
-		time.Sleep(time.Duration(i) * time.Second)
-	}(history.TimeWork)
+	// wg.Add(1)
+	// go func(i int) {
+	// 	defer wg.Done()
+	// 	time.Sleep(10 * time.Second)
+	// }(history.TimeWork)
 	
-	wg.Wait()
+	// wg.Wait()
 
 	queryUpdateStatus = fmt.Sprintf(`select update_status($1, $2);`)
 	_, err = r.db.Exec(queryUpdateStatus, deviceID, "inactive")
@@ -103,9 +103,9 @@ func (r *DeviceHistoryPostgres) GetDeviceHistory(userID int,
 	}
 	fmt.Println("HomeID", homeID)
 	var deviceID int
-	querDeviceID := `select d.deviceid from device d 
-		join devicehome dh on d.deviceid = dh.deviceid 
-			where dh.homeid = $1 and d.name = $2;`
+	querDeviceID := `select d.deviceid from device d join 
+		home h on d.homeid = h.homeid 
+			where h.homeid = $1 and h.name = $2;`
 	err = r.db.Get(&deviceID, querDeviceID, homeID, name)
 	if err != nil {
 		return nil, err

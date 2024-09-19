@@ -43,7 +43,8 @@ func (h *Handler) getListDevice(c *gin.Context) {
 	}
 
 	if listDevices == nil || len(listDevices) == 0 {
-		c.JSON(http.StatusNotFound, getAllListDevices{
+		c.JSON(http.StatusNotFound, map[string]interface{}{
+			"errors": "список устройств пуст",
 		})
 		return 
 	}

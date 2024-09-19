@@ -26,16 +26,6 @@ func (r *AccessHomePostgres) AddUser(userID int, access pkg.Access) (int, error)
 		return 0, err
 	}
 
-	var id int
-	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel) 
-		values ($1, $2) RETURNING accessID`, "access")
-	row := r.db.QueryRow(query, "active", access.AccessLevel)
-	err = row.Scan(&id)
-	if err != nil {
-		logger.Log("Error", "Scan", "Error insert into access:", err, &id)
-		return 0, err
-	}
-
 	var newUserID int
 	queryUserID := `select c.clientID from client c where email = $1;`
 	err = r.db.Get(&newUserID, queryUserID, access.Email)
@@ -44,52 +34,29 @@ func (r *AccessHomePostgres) AddUser(userID int, access pkg.Access) (int, error)
 		return 0, err
 	}
 
-	query2 := fmt.Sprintf("INSERT INTO %s (clientID, accessID) VALUES ($1, $2)", "accessClient")
-	result, err := r.db.Exec(query2, newUserID, id)
+	var id int
+	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, homeid, clientid) 
+		values ($1, $2, $3, $4) RETURNING accessID`, "access")
+	row := r.db.QueryRow(query, "active", access.AccessLevel, homeID, newUserID)
+	err = row.Scan(&id)
 	if err != nil {
-		logger.Log("Error", "Exec", "Error insert into accessClient:", err, newUserID, id)
+		logger.Log("Error", "Scan", "Error insert into access:", err, &id)
 		return 0, err
 	}
-
-	_, err = result.RowsAffected()
-	if err != nil {
-		logger.Log("Error", "RowsAffected", "Error insert into accessClient:", err, "")
-		return 0, err
-	}
-
-	query3 := fmt.Sprintf("INSERT INTO %s (homeID, accessID) VALUES ($1, $2)", "accessHome")
-	r.db.QueryRow(query3, homeID, id)
 
 	return id, nil
 }
 
 func (r *AccessHomePostgres) AddOwner(userID, homeID int) (int, error) {
 	var id int
-	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel) 
-		values ($1, $2) RETURNING accessID`, "access")
-	row := r.db.QueryRow(query, "active", 4)
+	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, clientid, homeid) 
+		values ($1, $2, $3, $4) RETURNING accessID`, "access")
+	row := r.db.QueryRow(query, "active", 4, userID, homeID)
 	err := row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into access:", err, "")
 		return 0, err
 	}
-
-	query2 := fmt.Sprintf("INSERT INTO %s (clientID, accessID) VALUES ($1, $2)", "accessClient")
-
-	result, err := r.db.Exec(query2, userID, id)
-	if err != nil {
-		logger.Log("Error", "Exec", "Error insert into accessClient:", err, userID, id)
-		return 0, err
-	}
-
-	_, err = result.RowsAffected()
-	if err != nil {
-		logger.Log("Error", "RowsAffected", "Error insert into accessClient:", err, "")
-		return 0, err
-	}
-
-	query3 := fmt.Sprintf("INSERT INTO %s (homeID, accessID) VALUES ($1, $2)", "accessHome")
-	r.db.QueryRow(query3, homeID, id)
 
 	return id, nil
 }

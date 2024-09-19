@@ -127,6 +127,7 @@
                 body: JSON.stringify({ name: homeName })
             })
             .then(response => {
+                console.log(response.ok)
                 if (!response.ok) {
                     return response.json().then(data => {
                         throw new Error(data.errors || 'Неизвестная ошибка');

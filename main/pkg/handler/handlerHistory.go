@@ -3,6 +3,7 @@ package handler
 import (
 	"crypto/rand"
 	"math/big"
+	"fmt"
 	"net/http"
 
 	"github.com/Mamvriyskiy/database_course/main/logger"
@@ -61,8 +62,9 @@ func (h *Handler) createDeviceHistory(c *gin.Context) {
 	}
 
 	idHistory, err := h.services.IHistoryDevice.CreateDeviceHistory(int(intVal), history)
+	fmt.Println(idHistory, err)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusNotFound, map[string]interface{}{
 			"errors": "Ошибка создания истории",
 		})
 		logger.Log("Error", "CreateDeviceHistory", "Error create history:", err, id, history)

@@ -18,8 +18,8 @@ func NewHomePostgres(db *sqlx.DB) *HomePostgres {
 
 func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
 	getHomeID := `select h.homeid, h.name from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a where clientid = $1));`
+	where h.homeid in (select a.homeid from access a 
+		where a.clientid = $1);`
 
 	var homeList []pkg.Home
 	err := r.db.Select(&homeList, getHomeID, userID)
@@ -55,8 +55,7 @@ func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 	}
 
 	query1 := `DELETE FROM access 
-		WHERE accessid IN (SELECT accessid 
-			FROM accesshome WHERE homeid = $1);`
+		WHERE homeid = $1;`
 	_, err = r.db.Exec(query1, homeID)
 	if err != nil {
 		logger.Log("Error", "Exec", "Error delete from access:", err, homeID)
@@ -65,8 +64,7 @@ func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 
 	query2 := `DELETE FROM historydev 
 		WHERE historydevid IN (SELECT historydevid 
-			FROM historydevice WHERE deviceid 
-				IN (SELECT deviceid FROM devicehome WHERE homeid = $1));`
+			FROM historydevice hd join device d on d.deviceid = hd.deviceid WHERE d.homeid = $1);`
 	_, err = r.db.Exec(query2, homeID)
 	if err != nil {
 		logger.Log("Error", "Exec", "Error delete from historydev:", err, homeID)
@@ -74,8 +72,8 @@ func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 	}
 
 	query3 := `DELETE FROM device 
-		WHERE deviceid IN (SELECT deviceid 
-			FROM devicehome WHERE homeid = $1);`
+		WHERE homeid = $1;`
+
 	_, err = r.db.Exec(query3, homeID)
 	if err != nil {
 		logger.Log("Error", "Exec", "Error delete from device:", err, homeID)
