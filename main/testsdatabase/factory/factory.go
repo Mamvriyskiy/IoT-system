@@ -1,7 +1,7 @@
 package factory
 
 import (
-	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/testdatabase" testdb
 )
 
 type ObjectSystem interface {
@@ -18,3 +18,10 @@ func New(typeObject string) ObjectSystem {
 
 
 
+func (u *testdb.TestUser) InsertObject() {
+
+}
+
+func (u *testdb.TestUser) DeleteObject() {
+
+}

@@ -4,9 +4,17 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
 	"errors"
 	"strconv"
 )
+
+type TestUser struct {
+	Password string
+	UserName string
+	Email string
+	ID int
+}
 
 func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	// tests := []struct {
@@ -39,7 +47,7 @@ func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	// 	},
 	// }
 
-	var user pkg.User
+	var user TestUser
 	t.Step(factory.New("user"))
 
 	// repos := repository.NewRepository(connDB)
