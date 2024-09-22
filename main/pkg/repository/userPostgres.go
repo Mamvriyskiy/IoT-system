@@ -42,7 +42,7 @@ func (r *UserPostgres) GetUser(email, password string) (pkg.User, error) {
 	var user pkg.User
 	query := fmt.Sprintf("SELECT clientid from %s where email = $1 and password = $2", "client")
 	err := r.db.Get(&user, query, email, password)
-	
+
 	return user, err
 }
 
@@ -71,11 +71,13 @@ func (r *UserPostgres) AddCode(email pkg.Email) error {
 	var userID int
 	query := fmt.Sprintf("select clientID from client where email = $1")
 	err := r.db.Get(&userID, query, email.Email)
+	if err != nil {
+		return err
+	}
 
 	query = fmt.Sprintf(`INSERT INTO resetpswrd (clientID, resetcode, token) 
 	values ($1, $2, $3)`)
-	row := r.db.QueryRow(query, userID, email.Code, email.Token)
-	fmt.Println(row)
+	_ = r.db.QueryRow(query, userID, email.Code, email.Token)
 
 	return err
 }

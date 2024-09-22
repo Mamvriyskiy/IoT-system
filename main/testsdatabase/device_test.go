@@ -2,14 +2,13 @@ package testsdatabase
 
 import (
 	"fmt"
-	"testing"
 	//"github.com/jmoiron/sqlx"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	//"github.com/Mamvriyskiy/database_course/main/pkg/repository"
-	"github.com/stretchr/testify/assert"
+	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func TestUpdateStatusFunc(t *testing.T) {
+func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
 	insertData := []struct {
 		device pkg.Devices
 		ID     int
@@ -109,23 +108,18 @@ func TestUpdateStatusFunc(t *testing.T) {
 
 		var id int
 		err := row.Scan(&id)
-		if err != nil {
-			assert.NoError(t, err, "")
-		}
+		t.Require().NoError(err)
 	}
 
 	for _, test := range tests {
-		t.Run(test.nameTest, func(t *testing.T) {
+		t.Run(test.nameTest, func(t provider.T) {
 
 			var result int
 			queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
 			err := connDB.Get(&result, queryUpdateStatus, test.devID, test.status)
+			t.Require().NoError(err)
 
-			if err != nil {
-				assert.NoError(t, err, "")
-			}
-
-			assert.Equal(t, test.resultCode, result, "The result status code should be the same.")
+			t.Assert().Equal(test.resultCode, result)
 		})
 	}
 }
