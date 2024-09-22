@@ -9,13 +9,6 @@ import (
 	"strconv"
 )
 
-type TestUser struct {
-	Password string
-	UserName string
-	Email string
-	ID int
-}
-
 func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	// tests := []struct {
 	// 	nameTest string
@@ -47,7 +40,7 @@ func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	// 	},
 	// }
 
-	var user TestUser
+	var user factory.TestUser
 	t.Step(factory.New("user"))
 
 	// repos := repository.NewRepository(connDB)

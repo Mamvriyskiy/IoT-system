@@ -1,7 +1,6 @@
 package factory 
 
 import (
-	"github.com/Mamvriyskiy/database_course/main/testdatabase" testdb
 	"crypto/rand"
 	"math/big"
 )
@@ -14,6 +13,13 @@ const (
 	lengtDomainRight = 3
 	lengthEmail = 10 
 )
+
+type TestUser struct {
+	Password string
+	UserName string
+	Email string
+	ID int
+}
 
 type InvoiceUser struct {
 	User testdb.TestUser
