@@ -4,6 +4,7 @@ import (
 	"crypto/rand"
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/jmoiron/sqlx"
 )
 
 const (
@@ -19,16 +20,20 @@ type TestUser struct {
 	pkg.User
 }
 
-func NewUser() *TestUser {
+func NewUser(email string) *TestUser {
 	var b TestUser
 
-	return b.BuilderUser()
+	return b.BuilderUser(email)
 }
 
-func (b *TestUser) BuilderUser() *TestUser {
+func (b *TestUser) BuilderUser(email string) *TestUser {
 	b.generatePassword()
 	b.generateUserName()
-	b.generateEmail()
+	if email == "" {
+		b.generateEmail()
+	} else {
+		b.Email = email
+	}
 
 	return b
 }
@@ -83,8 +88,14 @@ func (b *TestUser) generateEmail() {
 	b.Email = string(email)
 }
 
-func (u TestUser) InsertObject() {
+func (tu TestUser) InsertObject(connDB *sqlx.DB) (int, error) {
+	query := `INSERT INTO client (password, login, email) values ($1, $2, $3) RETURNING clientid`
+	row := connDB.QueryRow(query, tu.Password, tu.Username, tu.Email)
 
+	var clientID int
+	err := row.Scan(&clientID)
+	
+	return clientID, err
 }
 
 func (u TestUser) DeleteObject() {

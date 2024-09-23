@@ -1,13 +1,14 @@
 package testsdatabase
 
 import (
-	// "github.com/Mamvriyskiy/database_course/main/pkg"
-	// "github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
-	"github.com/Mamvriyskiy/database_course/main/testsdatabase/builder"
-	"fmt"
-	// "errors"
+	method "github.com/Mamvriyskiy/database_course/main/testsdatabase/method"
+	//"fmt"
+	//"reflect"
+	"errors"
 	// "strconv"
 )
 
@@ -18,119 +19,94 @@ func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user"),
+			user:     factory.New("user", ""),
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user"),
+			user: 	  factory.New("user", ""),
 		},
 		{
 			nameTest: "Test3",
-			user: factory.New("user"),
+			user: 	  factory.New("user", ""),
 		},
 	}
 
-	//var user factory.TestUser
+	repos := repository.NewRepository(connDB)
 
-	// userObject := factory.New("user") // This returns factory.ObjectSystem
-	if user, ok := tests[0].user.(*builder.TestUser); ok {
-        // Теперь можно получить доступ к pkg.User
-        pkgUser := user.User
-        // Использовать pkgUser
-        fmt.Println(pkgUser)
-    }
+	for _, test := range tests {
+		t.Run(test.nameTest, func(t provider.T) {
+			newUser := test.user.(*method.TestUser)
+			
+			resultID, err := repos.IUserRepo.CreateUser(newUser.User)
+			t.Require().NoError(err)
 
-	// repos := repository.NewRepository(connDB)
+			newUser.User.ID = resultID
+			query := `SELECT password, login, email FROM client WHERE clientid = $1`
+			row := connDB.QueryRow(query, resultID)
 
-	// for _, test := range tests {
-	// 	t.Run(test.nameTest, func(t provider.T) {
-	// 		resultID, err := repos.IUserRepo.CreateUser(test.user)
-	// 		t.Require().NoError(err)
+			retrievedUser := pkg.User{
+				ID: resultID,
+			}
 
-	// 		test.user.ID = resultID
-	// 		query := `SELECT password, login, email FROM client WHERE clientid = $1`
-	// 		row := connDB.QueryRow(query, resultID)
-
-	// 		retrievedUser := pkg.User{
-	// 			ID: resultID,
-	// 		}
-
-	// 		err = row.Scan(&retrievedUser.Password, &retrievedUser.Username, &retrievedUser.Email)
-	// 		t.Require().NoError(err)
-	// 		t.Assert().Equal(test.user, retrievedUser)
-	// 	})
-	// }
+			err = row.Scan(&retrievedUser.Password, &retrievedUser.Username, &retrievedUser.Email)
+			t.Require().NoError(err)
+			t.Assert().Equal(newUser.User, retrievedUser)
+		})
+	}
 }
 
-// func (s *MyFirstSuite) TestGetClient(t provider.T) {
-// 	tests := []struct {
-// 		nameTest    string
-// 		user        pkg.User
-// 		SearchEmail string
-// 		ResultError error
-// 	}{
-// 		{
-// 			nameTest: "Test1",
-// 			user: pkg.User{
-// 				Password: "pswrd4",
-// 				Username: "user4",
-// 				Email:    "email4",
-// 			},
-// 			SearchEmail: "email4",
-// 			ResultError: nil,
-// 		},
-// 		{
-// 			nameTest: "Test2",
-// 			user: pkg.User{
-// 				Password: "pswrd5",
-// 				Username: "user5",
-// 				Email:    "email5",
-// 			},
-// 			SearchEmail: "email5",
-// 			ResultError: nil,
-// 		},
-// 		{
-// 			nameTest: "Test3",
-// 			user: pkg.User{
-// 				Password: "pswrd6",
-// 				Username: "user6",
-// 				Email:    "email6",
-// 			},
-// 			SearchEmail: "email6",
-// 			ResultError: nil,
-// 		},
-// 		{
-// 			nameTest: "Test4",
-// 			user: pkg.User{
-// 				Password: "pswrd6",
-// 				Username: "user6",
-// 				Email:    "email7",
-// 			},
-// 			SearchEmail: "email8",
-// 			ResultError: errors.New("sql: no rows in result set"),
-// 		},
-// 	}
+func (s *MyFirstSuite) TestGetClient(t provider.T) {
+	tests := []struct {
+		nameTest    string
+		user        factory.ObjectSystem
+		SearchEmail string
+		ResultError error
+	}{
+		{
+			nameTest: "Test1",
+			user: factory.New("user", "email4"),
+			SearchEmail: "email4",
+			ResultError: nil,
+		},
+		{
+			nameTest: "Test2",
+			user: factory.New("user", "email5"),
+			SearchEmail: "email5",
+			ResultError: nil,
+		},
+		{
+			nameTest: "Test3",
+			user: factory.New("user", "email6"),
+			SearchEmail: "email6",
+			ResultError: nil,
+		},
+		{
+			nameTest: "Test4",
+			user: factory.New("user", "email7"),
+			SearchEmail: "email8",
+			ResultError: errors.New("sql: no rows in result set"),
+		},
+	}
 
-// 	repos := repository.NewRepository(connDB)
+	repos := repository.NewRepository(connDB)
 
-// 	for _, test := range tests {
-// 		t.Run(test.nameTest, func(t provider.T) {
-// 			query := `INSERT INTO client (password, login, email) values ($1, $2, $3) RETURNING clientid`
-// 			row := connDB.QueryRow(query, test.user.Password, test.user.Username, test.user.Email)
+	for _, test := range tests {
+		t.Run(test.nameTest, func(t provider.T) {
+			newUser := test.user.(*method.TestUser)
 
-// 			var clientID int
-// 			err := row.Scan(&clientID)
-// 			t.Require().NoError(err)
+			clientID, err := newUser.InsertObject(connDB)
 
-// 			resultUser, err := repos.IUserRepo.GetUser(test.SearchEmail, test.user.Password)
-// 			if err != nil {
-// 				t.Require().Equal(err, test.ResultError)
-// 			} else {
-// 				t.Assert().Equal(clientID, resultUser.ID)
-// 			}
-// 		})
-// 	}
-// }
+			t.Require().NoError(err)
+
+			resultUser, err := repos.IUserRepo.GetUser(test.SearchEmail, newUser.Password)
+			if err != nil {
+				t.Require().Equal(err, test.ResultError)
+			} else {
+				t.Assert().Equal(clientID, resultUser.ID)
+			}
+		})
+	}
+}
 
 // func (s *MyFirstSuite) TestChangePassword(t provider.T) {
 // 	tests := []struct {

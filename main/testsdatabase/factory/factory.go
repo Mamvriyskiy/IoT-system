@@ -1,18 +1,19 @@
 package factory
 
 import (
-	"github.com/Mamvriyskiy/database_course/main/testsdatabase/builder"
+	method "github.com/Mamvriyskiy/database_course/main/testsdatabase/method"
+	"github.com/jmoiron/sqlx"
 )
 
 type ObjectSystem interface {
-	InsertObject()
+	InsertObject(connDB *sqlx.DB) (int, error)
 	DeleteObject()
 }
 
-func New(typeObject string) ObjectSystem {
+func New(typeObject, keyСharacter string) ObjectSystem {
 	switch typeObject {
 	case "user":
-		return builder.NewUser()
+		return method.NewUser(keyСharacter)
 	default:
 		return nil
 	} 
