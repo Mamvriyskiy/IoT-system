@@ -1,7 +1,7 @@
 package factory
 
 import (
-
+	"github.com/Mamvriyskiy/database_course/main/testsdatabase/builder"
 )
 
 type ObjectSystem interface {
@@ -12,16 +12,8 @@ type ObjectSystem interface {
 func New(typeObject string) ObjectSystem {
 	switch typeObject {
 	case "user":
-		return NewUser()
+		return builder.NewUser()
 	default:
 		return nil
 	} 
-}
-
-func (u TestUser) InsertObject() {
-
-}
-
-func (u TestUser) DeleteObject() {
-
 }

@@ -4,7 +4,6 @@ import (
 	"crypto/rand"
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
-	"github.com/Mamvriyskiy/database_course/main/testdatabase/structure"
 )
 
 const (
@@ -15,6 +14,10 @@ const (
 	lengtDomainRight = 3
 	lengthEmail = 10 
 )
+
+type TestUser struct {
+	pkg.User
+}
 
 func NewUser() *TestUser {
 	var b TestUser
@@ -78,4 +81,12 @@ func (b *TestUser) generateEmail() {
 	}
 	
 	b.Email = string(email)
+}
+
+func (u TestUser) InsertObject() {
+
+}
+
+func (u TestUser) DeleteObject() {
+
 }

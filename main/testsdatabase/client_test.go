@@ -5,7 +5,7 @@ import (
 	// "github.com/Mamvriyskiy/database_course/main/pkg/repository"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
-	"github.com/Mamvriyskiy/database_course/main/testdatabase/structure"
+	"github.com/Mamvriyskiy/database_course/main/testsdatabase/builder"
 	"fmt"
 	// "errors"
 	// "strconv"
@@ -33,7 +33,7 @@ func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	//var user factory.TestUser
 
 	// userObject := factory.New("user") // This returns factory.ObjectSystem
-	if user, ok := tests[0].user.(*TestUser); ok {
+	if user, ok := tests[0].user.(*builder.TestUser); ok {
         // Теперь можно получить доступ к pkg.User
         pkgUser := user.User
         // Использовать pkgUser
