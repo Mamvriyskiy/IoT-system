@@ -34,12 +34,6 @@ func  (s *MyFirstSuite) BeforeEach(t provider.T) {
 func (s *MyFirstSuite) AfterEach(t provider.T) {
 }
 
-func (s *MyFirstSuite) TestMyFirstTest(t provider.T) {
-	test := "test"
-	t.Require().NotNil(test)
-	t.Require().Equal(test, "test")
-}
-
 var connDB *sqlx.DB
 
 func TestSuiteRunner(t *testing.T) {

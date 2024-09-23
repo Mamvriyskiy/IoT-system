@@ -13,13 +13,15 @@ func New(typeObject string) ObjectSystem {
 	switch typeObject {
 	case "user":
 		return NewUser()
-	}
+	default:
+		return nil
+	} 
 }
 
-func (u *testdb.TestUser) InsertObject() {
+func (u TestUser) InsertObject() {
 
 }
 
-func (u *testdb.TestUser) DeleteObject() {
+func (u TestUser) DeleteObject() {
 
 }

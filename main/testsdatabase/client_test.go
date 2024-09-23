@@ -1,47 +1,44 @@
 package testsdatabase
 
 import (
-	"github.com/Mamvriyskiy/database_course/main/pkg"
-	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	// "github.com/Mamvriyskiy/database_course/main/pkg"
+	// "github.com/Mamvriyskiy/database_course/main/pkg/repository"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
-	"errors"
-	"strconv"
+	"github.com/Mamvriyskiy/database_course/main/testdatabase/structure"
+	"fmt"
+	// "errors"
+	// "strconv"
 )
 
 func (s *MyFirstSuite) TestCreateClient(t provider.T) {
-	// tests := []struct {
-	// 	nameTest string
-	// 	user     pkg.User
-	// }{
-	// 	{
-	// 		nameTest: "Test1",
-	// 		user: pkg.User{
-	// 			Password: "pswrd1",
-	// 			Username: "user1",
-	// 			Email:    "email1",
-	// 		},
-	// 	},
-	// 	{
-	// 		nameTest: "Test2",
-	// 		user: pkg.User{
-	// 			Password: "pswrd2",
-	// 			Username: "user2",
-	// 			Email:    "email2",
-	// 		},
-	// 	},
-	// 	{
-	// 		nameTest: "Test3",
-	// 		user: pkg.User{
-	// 			Password: "pswrd3",
-	// 			Username: "user3",
-	// 			Email:    "email3",
-	// 		},
-	// 	},
-	// }
+	tests := []struct {
+		nameTest string
+		user     factory.ObjectSystem
+	}{
+		{
+			nameTest: "Test1",
+			user: factory.New("user"),
+		},
+		{
+			nameTest: "Test2",
+			user: factory.New("user"),
+		},
+		{
+			nameTest: "Test3",
+			user: factory.New("user"),
+		},
+	}
 
-	var user factory.TestUser
-	t.Step(factory.New("user"))
+	//var user factory.TestUser
+
+	// userObject := factory.New("user") // This returns factory.ObjectSystem
+	if user, ok := tests[0].user.(*TestUser); ok {
+        // Теперь можно получить доступ к pkg.User
+        pkgUser := user.User
+        // Использовать pkgUser
+        fmt.Println(pkgUser)
+    }
 
 	// repos := repository.NewRepository(connDB)
 

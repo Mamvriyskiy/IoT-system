@@ -3,6 +3,8 @@ package factory
 import (
 	"crypto/rand"
 	"math/big"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/testdatabase/structure"
 )
 
 const (
@@ -14,74 +16,66 @@ const (
 	lengthEmail = 10 
 )
 
-type TestUser struct {
-	Password string
-	UserName string
-	Email string
-	ID int
-}
-
-type InvoiceUser struct {
-	User testdb.TestUser
-}
-
-func NewUser() pkg.User {
-	var b InvoiceUser
+func NewUser() *TestUser {
+	var b TestUser
 
 	return b.BuilderUser()
 }
 
-func (b *InvoiceUser) BuilderUser() pkg.User {
+func (b *TestUser) BuilderUser() *TestUser {
 	b.generatePassword()
 	b.generateUserName()
 	b.generateEmail()
 
-	return b.User
+	return b
 }
 
-func (b *InvoiceUser) generatePassword() {
+func (b *TestUser) generatePassword() {
 	password := make([]byte, lengthPassword)
 	for i := range password {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		password[i] = charset[n.Int64()]
 	}
 
-	b.Password = password
+	b.Password = string(password)
 }
 
-func (b *InvoiceUser) generateUserName() {
+func (b *TestUser) generateUserName() {
 	userName := make([]byte, lengthUserName)
 	for i := range userName {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		userName[i] = charset[n.Int64()]
 	}
 
-	b.Username = userName
+	b.Username = string(userName)
 }
 
-func (b *InvoiceUser) generateEmail() {
+func (b *TestUser) generateEmail() {
 	email := make([]byte, lengthEmail + lengtDomainLeft + lengtDomainRight + 2)
 	i := 0
-	for ; i < lengthEmail; i++ {
+	for j := 0; j < lengthEmail; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
+		i++
 	}
 
 	email[i] = '@'
 	i++
 
-	for ; i < i + lengtDomainLeft; i++ {
+	for j := 0; j < lengtDomainLeft; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
+		i++
 	}
 
 	email[i] = '.'
 	i++
 
-	for ; i < i + lengtDomainRight; i++ {
+	for j := 0; j < lengtDomainRight; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
+		i++
 	}
 	
-	b.Email = emil
+	b.Email = string(email)
 }
