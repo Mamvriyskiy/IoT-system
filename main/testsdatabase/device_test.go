@@ -4,32 +4,25 @@ import (
 	"fmt"
 	//"github.com/jmoiron/sqlx"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
-	//"github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
+	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
+	method "github.com/Mamvriyskiy/database_course/main/testsdatabase/method"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
+	"errors"
 )
 
 func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
 	insertData := []struct {
-		device pkg.Devices
+		device factory.ObjectSystem
 		ID     int
 	}{
 		{
-			device: pkg.Devices{
-				Name:       "dev1",
-				TypeDevice: "type1",
-				Status:     "inactive",
-				Brand:      "brand1",
-			},
-			ID: 1,
+			device: factory.New("device", ""),
+			ID:     1,
 		},
 		{
-			device: pkg.Devices{
-				Name:       "dev2",
-				TypeDevice: "type2",
-				Status:     "inactive",
-				Brand:      "brand2",
-			},
-			ID: 2,
+			device: factory.New("device", ""),
+			ID:     2,
 		},
 	}
 
@@ -98,16 +91,8 @@ func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
 		},
 	}
 
-	//Заполнение таблицы Device данными
-
 	for _, data := range insertData {
-		query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, Brand)
-			values ($1, $2, $3, $4) RETURNING deviceID`, "device")
-		row := connDB.QueryRow(query, data.device.Name, data.device.TypeDevice,
-			data.device.Status, data.device.Brand)
-
-		var id int
-		err := row.Scan(&id)
+		_, err := data.device.InsertObject(connDB)
 		t.Require().NoError(err)
 	}
 
@@ -120,6 +105,192 @@ func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
 			t.Require().NoError(err)
 
 			t.Assert().Equal(test.resultCode, result)
+		})
+	}
+}
+
+func (s *MyFirstSuite) TestCreateDevice(t provider.T) {
+	tests := []struct {
+		nameTest  string
+		device    factory.ObjectSystem
+		character factory.ObjectSystem
+		home      factory.ObjectSystem
+		access    factory.ObjectSystem
+		user      factory.ObjectSystem
+		devChar   pkg.DeviceCharacteristics
+	}{
+		{
+			nameTest:  "Test1",
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 100,
+			},
+		},
+		{
+			nameTest:  "Test2",
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			device:    factory.New("device", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 200,
+			},
+		},
+		{
+			nameTest:  "Test3",
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			access:    factory.New("access", ""),
+			home:      factory.New("home", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 300,
+			},
+		},
+	}
+
+	repos := repository.NewRepository(connDB)
+
+	for _, test := range tests {
+		t.Run(test.nameTest, func(t provider.T) {
+			//Создание пользователя
+			newUser := test.user.(*method.TestUser)
+
+			clientID, err := newUser.InsertObject(connDB)
+			t.Require().NoError(err)
+
+			//создание дома
+			newHome := test.home.(*method.TestHome)
+
+			homeID, err := newHome.InsertObject(connDB)
+			t.Require().NoError(err)
+
+			//создание доступа к дому
+			newAccess := test.access.(*method.TestAccess)
+			newAccess.ClientID = clientID
+			newAccess.HomeID = homeID
+			_, err = newAccess.InsertObject(connDB)
+			t.Require().NoError(err)
+
+			//создание харакетристик устройства
+			newChar := test.character.(*method.TestCharacter)
+
+			//создание устройства
+			newDevice := test.device.(*method.TestDevice)
+			newDevice.Home = newHome.Name
+			deviceID, err := repos.IDeviceRepo.CreateDevice(clientID, &newDevice.Devices, test.devChar, newChar.TypeCharacter)
+			t.Require().NoError(err)
+
+			query := `SELECT name FROM device WHERE deviceID = $1`
+			row := connDB.QueryRow(query, deviceID)
+
+			var nameDev string
+			err = row.Scan(&nameDev)
+			t.Require().NoError(err)
+
+			t.Assert().Equal(newDevice.Name, nameDev)
+		})
+	}
+}
+
+func (s *MyFirstSuite) TestDeleteDevice(t provider.T) {
+	tests := []struct {
+		nameTest  string
+		device    factory.ObjectSystem
+		character factory.ObjectSystem
+		home      factory.ObjectSystem
+		access    factory.ObjectSystem
+		user      factory.ObjectSystem
+		devChar   pkg.DeviceCharacteristics
+	}{
+		{
+			nameTest:  "Test1",
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 100,
+			},
+		},
+		{
+			nameTest:  "Test2",
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			device:    factory.New("device", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 200,
+			},
+		},
+		{
+			nameTest:  "Test3",
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			access:    factory.New("access", ""),
+			home:      factory.New("home", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristics{
+				Values: 300,
+			},
+		},
+	}
+
+	repos := repository.NewRepository(connDB)
+
+	for _, test := range tests {
+		t.Run(test.nameTest, func(t provider.T) {
+			//Создание пользователя
+			newUser := test.user.(*method.TestUser)
+
+			clientID, err := newUser.InsertObject(connDB)
+			t.Require().NoError(err)
+
+			//создание дома
+			newHome := test.home.(*method.TestHome)
+
+			homeID, err := newHome.InsertObject(connDB)
+			fmt.Println("==+==", homeID)
+			t.Require().NoError(err)
+
+			//создание доступа к дому
+			newAccess := test.access.(*method.TestAccess)
+			newAccess.ClientID = clientID
+			newAccess.HomeID = homeID
+			_, err = newAccess.InsertObject(connDB)
+			t.Require().NoError(err)
+
+			//создание устройства
+			newDevice := test.device.(*method.TestDevice)
+			newDevice.HomeID = homeID
+			deviceID, err := newDevice.InsertObject(connDB)
+
+			//создание харакетристик устройства
+			newChar := test.character.(*method.TestCharacter)
+			typeID, err := newChar.InsertObject(connDB)
+			t.Require().NoError(err)
+			
+			query3 := fmt.Sprintf(`INSERT INTO devicecharacteristics (deviceID, valueschar, typecharacterid)
+				values ($1, $2, $3)`)
+			_ = connDB.QueryRow(query3, deviceID, test.devChar.Values, typeID)
+
+			err = repos.IDeviceRepo.DeleteDevice(clientID, newDevice.Name, newHome.Name) 
+			t.Require().NoError(err)
+
+			query := `SELECT name FROM device WHERE deviceID = $1`
+			row := connDB.QueryRow(query, deviceID)
+
+			var resultName string
+			err = row.Scan(&resultName)
+
+			t.Assert().Equal(err, errors.New("sql: no rows in result set"))
 		})
 	}
 }

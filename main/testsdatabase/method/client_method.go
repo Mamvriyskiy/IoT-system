@@ -1,4 +1,4 @@
-package factory 
+package method 
 
 import (
 	"crypto/rand"
@@ -59,9 +59,13 @@ func (b *TestUser) generateUserName() {
 }
 
 func (b *TestUser) generateEmail() {
-	email := make([]byte, lengthEmail + lengtDomainLeft + lengtDomainRight + 2)
+	b.Email = createEmail(lengthEmail, lengtDomainLeft, lengtDomainRight)
+}
+
+func createEmail(a, b, c int) string {
+	email := make([]byte, a + b + c + 2)
 	i := 0
-	for j := 0; j < lengthEmail; j++ {
+	for j := 0; j < a; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
 		i++
@@ -70,7 +74,7 @@ func (b *TestUser) generateEmail() {
 	email[i] = '@'
 	i++
 
-	for j := 0; j < lengtDomainLeft; j++ {
+	for j := 0; j < b; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
 		i++
@@ -79,13 +83,13 @@ func (b *TestUser) generateEmail() {
 	email[i] = '.'
 	i++
 
-	for j := 0; j < lengtDomainRight; j++ {
+	for j := 0; j < c; j++ {
 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
 		email[i] = charset[n.Int64()]
 		i++
 	}
-	
-	b.Email = string(email)
+
+	return string(email)
 }
 
 func (tu TestUser) InsertObject(connDB *sqlx.DB) (int, error) {
@@ -96,8 +100,4 @@ func (tu TestUser) InsertObject(connDB *sqlx.DB) (int, error) {
 	err := row.Scan(&clientID)
 	
 	return clientID, err
-}
-
-func (u TestUser) DeleteObject() {
-
 }
