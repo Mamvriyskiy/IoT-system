@@ -5,8 +5,8 @@ import (
 	//"github.com/jmoiron/sqlx"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
-	"github.com/Mamvriyskiy/database_course/main/testsdatabase/factory"
-	method "github.com/Mamvriyskiy/database_course/main/testsdatabase/method"
+	"github.com/Mamvriyskiy/database_course/main/unittests/factory"
+	method "github.com/Mamvriyskiy/database_course/main/unittests/method"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"errors"
 )
