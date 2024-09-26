@@ -1,0 +1,214 @@
+% $ biblatex auxiliary file $
+% $ biblatex bbl format version 3.2 $
+% Do not modify the above lines!
+%
+% This is an auxiliary file used by the 'biblatex' package.
+% This file may safely be deleted. It will be recreated by
+% biber as required.
+%
+\begingroup
+\makeatletter
+\@ifundefined{ver@biblatex.sty}
+  {\@latex@error
+     {Missing 'biblatex' package}
+     {The bibliography requires the 'biblatex' package.}
+      \aftergroup\endinput}
+  {}
+\endgroup
+
+
+\refsection{0}
+  \datalist[entry]{none/global//global/global}
+    \entry{apple}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://www.apple.com/shop/accessories/all/homekit} (Дата обращения: 20.05.2024)}
+      \field{title}{HomeKit [Электронный ресурс].}
+    \endentry
+    \entry{intel}{misc}{}
+      \field{sortinit}{2}
+      \field{sortinithash}{8b555b3791beccb63322c22f3320aa9a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://www.intel.com/content/www/us/en/support/ru-banner-inside.html} (Дата обращения: 20.05.2024)}
+      \field{title}{Intel Iot Platform [Электронный ресурс].}
+    \endentry
+    \entry{mts}{misc}{}
+      \field{sortinit}{3}
+      \field{sortinithash}{ad6fe7482ffbd7b9f99c9e8b5dccd3d7}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://business.mts.ru/moskva/iot-platforma} (Дата обращения: 20.05.2024)}
+      \field{title}{MTS IoT HUB [Электронный ресурс].}
+    \endentry
+    \entry{xmi}{misc}{}
+      \field{sortinit}{4}
+      \field{sortinithash}{9381316451d1b9788675a07e972a12a7}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://www.mi.com/ru/smart-home/} (Дата обращения: 20.05.2024)}
+      \field{title}{Xiaomi MI [Электронный ресурс].}
+    \endentry
+    \entry{kranke}{book}{}
+      \name{author}{1}{}{%
+        {{hash=4088a98b791f0d4b5102a2ab8a36bf45}{%
+           family={Кренке},
+           familyi={К\bibinitperiod},
+           given={Д.},
+           giveni={Д\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {Издательство дом «Питер»}%
+      }
+      \strng{namehash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \strng{fullhash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \strng{bibnamehash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \strng{authorbibnamehash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \strng{authornamehash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \strng{authorfullhash}{4088a98b791f0d4b5102a2ab8a36bf45}
+      \field{sortinit}{5}
+      \field{sortinithash}{20e9b4b0b173788c5dace24730f47d8c}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Теория и практика построения базы данных}
+      \field{year}{2003. --- 39 с.}
+    \endentry
+    \entry{petr}{misc}{}
+      \field{sortinit}{6}
+      \field{sortinithash}{b33bc299efb3c36abec520a4c896a66d}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://cs.petrsu.ru/studies/filatova_information/CMD_1996566_M/my_files/Inform/DataBase/} (Дата обращения: 20.05.2024)}
+      \field{title}{Петрозаводский государственный университет [Электронный ресурс].}
+    \endentry
+    \entry{oracle}{misc}{}
+      \field{sortinit}{7}
+      \field{sortinithash}{108d0be1b1bee9773a1173443802c0a3}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://www.oracle.com/cis/database/what-is-a-relational-database/} (Дата обращения: 20.05.2024)}
+      \field{title}{Oracle [Электронный ресурс].}
+    \endentry
+    \entry{fedor}{misc}{}
+      \field{sortinit}{8}
+      \field{sortinithash}{a231b008ebf0ecbe0b4d96dcc159445f}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{http://db4.sbras.ru/elbib/data/show_page.phtml?13+2300} (Дата обращения: 20.05.2024)}
+      \field{title}{Сибирское отделение Российской академии наук [Электронный ресурс].}
+    \endentry
+    \entry{microsoft}{misc}{}
+      \field{sortinit}{9}
+      \field{sortinithash}{0a5ebc79d83c96b6579069544c73c7d4}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://learn.microsoft.com/ru-ru/azure/architecture/data-guide/big-data/non-relational-data} (Дата обращения: 20.5.2024)}
+      \field{title}{Learn Microsoft [Электронный ресурс].}
+    \endentry
+    \entry{diffdb}{article}{}
+      \name{author}{2}{}{%
+        {{hash=dea3d2eefd608251e053f78153422278}{%
+           family={Тортика},
+           familyi={Т\bibinitperiod},
+           given={А.\bibnamedelimi С.},
+           giveni={А\bibinitperiod\bibinitdelim С\bibinitperiod}}}%
+        {{hash=02b9929b3d84a85e6cf4726578102edb}{%
+           family={Ершов},
+           familyi={Е\bibinitperiod},
+           given={А.\bibnamedelimi С.},
+           giveni={А\bibinitperiod\bibinitdelim С\bibinitperiod}}}%
+      }
+      \strng{namehash}{a84f82bd67c494145ac82a24fcc4686d}
+      \strng{fullhash}{a84f82bd67c494145ac82a24fcc4686d}
+      \strng{bibnamehash}{a84f82bd67c494145ac82a24fcc4686d}
+      \strng{authorbibnamehash}{a84f82bd67c494145ac82a24fcc4686d}
+      \strng{authornamehash}{a84f82bd67c494145ac82a24fcc4686d}
+      \strng{authorfullhash}{a84f82bd67c494145ac82a24fcc4686d}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{journaltitle}{Компьютерные и информационные науки}
+      \field{title}{Обзор и анализ современных систем управления базами}
+      \field{year}{2020}
+      \field{pages}{79\bibrangedash 81}
+      \range{pages}{3}
+    \endentry
+    \entry{golang}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://go.dev/doc/} (дата обращения: 22.05.2024)}
+      \field{title}{Документация GoLang [Электронный ресурс].}
+    \endentry
+    \entry{html}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://developer.mozilla.org/en-US/docs/Web/HTML} (дата обращения: 22.05.2024)}
+      \field{title}{Документация HTML [Электронный ресурс].}
+    \endentry
+    \entry{css}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://developer.mozilla.org/en-US/docs/Web/CSS} (дата обращения: 22.05.2024)}
+      \field{title}{Документация CSS [Электронный ресурс].}
+    \endentry
+    \entry{jsLang}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://developer.mozilla.org/en-US/docs/Web/JavaScript} (дата обращения: 25.05.2024)}
+      \field{title}{Документация JavaScript [Электронный ресурс].}
+    \endentry
+    \entry{vscode}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://code.visualstudio.com/docs} (дата обращения: 25.05.2024)}
+      \field{title}{Документация Visual Studio Code [Электронный ресурс].}
+    \endentry
+    \entry{cleanArch}{book}{}
+      \name{author}{1}{}{%
+        {{hash=f7eba3355f52652d346227094e9780c8}{%
+           family={Мартин},
+           familyi={М\bibinitperiod},
+           given={Р.},
+           giveni={Р\bibinitperiod}}}%
+      }
+      \list{publisher}{1}{%
+        {СПб: Питер}%
+      }
+      \strng{namehash}{f7eba3355f52652d346227094e9780c8}
+      \strng{fullhash}{f7eba3355f52652d346227094e9780c8}
+      \strng{bibnamehash}{f7eba3355f52652d346227094e9780c8}
+      \strng{authorbibnamehash}{f7eba3355f52652d346227094e9780c8}
+      \strng{authornamehash}{f7eba3355f52652d346227094e9780c8}
+      \strng{authorfullhash}{f7eba3355f52652d346227094e9780c8}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labelnamesource}{author}
+      \field{labeltitlesource}{title}
+      \field{title}{Чистая архитектура. Искусство разработки прогрммного обеспечения}
+      \field{year}{2019. --- 106 с.}
+    \endentry
+    \entry{testcontainers}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://golang.testcontainers.org} (дата обращения: 26.05.2024)}
+      \field{title}{Документация Testcontainers [Электронный ресурс].}
+    \endentry
+    \entry{goose}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://pkg.go.dev/github.com/pressly/goose/v3} (дата обращения: 26.05.2024)}
+      \field{title}{Документация Goose [Электронный ресурс].}
+    \endentry
+    \entry{macos}{misc}{}
+      \field{sortinit}{1}
+      \field{sortinithash}{4f6aaa89bab872aa0999fec09ff8e98a}
+      \field{labeltitlesource}{title}
+      \field{howpublished}{URL: \url{https://www.apple.com/macos/sonoma/} (дата обращения: 26.05.2024)}
+      \field{title}{macOS Sonoma [Электронный ресурс].}
+    \endentry
+  \enddatalist
+\endrefsection
+\endinput
+

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Authorization Page</title>
+    <link rel="icon" type="image/png" href="images/favicon.ico"/>
+    <style>
+        body {
+            font-family: 'Montserrat', sans-serif;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-image: linear-gradient(to right, #4facfe 0%, #00f2fe 100%);
+        }
+
+        .container {
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        .container h1 {
+        margin-bottom: 30px;
+        font-size: 28px;
+        font-weight: 700;
+        color: #333;
+        }
+
+        .container input {
+            width: 90%;
+            padding: 15px;
+            margin: 15px 0;
+            border: none;
+            border-radius: 5px;
+            background-color: #f5f5f5;
+            font-size: 14px;
+            color: #555;
+        }
+
+        .container button {
+            width: 100%;
+            padding: 15px;
+            border: none;
+            margin: 10px 0;
+            border-radius: 5px;
+            background-color: #007bff;
+            color: #fff;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .container button:hover {
+            background-color: #0056b3;
+        }
+
+        .container .register-button {
+            background-color: #28a745;
+        }
+
+        .container .register-button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Войти</h1>
+        <input type="text" id="login" placeholder="Почта" required>
+        <input type="password" id="password" placeholder="Пароль" required>
+        <button onclick="login()">Войти</button>
+        <button class="register-button" onclick="register()">Регистрация</button>
+        <button onclick="reset()">Сменить пароль</button>
+    </div>
+    <script>
+        function login() {
+            const email = document.getElementById('login').value;
+            const password = document.getElementById('password').value;
+
+            if (!email || !password) {
+                alert('Заполните поля');
+                return;
+            }
+
+            fetch('/auth/sign-in', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ email, password })
+            })
+            .then(response => {
+                if (!response.ok) {
+                    return response.json().then(data => {
+                        throw new Error(data.errors || 'Неизвестная ошибка');
+                    });
+                }
+                return response.json();  // Если все ок, парсим JSON
+            })
+            .then(data => {
+                console.log(data.token)
+                if (data.token) {
+                    localStorage.setItem('jwt', data.token);
+                    console.log('Authorization token:', data.token);
+                    window.location.href = '/app/menu';
+                } else {
+                    alert('Ошибка авторизации');
+                }
+            })
+            .catch(error => alert('Пользователь не найден'));
+        }
+
+        function register() {
+            window.location.href = 'sign-up';
+        }
+
+        function reset() {
+            window.location.href = 'reset-password';
+        }
+    </script>
+</body>
+</html>
