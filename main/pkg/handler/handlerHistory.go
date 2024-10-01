@@ -44,9 +44,6 @@ func (h *Handler) createDeviceHistory(c *gin.Context) {
 
 	history := pkg.AddHistory{
 		Name:             input.Name,
-		TimeWork:         generateRandomInt(101),
-		AverageIndicator: generateRandomFloat(100),
-		EnergyConsumed:   generateRandomInt(101),
 		Home:             input.Home,
 	}
 
