@@ -1,7 +1,7 @@
 package factory
 
 import (
-	method "github.com/Mamvriyskiy/database_course/main/unittests/method"
+	method "github.com/Mamvriyskiy/database_course/main/tests/method"
 	"github.com/jmoiron/sqlx"
 )
 

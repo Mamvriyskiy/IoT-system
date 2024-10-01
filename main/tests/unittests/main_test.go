@@ -45,7 +45,7 @@ func TestSuiteRunner(t *testing.T) {
 	defer dbTestContainers.Terminate(context.Background())
 
 	connDB = db
-	err = migrations.MigrationsTestDataBase(connDB, "./data/data.sql")
+	err = migrations.MigrationsTestDataBase(connDB, "../data/data.sql")
 	if err != nil {
 		panic(err)
 	}

@@ -3,8 +3,8 @@ package unittests
 import (
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/Mamvriyskiy/database_course/main/pkg/repository"
-	"github.com/Mamvriyskiy/database_course/main/unittests/factory"
-	method "github.com/Mamvriyskiy/database_course/main/unittests/method"
+	"github.com/Mamvriyskiy/database_course/main/tests/factory"
+	method "github.com/Mamvriyskiy/database_course/main/tests/method"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 

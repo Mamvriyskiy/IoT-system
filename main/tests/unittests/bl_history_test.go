@@ -4,17 +4,11 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	mocks_service "github.com/Mamvriyskiy/database_course/main/pkg/repository/mocks"
 	"github.com/Mamvriyskiy/database_course/main/pkg/service"
-	"github.com/Mamvriyskiy/database_course/main/unittests/factory"
-	method "github.com/Mamvriyskiy/database_course/main/unittests/method"
+	"github.com/Mamvriyskiy/database_course/main/tests/factory"
+	method "github.com/Mamvriyskiy/database_course/main/tests/method"
 	"github.com/golang/mock/gomock"
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
-
-// func (s *HistoryDeviceService) CreateDeviceHistory(deviceID int,
-// 	history pkg.AddHistory,
-// ) (int, error) {
-// 	return s.repo.CreateDeviceHistory(deviceID, history)
-// }
 
 func (s *MyFirstSuite) TestCreateDeviceHistoryBL(t provider.T) {
 	tests := []struct {
