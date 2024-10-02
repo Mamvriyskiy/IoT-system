@@ -66,7 +66,7 @@ func (h *Handler) changePassword(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{})
 }
 
-func (h *Handler) signUp(c *gin.Context) {
+func (h *Handler) SignUp(c *gin.Context) {
 	var input pkg.User
 	if err := c.BindJSON(&input); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")

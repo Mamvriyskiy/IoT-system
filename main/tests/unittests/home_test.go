@@ -10,7 +10,7 @@ import (
 	"errors"
 )
 
-func (s *MyFirstSuite) TestCreateHome(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateHome(t provider.T) {
 	tests := []struct {
 		nameTest string
 		home     factory.ObjectSystem
@@ -55,7 +55,7 @@ func (s *MyFirstSuite) TestCreateHome(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetListHome(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int
@@ -113,7 +113,7 @@ func (s *MyFirstSuite) TestGetListHome(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateHome(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		user       factory.ObjectSystem
@@ -191,7 +191,7 @@ func (s *MyFirstSuite) TestUpdateHome(t provider.T) {
 }
 
 
-func (s *MyFirstSuite) TestDeleteHome(t provider.T) {
+func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		user       factory.ObjectSystem

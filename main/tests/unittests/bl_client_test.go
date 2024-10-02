@@ -11,7 +11,7 @@ import (
 	"errors"
 )
 
-func (s *MyFirstSuite) TestCreateClientBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateClientBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
@@ -55,7 +55,7 @@ func (s *MyFirstSuite) TestCreateClientBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestCheckUserBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCheckUserBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
@@ -101,7 +101,7 @@ func (s *MyFirstSuite) TestCheckUserBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestSendCodeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestSendCodeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		email    factory.ObjectSystem
@@ -142,7 +142,7 @@ func (s *MyFirstSuite) TestSendCodeBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestCheckCodeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCheckCodeBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		code       string

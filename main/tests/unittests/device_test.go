@@ -11,7 +11,7 @@ import (
 	"errors"
 )
 
-func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 	insertData := []struct {
 		device factory.ObjectSystem
 		ID     int
@@ -114,7 +114,7 @@ func (s *MyFirstSuite) TestUpdateStatusFunc(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestCreateDevice(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		device    factory.ObjectSystem
@@ -203,7 +203,7 @@ func (s *MyFirstSuite) TestCreateDevice(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestDeleteDevice(t provider.T) {
+func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		device    factory.ObjectSystem

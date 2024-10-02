@@ -12,7 +12,7 @@ import (
 	"errors"
 )
 
-func (s *MyFirstSuite) TestCreateDeviceIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestCreateDeviceIntro(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		device    factory.ObjectSystem
@@ -102,7 +102,7 @@ func (s *MyFirstSuite) TestCreateDeviceIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestDeleteDeviceIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestDeleteDeviceIntro(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		device    factory.ObjectSystem

@@ -11,7 +11,7 @@ import (
 	"errors"
 )
 
-func (s *MyFirstSuite) TestCreateHomeIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestCreateHomeIntro(t provider.T) {
 	tests := []struct {
 		nameTest string
 		home     factory.ObjectSystem
@@ -57,7 +57,7 @@ func (s *MyFirstSuite) TestCreateHomeIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetListHomeIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestGetListHomeIntro(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int
@@ -116,7 +116,7 @@ func (s *MyFirstSuite) TestGetListHomeIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateHomeIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestUpdateHomeIntro(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		user       factory.ObjectSystem
@@ -194,7 +194,7 @@ func (s *MyFirstSuite) TestUpdateHomeIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestDeleteHomeIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestDeleteHomeIntro(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		user       factory.ObjectSystem

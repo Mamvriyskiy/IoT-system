@@ -11,7 +11,7 @@ import (
 	"strconv"
 )
 
-func (s *MyFirstSuite) TestCreateClient(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateClient(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
@@ -54,7 +54,7 @@ func (s *MyFirstSuite) TestCreateClient(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetClient(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetClient(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem
@@ -107,7 +107,7 @@ func (s *MyFirstSuite) TestGetClient(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestChangePassword(t provider.T) {
+func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 	tests := []struct {
 		nameTest       string
 		user           factory.ObjectSystem
@@ -174,7 +174,7 @@ func (s *MyFirstSuite) TestChangePassword(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetCode(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		ClientID    int
@@ -226,7 +226,7 @@ func (s *MyFirstSuite) TestGetCode(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestAddCode(t provider.T) {
+func (s *MyUnitTestsSuite) TestAddCode(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem

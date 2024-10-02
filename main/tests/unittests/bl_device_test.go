@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestCreateDeviceBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateDeviceBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		device   factory.ObjectSystem
@@ -58,7 +58,7 @@ func (s *MyFirstSuite) TestCreateDeviceBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestDeleteDeviceBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestDeleteDeviceBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		deviceID   int

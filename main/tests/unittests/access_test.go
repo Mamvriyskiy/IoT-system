@@ -8,7 +8,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestAddClient(t provider.T) {
+func (s *MyUnitTestsSuite) TestAddClient(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem
@@ -82,7 +82,7 @@ func (s *MyFirstSuite) TestAddClient(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateLevel(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateLevel(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem
@@ -152,7 +152,7 @@ func (s *MyFirstSuite) TestUpdateLevel(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateStatus(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateStatus(t provider.T) {
 	tests := []struct {
 		nameTest     string
 		user         factory.ObjectSystem
@@ -216,7 +216,7 @@ func (s *MyFirstSuite) TestUpdateStatus(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetListUserHome(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetListUserHome(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int

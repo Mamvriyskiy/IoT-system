@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestCreateHistoryIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestCreateHistoryIntro(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		device    factory.ObjectSystem
@@ -96,7 +96,7 @@ func (s *MyFirstSuite) TestCreateHistoryIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetDeviceHistoryIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestGetDeviceHistoryIntro(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int

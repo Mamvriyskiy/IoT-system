@@ -23,7 +23,7 @@ func generatePasswordHash(password string) string {
 	return hex.EncodeToString(hash.Sum([]byte(salt)))
 }
 
-func (s *MyFirstSuite) TestCreateClientIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestCreateClientIntro(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
@@ -68,7 +68,7 @@ func (s *MyFirstSuite) TestCreateClientIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetClientIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestGetClientIntro(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem
@@ -123,7 +123,7 @@ func (s *MyFirstSuite) TestGetClientIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestChangePasswordIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestChangePasswordIntro(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		user        factory.ObjectSystem
@@ -193,7 +193,7 @@ func (s *MyFirstSuite) TestChangePasswordIntro(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestCheckCodeIntro(t provider.T) {
+func (s *MyIntroTestsSuite) TestCheckCodeIntro(t provider.T) {
 	tests := []struct {
 		nameTest    string
 		ClientID    int

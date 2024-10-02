@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestAddClientBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessUser factory.ObjectSystem
@@ -59,7 +59,7 @@ func (s *MyFirstSuite) TestAddClientBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateLevelBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessUser factory.ObjectSystem
@@ -103,7 +103,7 @@ func (s *MyFirstSuite) TestUpdateLevelBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestUpdateStatusBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateStatusBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessHome pkg.AccessHome
@@ -152,7 +152,7 @@ func (s *MyFirstSuite) TestUpdateStatusBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetListUserHomeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetListUserHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int

@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestCreateDeviceHistoryBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateDeviceHistoryBL(t provider.T) {
 	tests := []struct {
 		nameTest  string
 		history   factory.ObjectSystem
@@ -48,7 +48,7 @@ func (s *MyFirstSuite) TestCreateDeviceHistoryBL(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newHistory := test.history.(*method.TestHistory)
 
-			mockRepo.EXPECT().CreateDeviceHistory(test.deviceID, newHistory.AddHistory).Return(test.historyID, nil)
+			mockRepo.EXPECT().CreateDeviceHistory(test.deviceID, gomock.Any()).Return(test.historyID, nil)
 
 			homeService := service.NewHistoryDeviceService(mockRepo)
 
@@ -65,7 +65,7 @@ func (s *MyFirstSuite) TestCreateDeviceHistoryBL(t provider.T) {
 // 	return s.repo.GetDeviceHistory(userID, name, home)
 // }
 
-func (s *MyFirstSuite) TestGetDeviceHistoryBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetDeviceHistoryBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		lenList    int

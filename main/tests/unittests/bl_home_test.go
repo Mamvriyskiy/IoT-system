@@ -10,7 +10,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 )
 
-func (s *MyFirstSuite) TestUpdateHomeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestUpdateHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		updateHome pkg.UpdateNameHome
@@ -55,7 +55,7 @@ func (s *MyFirstSuite) TestUpdateHomeBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestCreateHomeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		home     factory.ObjectSystem
@@ -101,7 +101,7 @@ func (s *MyFirstSuite) TestCreateHomeBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestDeleteHomeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestDeleteHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		home     factory.ObjectSystem
@@ -146,7 +146,7 @@ func (s *MyFirstSuite) TestDeleteHomeBL(t provider.T) {
 	}
 }
 
-func (s *MyFirstSuite) TestGetListHomeBL(t provider.T) {
+func (s *MyUnitTestsSuite) TestGetListHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int

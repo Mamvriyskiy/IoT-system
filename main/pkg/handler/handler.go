@@ -120,7 +120,7 @@ func (h *Handler) InitRouters() *gin.Engine {
 		ctx.HTML(http.StatusOK, "changepswrd.html", nil)
 	})
 
-	auth.POST("/sign-up", h.signUp)
+	auth.POST("/sign-up", h.SignUp)
 	auth.POST("/sign-in", h.signIn)
 	auth.POST("/newpassword", h.changePassword)
 	auth.POST("/checkcode", h.checkCode)
