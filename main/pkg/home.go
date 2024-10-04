@@ -1,14 +1,8 @@
 package pkg
 
 type Home struct {
-	Name           string `db:"name"    json:"name"`
-	GeographCoords int    `db:"coords" json:"coords"`
-	ID             int    `db:"homeid"  json:"-"`
-	UserID 		   int
-}
-
-type UpdateNameHome struct {
-	LastName string `json:"lastname"`
-	NewName string ` json:"newname"`
-	UserID int		`json:"-"`
+	Name      string  `db:"name"    json:"name"`
+	Latitude  float64 `db:"latitude" json:"latitude"`
+	Longitude float64 `db:"longitude" json:"longitude"`
+	ID        int     `db:"homeid"  json:"homeid"`
 }

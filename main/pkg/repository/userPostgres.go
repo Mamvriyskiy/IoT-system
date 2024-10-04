@@ -39,9 +39,17 @@ func (r *UserPostgres) GetUserByEmail(email string) (int, error) {
 	return count, err
 }
 
+func (r *UserPostgres) GetAccessLevel(userID int, homeID string) (int, error) {
+	var accessLevel int
+	query := fmt.Sprintf("SELECT accessLevel from access where homeid = $1 and clientid = $2")
+	err := r.db.Get(&accessLevel, query, homeID, userID)
+
+	return accessLevel, err
+}
+
 func (r *UserPostgres) GetUser(email, password string) (pkg.User, error) {
 	var user pkg.User
-	query := fmt.Sprintf("SELECT clientid from %s where email = $1 and password = $2", "client")
+	query := fmt.Sprintf("SELECT clientid, login, email from %s where email = $1 and password = $2", "client")
 	err := r.db.Get(&user, query, email, password)
 
 	return user, err

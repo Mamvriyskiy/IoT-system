@@ -17,7 +17,7 @@ func NewHomePostgres(db *sqlx.DB) *HomePostgres {
 }
 
 func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
-	getHomeID := `select h.homeid, h.name, h.coords from home h 
+	getHomeID := `select * from home h 
 	where h.homeid in (select a.homeid from access a 
 		where a.clientid = $1);`
 
@@ -33,30 +33,20 @@ func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
 
 func (r *HomePostgres) CreateHome(home pkg.Home) (int, error) {
 	var homeID int
-	query := fmt.Sprintf("INSERT INTO %s (coords, name) values ($1, $2) RETURNING homeID", "home")
-	row := r.db.QueryRow(query, home.GeographCoords, home.Name)
+	query := fmt.Sprintf("INSERT INTO %s (longitude, latitude, name) values ($1, $2, $3) RETURNING homeID", "home")
+	row := r.db.QueryRow(query, home.Longitude, home.Latitude, home.Name)
 	if err := row.Scan(&homeID); err != nil {
-		logger.Log("Error", "Scan", "Error insert into home:", err, home.GeographCoords, home.Name)
+		logger.Log("Error", "Scan", "Error insert into home:", err, home.Longitude, home.Latitude, home.Name)
 		return 0, err
 	}
 
 	return homeID, nil
 }
 
-func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
-	var homeID int
-	
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-
-	err := r.db.Get(&homeID, queryHomeID, userID, 4, nameHome)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, userID)
-		return err
-	}
-
+func (r *HomePostgres) DeleteHome(homeID string) error {
 	query1 := `DELETE FROM access 
 		WHERE homeid = $1;`
-	_, err = r.db.Exec(query1, homeID)
+	_, err := r.db.Exec(query1, homeID)
 	if err != nil {
 		logger.Log("Error", "Exec", "Error delete from access:", err, homeID)
 		return err
@@ -93,36 +83,27 @@ func (r *HomePostgres) DeleteHome(userID int, nameHome string) error {
 	return err
 }
 
-func (r *HomePostgres) UpdateHome(home pkg.UpdateNameHome) error {
-	var homeID int
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-
-	err := r.db.Get(&homeID, queryHomeID, home.UserID, 4, home.LastName)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, home.UserID, 4, home.LastName)
-		return err
-	}
-
+func (r *HomePostgres) UpdateHome(homeID, name string) error {
 	query := `UPDATE home
 		SET name = $1
 		WHERE homeid = $2;`
-	result, err := r.db.Exec(query, home.NewName, homeID)
+	result, err := r.db.Exec(query, name, homeID)
 	if err != nil {
-		logger.Log("Error", "Exec", "Error update home:", err, home.NewName, homeID)
+		logger.Log("Error", "Exec", "Error update home:", err, name, homeID)
 
 		return err
 	}
 
 	_, err = result.RowsAffected()
 	if err != nil {
-		logger.Log("Error", "RowsAffected", "Error update home:", err, home.NewName, homeID)
+		logger.Log("Error", "RowsAffected", "Error update home:", err, name, homeID)
 		return err
 	}
 
 	return err
 }
 
-func (r *HomePostgres) GetHomeByID(homeID int) (pkg.Home, error) {
+func (r *HomePostgres) GetHomeByID(homeID string) (pkg.Home, error) {
 	var home pkg.Home
 	query := fmt.Sprintf("SELECT * from %s where homeid = $1", "home")
 	err := r.db.Get(&home, query, homeID)

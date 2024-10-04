@@ -112,43 +112,42 @@ func (h *Handler) InitRouters() *gin.Engine {
 		ctx.HTML(http.StatusOK, "send.html", nil)
 	})
 
-	auth.GET("/checkcode", func(ctx *gin.Context) {
+	auth.GET("/verification", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "checkcode.html", nil)
 	})
 
-	auth.GET("/newpassword", func(ctx *gin.Context) {
+	auth.GET("/password", func(ctx *gin.Context) {
 		ctx.HTML(http.StatusOK, "changepswrd.html", nil)
 	})
 
 	auth.POST("/sign-up", h.SignUp)
 	auth.POST("/sign-in", h.signIn)
-	auth.POST("/newpassword", h.changePassword)
-	auth.POST("/checkcode", h.checkCode)
-	auth.POST("/sendcode", h.sendCode)
+	auth.PUT("/password", h.changePassword)
+	auth.POST("/verification", h.checkCode)
+	auth.POST("/code", h.code)
 
 	api := router.Group("/api")
 
-	home := api.Group("/home")
-	home.POST("/create", h.createHome)
-	home.DELETE("/delete", h.deleteHome)
-	home.PUT("/update", h.updateHome)
-	home.GET("/list", h.listHome)
+	home := api.Group("/homes")
+	home.POST("/", h.createHome)
+	home.GET("/", h.listHome)
+	home.DELETE("/:homeID", h.deleteHome)
+	home.PUT("/:homeID", h.updateHome)
+	home.GET("/:homeID", h.infoHome)
 
-	access := api.Group("/access")
-	access.POST("/add", h.addUser)
-	access.DELETE("/delete", h.deleteUser)
-	access.GET("/getList", h.getListUserHome)
-	access.PUT("/level/", h.updateLevel)
-	access.PUT("/status/", h.updateStatus)
+	home.POST("/:homeID/accesses", h.addUser)
+	home.DELETE("/:homeID/accesses/:accessID", h.deleteUser)
+	home.GET("/:homeID/accesses", h.getListUserHome)
+	home.PUT("/:homeID/accesses/:accessID", h.updateLevel)
+	home.GET("/:homeID/accesses/:accessID", h.getInfoAccess)
 
-	devices := api.Group("/device")
-	devices.POST("/", h.createDevice)
-	devices.PUT("/", h.getListDevice)
-	devices.DELETE("/", h.deleteDevice)
+	home.POST("/:homeID/devices", h.createDevice)
+	home.GET("/:homeID/devices", h.getListDevice)
+	home.DELETE("/:homeID/devices/:deviceID", h.deleteDevice)
+	home.GET("/:homeID/devices/:deviceID", h.getInfoDevice)
 
-	deviceHistory := api.Group("/history")
-	deviceHistory.POST("/", h.createDeviceHistory)
-	deviceHistory.PUT("/", h.getDeviceHistory)
+	home.POST("/:homeID/devices/:deviceID/status", h.createDeviceHistory)
+	home.GET("/:homeID/devices/:deviceID/history", h.getDeviceHistory)
 
 	logger.Log("Info", "", "Create router", nil)
 

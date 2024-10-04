@@ -25,17 +25,16 @@ func UseCryptoRandIntn(max int) int {
 	return int(n.Int64())
 }
 
-func (s *DeviceService) GetListDevices(userID int) ([]pkg.Devices, error) {
-	return s.repo.GetListDevices(userID)
+func (s *DeviceService) GetListDevices(homeID string) ([]pkg.DevicesInfo, error) {
+	return s.repo.GetListDevices(homeID)
 }
 
-func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, error) {
+func (s *DeviceService) CreateDevice(homeID string, device pkg.Devices) (pkg.Devices, error) {
 	deviceTypes := []string{"Type1", "Type2", "Type3"}
-	statusValues := []string{"Active", "Inactive"}
 	brands := []string{"Brand1", "Brand2", "Brand3"}
 
 	device.TypeDevice = deviceTypes[UseCryptoRandIntn(len(deviceTypes))]
-	device.Status = statusValues[UseCryptoRandIntn(len(statusValues))]
+	device.Status = "Inactive"
 	device.Brand = brands[UseCryptoRandIntn(len(brands))]
 
 	character := pkg.DeviceCharacteristics{
@@ -47,13 +46,20 @@ func (s *DeviceService) CreateDevice(homeID int, device *pkg.Devices) (int, erro
 		UnitMeasure: "kg",
 	}
 
-	return s.repo.CreateDevice(homeID, device, character, typeCharacter)
+	var err error
+	device.DeviceID, err = s.repo.CreateDevice(homeID, device, character, typeCharacter)
+
+	return device, err
 }
 
-func (s *DeviceService) DeleteDevice(idDevice int, name, home string) error {
-	return s.repo.DeleteDevice(idDevice, name, home)
+func (s *DeviceService) DeleteDevice(deviceID string) error {
+	return s.repo.DeleteDevice(deviceID)
 }
 
-func (s *DeviceService) GetDeviceByID(deviceID int) (pkg.Devices, error) {
+func (s *DeviceService) GetDeviceByID(deviceID string) (pkg.Devices, error) {
+	return s.repo.GetDeviceByID(deviceID)
+}
+
+func (s *DeviceService) GetInfoDevice(deviceID string) (pkg.Devices, error) {
 	return s.repo.GetDeviceByID(deviceID)
 }

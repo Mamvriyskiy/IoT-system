@@ -13,26 +13,30 @@ func NewAccessHomeService(repo repository.IAccessHomeRepo) *AccessHomeService {
 	return &AccessHomeService{repo: repo}
 }
 
-func (s *AccessHomeService) AddOwner(userID, homeID int) (int, error) {
+func (s *AccessHomeService) AddOwner(userID int, homeID string) (int, error) {
 	return s.repo.AddOwner(userID, homeID)
 }
 
-func (s *AccessHomeService) AddUser(userID int, access pkg.Access) (int, error) {
-	return s.repo.AddUser(userID, access)
+func (s *AccessHomeService) AddUser(homeID string, access pkg.Access) (int, error) {
+	return s.repo.AddUser(homeID, access)
 }
 
-func (s *AccessHomeService) DeleteUser(idUser int, access pkg.Access) error {
-	return s.repo.DeleteUser(idUser, access)
+func (s *AccessHomeService) DeleteUser(accessID string) error {
+	return s.repo.DeleteUser(accessID)
 }
 
-func (s *AccessHomeService) UpdateLevel(idUser int, updateAccess pkg.Access) error {
-	return s.repo.UpdateLevel(idUser, updateAccess)
+func (s *AccessHomeService) UpdateLevel(accessID string, updateAccess pkg.Access) error {
+	return s.repo.UpdateLevel(accessID, updateAccess)
 }
 
-func (s *AccessHomeService) UpdateStatus(idUser int, access pkg.AccessHome) error {
-	return s.repo.UpdateStatus(idUser, access)
+func (s *AccessHomeService) UpdateStatus(userID int, access pkg.AccessHome) error {
+	return s.repo.UpdateStatus(userID, access)
 }
 
-func (s *AccessHomeService) GetListUserHome(idHome int) ([]pkg.ClientHome, error) {
-	return s.repo.GetListUserHome(idHome)
+func (s *AccessHomeService) GetListUserHome(homeID string) ([]pkg.ClientHome, error) {
+	return s.repo.GetListUserHome(homeID)
+}
+
+func (s *AccessHomeService) GetInfoAccessByID(accessID string) (pkg.Access, error) {
+	return s.repo.GetInfoAccessByID(accessID)
 }

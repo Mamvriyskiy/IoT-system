@@ -51,7 +51,7 @@ paths:
                 password:
                   type: string
                   example: "abcd"
-                username: 
+                name: 
                   type: string
                   example: "user"
                 email:
@@ -62,18 +62,13 @@ paths:
       responses:
         '200':
           description: Successful operation
-        '400':
-          description: Invalid data value
-        '404':
-          description: Auth not found
+        # '404':
+        #   description: Auth not found
         '409':
           description: A user with such an email has already been registered
         '500':
           description: Internal error on the server
-      security:
-        - petstore_auth:
-            - write:auth
-            - read:auth
+      
   /auth/sign-in:
     post:
       tags:
@@ -107,16 +102,21 @@ paths:
                   token:
                     type: string
                     example: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE3MjY3NzgxNjUsImlhdCI6MTcyNjczNDk2NSwidXNlcklkIjoxfQ.aboYTZrft9YR1q59Q7u9AdyVhUDsi5ep4Pfzicde-5Y"
+                  name:
+                    type: string
+                    example: "user1"
+                  email:
+                    type: string
+                    example: "email1"
                   
         '400':
           description:  Invalid data value
+        '401':
+          description: Access denied
         '500':
           description: Internal error on the server
-      security:
-        - petstore_auth:
-            - write:auth
-            - read:auth
-  /auth/sendcode:
+      
+  /auth/code:
     post:
       tags:
         - auth
@@ -138,15 +138,12 @@ paths:
       responses:
         '200':
           description: successful operation
-        '400':
-          description: Invalid email
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
-      security:
-        - petstore_auth:
-            - write:auth
-            - read:auth
-  /auth/checkcode:
+      
+  /auth/verification:
     post:
       tags:
         - auth
@@ -159,7 +156,7 @@ paths:
             schema:
               type: object
               properties:
-                email:
+                code:
                   type: string
                   example: "1a2b3c"
                 
@@ -170,14 +167,13 @@ paths:
           description: successful operation
         '400':
           description: Invalid code
+        '401':
+          description: Access denied
         '500':
           description: Internal error on the server
-      security:
-        - petstore_auth:
-            - write:auth
-            - read:auth
-  /auth/newpassword:
-    post:
+      
+  /auth/password:
+    put:
       tags:
         - auth
       summary:  Update password
@@ -192,9 +188,6 @@ paths:
                 password:
                   type: string
                   example: "abcd"
-                repeatpassword:
-                  type: string
-                  example: "abcd"
                 
         required: true
         
@@ -203,14 +196,12 @@ paths:
           description: successful operation
         '400':
           description: Invalid password
+        '401':
+          description: Access denied
         '500':
           description: Internal error on the server
-      security:
-        - petstore_auth:
-            - write:auth
-            - read:auth
-            
-  /home/create:
+      
+  /homes:
     post:
       tags:
         - home
@@ -244,31 +235,123 @@ paths:
       responses:
         '200':
           description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  homeid:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "home"
+                  geographcoors:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                        format: float
+                        example: 37.7749
+                      longitude:
+                        type: number
+                        format: float
+                        example: -122.4194
+                  accessLevel:
+                    type: integer
+                    example: 4
         '400':
           description: Invalid data value
+        '401':
+          description: Access denied
+        '403':
+          description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
-            
-  /home/delete:
+          
+    get:
+      tags:
+        - home
+      summary: List of user's houses
+      description: Get a list of the user's houses
+          
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    homeid:
+                      type: integer
+                      example: 2
+                    name:
+                      type: string
+                      example: "home"
+                    geographcoors:
+                      type: object
+                      properties:
+                        latitude:
+                          type: number
+                          format: float
+                          example: 37.7749
+                        longitude:
+                          type: number
+                          format: float
+                          example: -122.4194
+                    accessLevel:
+                      type: integer  # Fixing the typo from intger to integer
+                      example: 4
+        '404':
+          description: The resource does not exist
+          
+        '500':
+          description: Internal error on the server
+          
+  /homes/{homeID}:       
     delete:
       tags:
         - home
       summary: Delete home
       description: Removal of the house by the owner by name
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
       responses:
         '200':
           description: successful operation
+        '401':
+          description: Access denied
         '403':
           description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
           
-  /home/update:
     put:
       tags:
         - home
       summary: Updating the home name
       description: Updating the home name
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
       requestBody:
         description: Updating the home name
         content:
@@ -276,10 +359,7 @@ paths:
             schema:
               type: object
               properties:
-                lastname:
-                  type: string
-                  example: "home"
-                newname:
+                name:
                   type: string
                   example: "home2"
                 
@@ -289,39 +369,98 @@ paths:
 
         '200':
           description:  successful operation
-        '403':
-          description: Access denied due to insufficient permissions
-        '500':
-          description: Internal error on the server
-    
-  /home/list:
-    get:
-      tags:
-        - home
-      summary: List of user's houses
-      description: Get a list of the user's houses
-      responses:
-
-        '200':
-          description:  successful operation
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: string
-                  example: ["home1", "home2"]
-
-
+                type: object
+                properties:
+                  homeid:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "home2"
+                  geographcoors:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                        format: float
+                        example: 37.7749
+                      longitude:
+                        type: number
+                        format: float
+                        example: -122.4194
+        '401':
+          description: Access denied
+        '403':
+          description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
+        '500':
+          description: Internal error on the server
+    
+    get:
+      tags:
+        - home
+      summary: Get inforamtions about home
+      description: Get inforamtions about home by homeid
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
+          
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  homeid:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "home"
+                  geographcoors:
+                    type: object
+                    properties:
+                      latitude:
+                        type: number
+                        format: float
+                        example: 37.7749
+                      longitude:
+                        type: number
+                        format: float
+                        example: -122.4194
+                  accessLevel:
+                    type: integer
+                    example: 4
+        '404':
+          description: The resource does not exist
+          
         '500':
           description: Internal error on the server
           
-  /access/add:
+  /homes/{homeID}/accesses:
     post:
       tags:
         - access
       summary: Adding a user to the house
       description: Adding a user to the house by specified mail
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
       requestBody:
         content:
           application/json:
@@ -331,36 +470,51 @@ paths:
                 email: 
                   type: string 
                   example: "123@mail.ru"
-                home: 
-                  type: string 
-                  example: "home"
+                accessLevel: 
+                  type: integer 
+                  example: 2
               
       responses:
         '200':
           description: Successful operation
-
-  /access/delete:
-    delete:
-      tags:
-        - access
-      summary: Remove a user from home
-      description:  Remove a user from home
-      responses:
-        '200':
-          description: successful operation
+          content:
+            application/json:
+              schema:
+                properties:
+                  accessid:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "user2"
+                  email:
+                    type: string
+                    example: "email2"
+                  accesslevel:
+                    type: integer
+                    example: 4
+        '401':
+          description: Access denied
         '403':
           description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
-          
-  /access/getlist:
     get:
       tags:
         - access
       summary: List of user's houses
       description: Get a list of the user's houses
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
       responses:
-
         '200':
           description:  successful operation
           content:
@@ -368,18 +522,120 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-                  example: ["user1", "user2"]
+                  type: object
+                  properties:
+                    accessod:
+                      type: integer
+                      example: 2
+                    name:
+                      type: string
+                      example: "user1"
+                    email:
+                      type: string
+                      example: "user1@example.com"
+                    accessLevel:
+                      type: string
+                      example: "owner"
+        '404':
+          description: The resource does not exist
+        '500':
+          description: Internal error on the server
 
+  /homes/{homeID}/accesses/{accessID}:
+    delete:
+      tags:
+        - access
+      summary: Remove a user from home
+      description:  Remove a user from home
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: accessID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
+      responses:
+        '200':
+          description: successful operation
+        '401':
+          description: Access denied
+        '403':
+          description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
           
-  /access/level:
+    get:
+      tags:
+        - access
+      summary: Get informations about access 
+      description: Get informations about access by accessid
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: accessID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
+      responses:
+        '200':
+          description:  successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessid:
+                    type: integer
+                    example: 3
+                  name:
+                    type: string
+                    example: "user1"
+                  email:
+                    type: string
+                    example: "user1@example.com"
+                  accessLevel:
+                    type: integer
+                    example: 4
+        '404':
+          description: The resource does not exist
+        '500':
+          description: Internal error on the server
+          
     put:
       tags:
         - access
       summary: Update the user's access level
       description: Update the user's access level
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: accessID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
       requestBody:
         description: Update the user's access level
         content:
@@ -387,10 +643,10 @@ paths:
             schema:
               type: object
               properties:
-                username:
+                email:
                   type: string
-                  example: "user1"
-                newlevel:
+                  example: "email1"
+                level:
                   type: integer
                   example: 3
                 
@@ -400,17 +656,47 @@ paths:
 
         '200':
           description:  successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  accessid:
+                    type: integer
+                    example: 3
+                  name:
+                    type: string
+                    example: "user1"
+                  email:
+                    type: string
+                    example: "email1"
+                  accessLevel:
+                    type: integer
+                    example: 4
+        '400':
+          description: Invalid data value
+        '401':
+          description: Access denied
         '403':
           description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
     
-  /devices/create:
+  /homes/{homeID}/devices:
     post:
       tags:
         - devices
       summary: Add a device
       description: Add a new device to your home
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
       
       requestBody:
         description: Add a new device to your home
@@ -422,28 +708,53 @@ paths:
                 name:
                   type: string
                   example: "dev1"
-                home:
-                  type: string
-                  example: "home1"
                
         required: true
         
       responses:
         '200':
           description: successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deviceid:
+                    type: integer
+                    example: 2
+                  name:
+                    type: string
+                    example: "dev1"
+                  brand:
+                    type: string
+                    example: "BrandX"
+                  status:
+                    type: string
+                    example: "inactive"
         '400':
           description: Invalid data value
+        '401':
+          description: Access denied
+        '403':
+          description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
-    
-  /devices/getlist:
     get:
       tags:
         - devices
       summary: List of devices houses
       description: Get a list of the devices houses
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+          
       responses:
-
         '200':
           description:  successful operation
           content:
@@ -451,289 +762,209 @@ paths:
               schema:
                 type: array
                 items:
-                  type: string
-                  example: ["dev1", "dev1"]
-
+                  type: object
+                  properties:
+                    deviceid:
+                      type: integer
+                      example: 2
+                    name:
+                      type: string
+                      example: "dev1"
+                    brand:
+                      type: string
+                      example: "BrandX"
+                    status:
+                      type: string
+                      example: "active"
+        '404':
+          description: The resource does not exist
+        '500':
+          description: Internal error on the server
+    
+  /homes/{homeID}/devices/{deviceID}:
+    get:
+      tags:
+        - devices
+      summary: Get informations about device
+      description: Get informations about device by deviceid
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: deviceID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
+      responses:
+        '200':
+          description:  successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  deviceid:
+                      type: integer
+                      example: 2
+                  name:
+                    type: string
+                    example: "dev1"
+                  brand:
+                    type: string
+                    example: "BrandX"
+                  status:
+                    type: string
+                    example: "active"
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
 
-  /devices/delete:
     delete:
       tags:
         - devices
       summary: Remove a device from home
       description:  Remove a device from home
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: deviceID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
       responses:
         '200':
           description: successful operation
+        '401':
+          description: Access denied
         '403':
           description: Access denied due to insufficient permissions
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
-          
-  /devices/startdevice:
-    post:
+   
+  /homes/{homeID}/devices/{deviceID}/status:
+    put:
       tags:
         - devices
       summary: Start the device
       description: Start the device
       
-      requestBody:
-        description: Start the device
-        content:
-          application/json:
-            schema:
-              type: object
-              properties:
-                name:
-                  type: string
-                  example: "dev1"
-                home:
-                  type: string
-                  example: "home1"
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: deviceID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+        - name: status
+          in: path
+          required: true
+          schema:
+            type: string
+            enum: ["active", "inactive"]
+            example: "active"
+          description: Status of the device
+      
+      # requestBody:
+      #   description: Start the device
+      #   content:
+      #     application/json:
+      #       schema:
+      #         type: object
+      #         properties:
+      #           name:
+      #             type: string
+      #             example: "dev1"
+      #           home:
+      #             type: string
+      #             example: "home1"
                
-        required: true
+      # required: true
         
       responses:
         '200':
           description: successful operation
         '400':
           description: Invalid data value
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
            
-  /devices/getlisthistory:
+  /homes/{homeID}/devices/{deviceID}/history:
     get:
       tags:
         - devices
       summary: List of device history
       description: Get a list of device history
+      parameters:
+        - name: homeID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the home
+        - name: deviceID
+          in: path
+          required: true
+          schema:
+            type: integer
+          description: ID of the device
+          
       responses:
         '200':
           description: A list of devices' history records.
           content:
             application/json:
               schema:
-                type: array
-                items:
-                  type: object
-                  properties:
-                    timework:
-                      type: integer
-                      description: Total time worked by the device
-                      example: 120
-                    average:
-                      type: number
-                      format: float
-                      description: Average indicator value
-                      example: 23.5
-                    energy:
-                      type: integer
-                      description: Energy consumed by the device
-                      example: 300
+                type: object
+                properties:
+                  name:
+                    type: string
+                    example: "dev1"
+                  history:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        timework:
+                          type: integer
+                          description: Total time worked by the device
+                          example: 120
+                        average:
+                          type: number
+                          format: float
+                          description: Average indicator value
+                          example: 23.5
+                        energy:
+                          type: integer
+                          description: Energy consumed by the device
+                          example: 300
+        '404':
+          description: The resource does not exist
         '500':
           description: Internal error on the server
           
-components:
-  schemas:
-    Order:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        petId:
-          type: integer
-          format: int64
-          example: 198772
-        quantity:
-          type: integer
-          format: int32
-          example: 7
-        shipDate:
-          type: string
-          format: date-time
-        status:
-          type: string
-          description: Order Status
-          example: approved
-          enum:
-            - placed
-            - approved
-            - delivered
-        complete:
-          type: boolean
-      xml:
-        name: order
-    Customer:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 100000
-        username:
-          type: string
-          example: fehguy
-        address:
-          type: array
-          xml:
-            name: addresses
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Address'
-      xml:
-        name: customer
-    Address:
-      type: object
-      properties:
-        street:
-          type: string
-          example: 437 Lytton
-        city:
-          type: string
-          example: Palo Alto
-        state:
-          type: string
-          example: CA
-        zip:
-          type: string
-          example: '94301'
-      xml:
-        name: address
-    Category:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 1
-        name:
-          type: string
-          example: Dogs
-      xml:
-        name: category
-    User:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        username:
-          type: string
-          example: theUser
-        firstName:
-          type: string
-          example: John
-        lastName:
-          type: string
-          example: James
-        email:
-          type: string
-          example: john@email.com
-        password:
-          type: string
-          example: '12345'
-        phone:
-          type: string
-          example: '12345'
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
-          example: 1
-      xml:
-        name: user
-    Tag:
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-        name:
-          type: string
-      xml:
-        name: tag
-    Pet:
-      required:
-        - name
-        - photoUrls
-      type: object
-      properties:
-        id:
-          type: integer
-          format: int64
-          example: 10
-        name:
-          type: string
-          example: doggie
-        category:
-          $ref: '#/components/schemas/Category'
-        photoUrls:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            type: string
-            xml:
-              name: photoUrl
-        tags:
-          type: array
-          xml:
-            wrapped: true
-          items:
-            $ref: '#/components/schemas/Tag'
-        status:
-          type: string
-          description: pet status in the store
-          enum:
-            - available
-            - pending
-            - sold
-      xml:
-        name: pet
-    ApiResponse:
-      type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
-      xml:
-        name: '##default'
-  requestBodies:
-    Pet:
-      description: Pet object that needs to be added to the store
-      content:
-        application/json:
-          schema:
-            $ref: '#/components/schemas/Pet'
-        application/xml:
-          schema:
-            $ref: '#/components/schemas/Pet'
-    UserArray:
-      description: List of user object
-      content:
-        application/json:
-          schema:
-            type: array
-            items:
-              $ref: '#/components/schemas/User'
-  securitySchemes:
-    petstore_auth:
-      type: oauth2
-      flows:
-        implicit:
-          authorizationUrl: https://petstore3.swagger.io/oauth/authorize
-          scopes:
-            write:pets: modify pets in your account
-            read:pets: read your pets
-    api_key:
-      type: apiKey
-      name: api_key
-      in: header
+          
+          

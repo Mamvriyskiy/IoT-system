@@ -20,7 +20,8 @@ ALTER TABLE resetPswrd
 
 ALTER TABLE home
     ALTER COLUMN name SET NOT NULL,
-    ALTER COLUMN coords SET NOT NULL;
+    ALTER COLUMN latitude SET NOT NULL,
+    ALTER COLUMN longitude SET NOT NULL;
 
 ALTER TABLE home 
     ADD CHECK (name != ''),

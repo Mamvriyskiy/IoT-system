@@ -17,7 +17,8 @@ CREATE TABLE IF NOT EXISTS access (
 
 CREATE TABLE IF NOT EXISTS home (
     homeID SERIAL,
-    coords int,
+    latitude REAL,
+    longitude REAL,
     name varchar(20)
 );
 

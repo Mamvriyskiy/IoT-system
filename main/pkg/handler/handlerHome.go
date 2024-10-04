@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
+	"strconv"
 )
 
 func (h *Handler) createHome(c *gin.Context) {
@@ -15,20 +16,18 @@ func (h *Handler) createHome(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Home
-	if err := c.BindJSON(&input); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
-		return
-	}
-
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
+	userID, ok := id.(float64)
+	if !ok {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"errors": "Ошибка создания дома",
 		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
+	}
+
+	var input pkg.Home
+	if err := c.BindJSON(&input); err != nil {
+		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
@@ -37,25 +36,24 @@ func (h *Handler) createHome(c *gin.Context) {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"errors": "Ошибка создания дома",
 		})
-		logger.Log("Error", "CreateHome", "Error create home:", err, intVal, input)
+		logger.Log("Error", "CreateHome", "Error create home:", err, userID, input)
 		return
 	}
 
-	_, err = h.services.IAccessHome.AddOwner(int(intVal), homeID)
+	homeIDStr := strconv.Itoa(homeID)
+
+	_, err = h.services.IAccessHome.AddOwner(int(userID), homeIDStr)
 	if err != nil {
 		c.JSON(http.StatusOK, map[string]interface{}{
 			"errors": "Ошибка добавления хозяина дома",
 		})
-		logger.Log("Error", "AddOwner", "Error add owner:", err, intVal, homeID)
+		logger.Log("Error", "AddOwner", "Error add owner:", err, userID, homeID)
 		return
 	}
 
-	c.Set("homeID", homeID)
-	c.Next()
+	input.ID = homeID
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"homeId": homeID,
-	})
+	c.JSON(http.StatusOK, input)
 
 	logger.Log("Info", "", "A home has been created", nil)
 }
@@ -67,39 +65,38 @@ func (h *Handler) deleteHome(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Home
-	if err := c.BindJSON(&input); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
-		return
-	}
-
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusInternalServerError, map[string]string{
-			"errors": "Ошибка удаления",
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
 		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 		return
 	}
 
-	err := h.services.IHome.DeleteHome(int(intVal), input.Name)
+	homeID := c.Param("homeID")
+
+	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	if accessLevel != 4 || err != nil {
+		c.JSON(http.StatusForbidden, map[string]string{
+			"errors": "Недостаточно прав для удаления",
+		})
+		logger.Log("Error", "GetAccessLevel", "Error GetAccessLevel home:", err, accessLevel)
+		return
+	}
+
+	err = h.services.IHome.DeleteHome(homeID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]string{
 			"errors": "дом не найден",
 		})
-		logger.Log("Error", "DeleteHome", "Error delete home:", err, id.(int))
+		logger.Log("Error", "DeleteHome", "Error delete home:", err, homeID)
 		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{})
 
 	logger.Log("Info", "", "A home has been deleted", nil)
-}
-
-type getAllListHomeResponse struct {
-	Data []pkg.Home `json:"data"`
 }
 
 func (h *Handler) listHome(c *gin.Context) {
@@ -109,31 +106,44 @@ func (h *Handler) listHome(c *gin.Context) {
 		return
 	}
 
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка получения списка домов",
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
 		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return 
+		return
 	}
 
-	homeListUser, err := h.services.IHome.ListUserHome(int(intVal))
+	homeListUser, err := h.services.IHome.ListUserHome(int(userID))
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка получения списка домов",
 		})
 		logger.Log("Error", "ListUserHome", "Error get user:", err, id.(int))
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListHomeResponse{
-		Data: homeListUser,
-	})
+	c.JSON(http.StatusOK, homeListUser)
 
 	logger.Log("Info", "", "The list of users has been received", nil)
+}
+
+func (h *Handler) infoHome(c *gin.Context) {
+	homeID := c.Param("homeID")
+
+	home, err := h.services.IHome.GetHomeByID(homeID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"errors": "дом не найден",
+		})
+		logger.Log("Error", "UpdateHome", "Error update home:", err, "")
+		return
+	}
+
+	c.JSON(http.StatusOK, home)
+
+	logger.Log("Info", "", "A home has been update", nil)
 }
 
 func (h *Handler) updateHome(c *gin.Context) {
@@ -143,26 +153,34 @@ func (h *Handler) updateHome(c *gin.Context) {
 		return
 	}
 
-	var input pkg.UpdateNameHome
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
+		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
+	}
+	
+	homeID := c.Param("homeID")
+
+	var input pkg.Home
 	err := c.BindJSON(&input)
 	if err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		c.JSON(http.StatusInternalServerError, map[string]string{
-			"errors": "Ошибка обновления",
+	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	if accessLevel != 4 || err != nil {
+		c.JSON(http.StatusForbidden, map[string]string{
+			"errors": "Недостаточно прав для удаления",
 		})
+		logger.Log("Error", "GetAccessLevel", "Error GetAccessLevel home:", err, accessLevel)
 		return
 	}
-	input.UserID = int(intVal)
 
-	err = h.services.IHome.UpdateHome(input)
+	err = h.services.IHome.UpdateHome(homeID, input.Name)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"errors": "дом не найден",
@@ -171,7 +189,16 @@ func (h *Handler) updateHome(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListHomeResponse{})
+	home, err := h.services.IHome.GetHomeByID(homeID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"errors": "дом не найден",
+		})
+		logger.Log("Error", "UpdateHome", "Error update home:", err, "")
+		return
+	}
+
+	c.JSON(http.StatusOK, home)
 
 	logger.Log("Info", "", "A home has been update", nil)
 }

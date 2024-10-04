@@ -17,15 +17,15 @@ func (s *HomeService) CreateHome(home pkg.Home) (int, error) {
 	return s.repo.CreateHome(home)
 }
 
-func (s *HomeService) DeleteHome(homeID int, homeName string) error {
-	return s.repo.DeleteHome(homeID, homeName)
+func (s *HomeService) DeleteHome(homeID string) error {
+	return s.repo.DeleteHome(homeID)
 }
 
-func (s *HomeService) UpdateHome(home pkg.UpdateNameHome) error {
-	return s.repo.UpdateHome(home)
+func (s *HomeService) UpdateHome(homeID, name string) error {
+	return s.repo.UpdateHome(homeID, name)
 }
 
-func (s *HomeService) GetHomeByID(homeID int) (pkg.Home, error) {
+func (s *HomeService) GetHomeByID(homeID string) (pkg.Home, error) {
 	return s.repo.GetHomeByID(homeID)
 }
 

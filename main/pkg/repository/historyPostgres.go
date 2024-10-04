@@ -18,31 +18,13 @@ func NewDeviceHistoryPostgres(db *sqlx.DB) *DeviceHistoryPostgres {
 	return &DeviceHistoryPostgres{db: db}
 }
 
-func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
-	history pkg.AddHistory,
-) (int, error) {
-	var homeID int
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-	err := r.db.Get(&homeID, queryHomeID, userID, 4, history.Home)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, userID,  history.Home, history.Name)
-		return 0, err
-	}
-
-	var deviceID int
-	const querDeviceID = `select d.deviceid from device d
-			where d.homeid = $1 and d.name = $2;`
-	err = r.db.Get(&deviceID, querDeviceID, homeID, history.Name)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from device:", err, homeID, history.Name)
-		return 0, err
-	}
-
+func (r *DeviceHistoryPostgres) CreateDeviceHistory(deviceID string,
+	history pkg.AddHistory) (int, error) {
 	var result int
 	queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
-	err = r.db.Get(&result, queryUpdateStatus, deviceID, "active")
+	err := r.db.Get(&result, queryUpdateStatus, deviceID, "active")
 	if err != nil {
-		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
+		logger.Log("Error", "Exec", "Error select from device:", err, deviceID)
 		return 0, err
 	}
 
@@ -63,7 +45,7 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	queryUpdateStatus = fmt.Sprintf(`select update_status($1, $2);`)
 	_, err = r.db.Exec(queryUpdateStatus, deviceID, "inactive")
 	if err != nil {
-		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
+		logger.Log("Error", "Exec", "Error select from device:", err, deviceID)
 		return 0, err
 	}
 
@@ -89,29 +71,12 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	return id, nil
 }
 
-func (r *DeviceHistoryPostgres) GetDeviceHistory(userID int,
-	name, home string) ([]pkg.DevicesHistory, error) {
-	var homeID int
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-	err := r.db.Get(&homeID, queryHomeID, userID, 4, home)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, userID, home)
-		return nil, err
-	}
-
-	var deviceID int
-	querDeviceID := `select d.deviceid from device d join 
-		home h on d.homeid = h.homeid 
-			where h.homeid = $1 and d.name = $2;`
-	err = r.db.Get(&deviceID, querDeviceID, homeID, name)
-	if err != nil {
-		return nil, err
-	}
+func (r *DeviceHistoryPostgres) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
 	var lists []pkg.DevicesHistory
 	query := `select hi.timework, hi.averageindicator, hi.energyconsumed 
 		from historydev as hi join historydevice as hd on hi.historydevid = hd.historydevid 
 			where hd.deviceid = $1`
-	err = r.db.Select(&lists, query, deviceID)
+	err := r.db.Select(&lists, query, deviceID)
 	if err != nil {
 		logger.Log("Error", "Select", "Error Select from historydev:", err, deviceID)
 		return nil, err
