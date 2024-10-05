@@ -20,7 +20,7 @@ func (h *Handler) getListDevice(c *gin.Context) {
 
 	listDevices, err := h.services.IDevice.GetListDevices(homeID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка получения списка пользователей",
 		})
 		logger.Log("Error", "GetListDevices", "Error get list devices:", err, homeID)
@@ -76,7 +76,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 
 	device, err := h.services.IDevice.CreateDevice(homeID, input)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка создания устройства",
 		})
 		logger.Log("Error", "CreateDevice", "Error create device:", err, homeID, &input)
@@ -124,7 +124,7 @@ func (h *Handler) deleteDevice(c *gin.Context) {
 
 	err = h.services.IDevice.DeleteDevice(deviceID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка удаления устройства",
 		})
 		logger.Log("Error", "DeleteDevice", "Error delete device:", err, deviceID)

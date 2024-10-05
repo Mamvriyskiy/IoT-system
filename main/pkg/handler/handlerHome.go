@@ -18,7 +18,7 @@ func (h *Handler) createHome(c *gin.Context) {
 
 	userID, ok := id.(float64)
 	if !ok {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка создания дома",
 		})
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
@@ -33,7 +33,7 @@ func (h *Handler) createHome(c *gin.Context) {
 
 	homeID, err := h.services.IHome.CreateHome(input)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка создания дома",
 		})
 		logger.Log("Error", "CreateHome", "Error create home:", err, userID, input)
@@ -44,7 +44,7 @@ func (h *Handler) createHome(c *gin.Context) {
 
 	_, err = h.services.IAccessHome.AddOwner(int(userID), homeIDStr)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка добавления хозяина дома",
 		})
 		logger.Log("Error", "AddOwner", "Error add owner:", err, userID, homeID)
@@ -124,7 +124,7 @@ func (h *Handler) listHome(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, homeListUser)
+	c.JSON(http.StatusOK, homeListUser) //вернуть пустой массив
 
 	logger.Log("Info", "", "The list of users has been received", nil)
 }
@@ -161,7 +161,7 @@ func (h *Handler) updateHome(c *gin.Context) {
 		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 		return
 	}
-	
+
 	homeID := c.Param("homeID")
 
 	var input pkg.Home
