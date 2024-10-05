@@ -6,7 +6,7 @@ import (
 	"net/http"
 
 	"github.com/Mamvriyskiy/database_course/main/logger"
-	"github.com/Mamvriyskiy/database_course/main/pkg"
+
 	"github.com/gin-gonic/gin"
 )
 
@@ -29,92 +29,49 @@ func generateRandomFloat(max float64) float64 {
 }
 
 func (h *Handler) createDeviceHistory(c *gin.Context) {
-	id, ok := c.Get("userId")
-	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
-		return
-	}
+	deviceID := c.Param("deviceID")
 
-	var input pkg.AddHistory
-	if err := c.BindJSON(&input); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
-		return
-	}
-
-	history := pkg.AddHistory{
-		Name:             input.Name,
-		TimeWork:         generateRandomInt(101),
-		AverageIndicator: generateRandomFloat(100),
-		EnergyConsumed:   generateRandomInt(101),
-		Home:             input.Home,
-	}
-
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка создания истории",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return
-	}
-
-	idHistory, err := h.services.IHistoryDevice.CreateDeviceHistory(int(intVal), history)
+	historyID, err := h.services.IHistoryDevice.CreateDeviceHistory(deviceID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusNotFound, map[string]interface{}{
 			"errors": "Ошибка создания истории",
 		})
-		logger.Log("Error", "CreateDeviceHistory", "Error create history:", err, id, history)
+		logger.Log("Error", "CreateDeviceHistory", "Error create history:", err, deviceID)
 		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"idHistory": idHistory,
+		"historyID": historyID,
 	})
 
 	logger.Log("Info", "", "The device's history has been created", nil)
 }
 
-type getAllListResponse struct {
-	Data []pkg.DevicesHistory `json:"data"`
-}
-
 func (h *Handler) getDeviceHistory(c *gin.Context) {
-	id, ok := c.Get("userId")
-	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
-		return
-	}
+	deviceID := c.Param("deviceID")
 
-	var info pkg.AddHistory
-	if err := c.BindJSON(&info); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
-		return
-	}
-
-	var intVal float64
-	if val, ok := id.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка получения истории",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return
-	}
-
-	input, err := h.services.IHistoryDevice.GetDeviceHistory(int(intVal), info.Name, info.Home)
+	historyList, err := h.services.IHistoryDevice.GetDeviceHistory(deviceID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка получения истории",
 		})
-		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, id, info.Name)
+		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, deviceID)
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListResponse{
-		Data: input,
+	device, err := h.services.IDevice.GetDeviceByID(deviceID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения истории",
+		})
+		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, deviceID)
+		return
+	}
+
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"name": device.Name,
+		"history": historyList,
 	})
 
 	logger.Log("Info", "", "The history of the device was obtained", nil)

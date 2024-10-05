@@ -1,15 +1,1 @@
 .DS_Store
-.env
-.bcf 
-.aux 
-.log 
-.bbl 
-.out 
-.fdb_latexmk 
-.gz 
-.toc 
-.fls
-.blg
-.xml
-.csv
-*.synctex(busy)

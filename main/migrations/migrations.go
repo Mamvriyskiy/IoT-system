@@ -13,7 +13,7 @@ func MigrationsTestDataBase(connDB *sqlx.DB, dataFile string) error {
 		return fmt.Errorf("get db: %w", err)
 	}
 
-	if err = goose.Up(connDB.DB, "../migrations/testMigrationsSQL/"); err != nil {
+	if err = goose.Up(connDB.DB, "../../migrations/testMigrationsSQL/"); err != nil {
 		return fmt.Errorf("up migrations: %w", err)
 	}
 

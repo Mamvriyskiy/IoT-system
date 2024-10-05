@@ -9,22 +9,22 @@ CREATE TABLE IF NOT EXISTS client (
 
 CREATE TABLE IF NOT EXISTS access (
     accessID SERIAL,
+    clientID int,
+    homeID int,
     accessStatus varchar(15),
     accessLevel int
 );
 
-CREATE TABLE IF NOT EXISTS accessClient (clientID int, accessID int);
-
-CREATE TABLE IF NOT EXISTS accessHome (accessID int, homeID int);
-
 CREATE TABLE IF NOT EXISTS home (
     homeID SERIAL,
-    coords int,
+    latitude REAL,
+    longitude REAL,
     name varchar(20)
 );
 
 CREATE TABLE IF NOT EXISTS device (
     deviceID SERIAL,
+    homeID int,
     name varchar(20),
     typeDevice varchar(20),
     status varchar(10),
@@ -43,8 +43,6 @@ CREATE TABLE IF NOT EXISTS typeCharacter (
     typecharacter varchar(25),
     unitmeasure varchar(15)
 );
-
-CREATE TABLE IF NOT EXISTS deviceHome (homeID int, deviceID int);
 
 CREATE TABLE IF NOT EXISTS historyDev (
     historyDevID SERIAL,

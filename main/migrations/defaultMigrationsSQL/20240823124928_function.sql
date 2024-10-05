@@ -33,9 +33,8 @@ DECLARE
   homeid integer;
 BEGIN
   select h.homeid into homeid from home h 
-	where h.homeid in (select a.homeid from accesshome a 
-		where a.accessid in (select a.accessid from accessclient a 
-			JOIN access ac ON a.accessid = ac.accessid where clientid = id AND accessLevel = level)) and h.name = nameHome;
+	where h.homeid in (select a.homeid from access a
+		where a.clientid = id) and h.name = nameHome;
   
   RETURN homeid;
 END;

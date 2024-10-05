@@ -14,36 +14,38 @@ type IUserRepo interface {
 	GetCode(token string) (string, error)
 	AddCode(email pkg.Email) error
 	GetUserByEmail(email string) (int, error)
+	GetAccessLevel(userID int, homeID string) (int, error)
 }
 
 type IHomeRepo interface {
 	CreateHome(home pkg.Home) (int, error)
-	DeleteHome(homeID int, homeName string) error
-	UpdateHome(home pkg.UpdateNameHome) error
-	GetHomeByID(homeID int) (pkg.Home, error)
+	DeleteHome(homeID string) error
+	UpdateHome(homeID, name string) error
+	GetHomeByID(homeID string) (pkg.Home, error)
 	ListUserHome(userID int) ([]pkg.Home, error)
 }
 
 type IAccessHomeRepo interface {
-	AddUser(userID int, access pkg.Access) (int, error)
-	DeleteUser(idUser int, access pkg.Access) error
-	UpdateLevel(userID int, updateAccess pkg.Access) error
-	UpdateStatus(idUser int, access pkg.AccessHome) error
-	GetListUserHome(userID int) ([]pkg.ClientHome, error)
-	AddOwner(userID, homeID int) (int, error)
+	AddUser(homeID string, access pkg.Access) (int, error)
+	DeleteUser(accessID string) error
+	UpdateLevel(accessID string, updateAccess pkg.Access) error
+	UpdateStatus(userID int, access pkg.AccessHome) error
+	GetListUserHome(homeID string) ([]pkg.ClientHome, error)
+	AddOwner(userID int, homeID string) (int, error)
+	GetInfoAccessByID(accessID string) (pkg.Access, error)
 }
 
 type IDeviceRepo interface {
-	CreateDevice(userID int, device *pkg.Devices, 
+	CreateDevice(homeID string, device pkg.Devices, 
 		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error)
-	DeleteDevice(idDevice int, name, home string) error
-	GetDeviceByID(deviceID int) (pkg.Devices, error)
-	GetListDevices(userID int) ([]pkg.Devices, error)
+	DeleteDevice(deviceID string) error
+	GetDeviceByID(deviceID string) (pkg.Devices, error)
+	GetListDevices(homeID string) ([]pkg.DevicesInfo, error)
 }
 
 type IHistoryDeviceRepo interface {
-	CreateDeviceHistory(userID int, history pkg.AddHistory) (int, error)
-	GetDeviceHistory(userID int, name, home string) ([]pkg.DevicesHistory, error)
+	CreateDeviceHistory(deviceID string, history pkg.AddHistory) (int, error)
+	GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error)
 }
 
 type Repository struct {

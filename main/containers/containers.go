@@ -29,15 +29,20 @@ func SetupTestDataBase() (testcontainers.Container, *sqlx.DB, error) {
 		},
 	}
 
-	dbContainer, _ := testcontainers.GenericContainer(
+	dbContainer, err := testcontainers.GenericContainer(
 		context.Background(),
 		testcontainers.GenericContainerRequest{
 			ContainerRequest: containerReq,
 			Started:          true,
 		})
+	if err != nil {
+		return nil, nil, fmt.Errorf("failed to start container: %w", err)
+	}
 
 	host, _ := dbContainer.Host(context.Background())
-	port, _ := dbContainer.MappedPort(context.Background(), "5432")
+
+    // Получение порта контейнера
+    port, _ := dbContainer.MappedPort(context.Background(), "5432")
 
 	dsn := fmt.Sprintf("host=%s port=%d user=postgres password=postgres dbname=testdb sslmode=disable", host, port.Int())
 	connDB, err := sqlx.Open("postgres", dsn)

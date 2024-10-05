@@ -18,7 +18,8 @@ type AddHistory struct {
 	TimeWork         int     `db:"timework"         json:"timework"`
 	AverageIndicator float64 `db:"averageindicator" json:"average"`
 	EnergyConsumed   int     `db:"energyconsumed"   json:"energy"`
-	Home             string  `json:"home"`
+	Home             string  `db:"home"   			json:"home"`
+	DeviceID		 int     `db:"deviceid"   		json:"deviceid"`
 }
 
 type Email struct {

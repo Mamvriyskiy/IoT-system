@@ -6,8 +6,8 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
-	"sync"
-	"time"
+	// "sync"
+	// "time"
 )
 
 type DeviceHistoryPostgres struct {
@@ -18,54 +18,34 @@ func NewDeviceHistoryPostgres(db *sqlx.DB) *DeviceHistoryPostgres {
 	return &DeviceHistoryPostgres{db: db}
 }
 
-func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
-	history pkg.AddHistory,
-) (int, error) {
-	var homeID int
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-	err := r.db.Get(&homeID, queryHomeID, userID, 4, history.Home)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, userID,  history.Home)
-		return 0, err
-	}
-
-	fmt.Println("HomeID", homeID)
-	var deviceID int
-	const querDeviceID = `select d.deviceid from device d join 
-		devicehome dh on d.deviceid = dh.deviceid 
-			where dh.homeid = $1 and d.name = $2;`
-	err = r.db.Get(&deviceID, querDeviceID, homeID, history.Name)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from device:", err, homeID, history.Name)
-		return 0, err
-	}
-
+func (r *DeviceHistoryPostgres) CreateDeviceHistory(deviceID string,
+	history pkg.AddHistory) (int, error) {
 	var result int
 	queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
-	err = r.db.Get(&result, queryUpdateStatus, deviceID, "Active")
+	err := r.db.Get(&result, queryUpdateStatus, deviceID, "active")
 	if err != nil {
-		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
+		logger.Log("Error", "Exec", "Error select from device:", err, deviceID)
 		return 0, err
 	}
 
 	if result == -2 {
-		return -2, fmt.Errorf("%s", "Устройство работает")
+		return -2, err
 	}
 
-	wg := &sync.WaitGroup{}
+	// wg := &sync.WaitGroup{}
 
-	wg.Add(1)
-	go func(i int) {
-		defer wg.Done()
-		time.Sleep(time.Duration(i) * time.Second)
-	}(history.TimeWork)
+	// wg.Add(1)
+	// go func(i int) {
+	// 	defer wg.Done()
+	// 	time.Sleep(10 * time.Second)
+	// }(history.TimeWork)
 	
-	wg.Wait()
+	// wg.Wait()
 
 	queryUpdateStatus = fmt.Sprintf(`select update_status($1, $2);`)
 	_, err = r.db.Exec(queryUpdateStatus, deviceID, "inactive")
 	if err != nil {
-		logger.Log("Error", "Exec", "Error select from device:", err, homeID, history.Name)
+		logger.Log("Error", "Exec", "Error select from device:", err, deviceID)
 		return 0, err
 	}
 
@@ -76,11 +56,10 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	row := r.db.QueryRow(query, history.TimeWork, history.AverageIndicator, history.EnergyConsumed)
 	err = row.Scan(&id)
 	if err != nil {
-		logger.Log("Error", "Scan", "Error instert into historyDevID:", err,
+		logger.Log("Error", "Scan", "Error insert into historyDevID:", err,
 			history.TimeWork, history.AverageIndicator, history.EnergyConsumed)
 		return 0, err
 	}
-	fmt.Println("===", id)
 
 	query = fmt.Sprintf("INSERT INTO %s (deviceID, historydevID) VALUES ($1, $2)", "historydevice")
 	_, err = r.db.Exec(query, deviceID, id)
@@ -92,30 +71,12 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(userID int,
 	return id, nil
 }
 
-func (r *DeviceHistoryPostgres) GetDeviceHistory(userID int,
-	name, home string) ([]pkg.DevicesHistory, error) {
-	var homeID int
-	const queryHomeID = `select * from getHomeID($1, $2, $3);`
-	err := r.db.Get(&homeID, queryHomeID, userID, 4, home)
-	if err != nil {
-		logger.Log("Error", "Get", "Error select from home:", err, userID, home)
-		return nil, err
-	}
-	fmt.Println("HomeID", homeID)
-	var deviceID int
-	querDeviceID := `select d.deviceid from device d 
-		join devicehome dh on d.deviceid = dh.deviceid 
-			where dh.homeid = $1 and d.name = $2;`
-	err = r.db.Get(&deviceID, querDeviceID, homeID, name)
-	if err != nil {
-		return nil, err
-	}
-	fmt.Println("DeviceID", deviceID)
+func (r *DeviceHistoryPostgres) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
 	var lists []pkg.DevicesHistory
 	query := `select hi.timework, hi.averageindicator, hi.energyconsumed 
 		from historydev as hi join historydevice as hd on hi.historydevid = hd.historydevid 
 			where hd.deviceid = $1`
-	err = r.db.Select(&lists, query, deviceID)
+	err := r.db.Select(&lists, query, deviceID)
 	if err != nil {
 		logger.Log("Error", "Select", "Error Select from historydev:", err, deviceID)
 		return nil, err

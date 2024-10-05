@@ -10,76 +10,100 @@ import (
 )
 
 func (h *Handler) addUser(c *gin.Context) {
-	userID, ok := c.Get("userId")
+	id, ok := c.Get("userId")
 	if !ok {
 		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
 		return
 	}
 
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
+		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
+	}
+	
+	homeID := c.Param("homeID")
+
+	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	if accessLevel != 4 || err != nil {
+		c.JSON(http.StatusForbidden, map[string]string{
+			"errors": "Недостаточно прав для удаления",
+		})
+		logger.Log("Error", "GetAccessLevel", "Error GetAccessLevel home:", err, accessLevel)
+		return
+	}
+
+	
 	var access pkg.Access
 	if err := c.BindJSON(&access); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
-	var intVal float64
-	if val, ok := userID.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка добавления пользователя",
+	if !isEmailValid(access.Email) {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errors": "Неверный формат почты",
 		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return 
+		return
 	}
 
-	idAccess, err := h.services.IAccessHome.AddUser(int(intVal), access)
+	accessID, err := h.services.IAccessHome.AddUser(homeID, access)
 	if err != nil {
 		logger.Log("Error", "AddUser", "Error create access:",
-			err, int(intVal), access.AccessLevel, access.Email)
-		c.JSON(http.StatusOK, map[string]interface{}{
+			err, homeID, access.AccessLevel, access.Email)
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка добавления пользователя",
 		})
 		return
 	}
 
 	c.JSON(http.StatusOK, map[string]interface{}{
-		"accessID": idAccess,
+		"ID": accessID,
+		"Email": access.Email,
+		"AccessLevel": access.AccessLevel,
 	})
 
 	logger.Log("Info", "", "The user has been granted access", nil)
 }
 
 func (h *Handler) deleteUser(c *gin.Context) {
-	userID, ok := c.Get("userId")
+	id, ok := c.Get("userId")
 	if !ok {
 		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
 		return
 	}
 
-	var input pkg.Access
-	if err := c.BindJSON(&input); err != nil {
-		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
+		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
+	}
+	
+	homeID := c.Param("homeID")
+
+	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	if accessLevel != 4 || err != nil {
+		c.JSON(http.StatusForbidden, map[string]string{
+			"errors": "Недостаточно прав для удаления",
+		})
+		logger.Log("Error", "GetAccessLevel", "Error GetAccessLevel home:", err, accessLevel)
 		return
 	}
 
-	var intVal float64
-	if val, ok := userID.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка удаления пользователя",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return 
-	}
+	accessID := c.Param("accessID")
 
-	err := h.services.IAccessHome.DeleteUser(int(intVal), input)
+	err = h.services.IAccessHome.DeleteUser(accessID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка удаления пользователя",
 		})
-		logger.Log("Error", "DeleteUser", "Error delete access:", err, int(intVal), input)
+		logger.Log("Error", "DeleteUser", "Error delete access:", err, accessID)
 		return
 	}
 
@@ -89,47 +113,89 @@ func (h *Handler) deleteUser(c *gin.Context) {
 }
 
 func (h *Handler) updateLevel(c *gin.Context) {
-	userID, ok := c.Get("userId")
+	id, ok := c.Get("userId")
 	if !ok {
 		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
 		return
 	}
 
-	var update pkg.Access
-	if err := c.BindJSON(&update); err != nil {
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
+		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		return
+	}
+	
+	homeID := c.Param("homeID")
+
+	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	if accessLevel != 4 || err != nil {
+		c.JSON(http.StatusForbidden, map[string]string{
+			"errors": "Недостаточно прав для удаления",
+		})
+		logger.Log("Error", "GetAccessLevel", "Error GetAccessLevel home:", err, accessLevel)
+		return
+	}
+
+	accessID := c.Param("accessID")
+
+	var access pkg.Access
+	if err := c.BindJSON(&access); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
-	var intVal float64
-	if val, ok := userID.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка обновления пользователя",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return 
-	}
-
-	err := h.services.IAccessHome.UpdateLevel(int(intVal), update)
-	if err != nil {
-		logger.Log("Error", "UpdateLevel", "Error update access:", err, intVal, update)
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка обновления пользователя",
+	if !isEmailValid(access.Email) {
+		c.JSON(http.StatusBadRequest, map[string]interface{}{
+			"errors": "Неверный формат почты",
 		})
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListUserResponse{})
+	err = h.services.IAccessHome.UpdateLevel(accessID, access)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
+		logger.Log("Error", "GetInfoAccessByID", "Error get access:", err, accessID)
+		return
+	}
 
-	logger.Log("Info", "", "A level has been update", nil)
+	accessInfo, err := h.services.IAccessHome.GetInfoAccessByID(accessID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
+		logger.Log("Error", "GetInfoAccessByID", "Error get access:", err, accessID)
+		return
+	}
+
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"AccessID": accessInfo.ID,
+		"Login": accessInfo.Login,
+		"AccessLevel": accessInfo.AccessLevel,
+		"Email": accessInfo.Email,
+	})
+
+	logger.Log("Info", "", "Info of access", nil)
 }
 
 func (h *Handler) updateStatus(c *gin.Context) {
-	userID, ok := c.Get("userId")
+	id, ok := c.Get("userId")
 	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
+		logger.Log("Warning", "Get", "Error get userID from context", nil, id)
+		return
+	}
+
+	userID, ok := id.(float64)
+	if !ok {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка обновления статуса",
+		})
+		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
 		return
 	}
 
@@ -139,20 +205,9 @@ func (h *Handler) updateStatus(c *gin.Context) {
 		return
 	}
 
-	var intVal float64
-	if val, ok := userID.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка обновления статуса",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return 
-	}
-
-	err := h.services.IAccessHome.UpdateStatus(int(intVal), input)
+	err := h.services.IAccessHome.UpdateStatus(int(userID), input)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка обновления статуса",
 		})
 		logger.Log("Error", "UpdateStatus", "Error update access:", err, userID, input)
@@ -164,40 +219,41 @@ func (h *Handler) updateStatus(c *gin.Context) {
 	logger.Log("Info", "", "A status has been update", nil)
 }
 
-type getAllListUserResponse struct {
-	Data []pkg.ClientHome `json:"data"`
-}
-
 func (h *Handler) getListUserHome(c *gin.Context) {
-	userID, ok := c.Get("userId")
-	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
-		return
-	}
+	homeID := c.Param("homeID")
 
-	var intVal float64
-	if val, ok := userID.(float64); ok {
-		intVal = val
-	} else {
-		c.JSON(http.StatusOK, map[string]interface{}{
-			"errors": "Ошибка получения списка пользователей",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
-		return
-	}
-
-	listUser, err := h.services.IAccessHome.GetListUserHome(int(intVal))
+	listUser, err := h.services.IAccessHome.GetListUserHome(homeID)
 	if err != nil {
-		c.JSON(http.StatusOK, map[string]interface{}{
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка получения списка пользователей",
 		})
-		logger.Log("Error", "GetListUserHome", "Error get access:", err, int(intVal))
+		logger.Log("Error", "GetListUserHome", "Error get access:", err, homeID)
 		return
 	}
 
-	c.JSON(http.StatusOK, getAllListUserResponse{
-		Data: listUser,
-	})
+	c.JSON(http.StatusOK,listUser)
 
 	logger.Log("Info", "", "The list of users has been received", nil)
+}
+
+func (h *Handler) getInfoAccess(c *gin.Context) {
+	accessID := c.Param("accessID")
+
+	accessInfo, err := h.services.IAccessHome.GetInfoAccessByID(accessID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
+		logger.Log("Error", "GetInfoAccessByID", "Error get access:", err, accessID)
+		return
+	}
+
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"AccessID": accessInfo.ID,
+		"Login": accessInfo.Login,
+		"AccessLevel": accessInfo.AccessLevel,
+		"Email": accessInfo.Email,
+	})
+
+	logger.Log("Info", "", "Info of access", nil)
 }

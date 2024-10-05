@@ -1,1 +1,1 @@
-DROP TABLE accessClient, accessHome, deviceHome, historyDevice, historydev, device, home, access, resetPswrd, client, devicecharacteristics, typecharacter;
+DROP TABLE historyDevice, historydev, device, access, home, resetPswrd, client, devicecharacteristics, typecharacter;

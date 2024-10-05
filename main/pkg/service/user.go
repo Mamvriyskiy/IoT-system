@@ -37,6 +37,10 @@ func (s *UserService) CreateUser(user pkg.User) (int, error) {
 	return s.repo.CreateUser(user)
 }
 
+func (s *UserService) GetAccessLevel(userID int, homeID string) (int, error) {
+	return s.repo.GetAccessLevel(userID, homeID)
+}
+
 func (s *UserService) CheckUser(user pkg.User) (id int, err error) {
 	if user.Email == "" {
 		logger.Log("Error", "CheckUser", "Empty email:", nil, "")
@@ -108,7 +112,7 @@ func (s *UserService) SendCode(email pkg.Email) error {
 
 func (s *UserService) CheckCode(code, token string) error {
 	verCode, err := s.repo.GetCode(token)
-	fmt.Println(verCode, code)
+	// fmt.Println(verCode, code)
 	if code != verCode {
 		err = errors.New("Negative code")
 		logger.Log("Error", "CheckCode", "Negative codeID:", err)
@@ -123,11 +127,11 @@ type tokenClaims struct {
 	UserID int `json:"userId"`
 }
 
-func (s *UserService) GenerateToken(login, password string) (string, error) {
+func (s *UserService) GenerateToken(login, password string) (pkg.User, string, error) {
 	user, err := s.repo.GetUser(login, s.generatePasswordHash(password))
 	if err != nil {
 		logger.Log("Error", "GetUser", "Error get user:", err, login, "s.generatePasswordHash(password)")
-		return "", err
+		return pkg.User{}, "", err
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
@@ -137,7 +141,9 @@ func (s *UserService) GenerateToken(login, password string) (string, error) {
 		user.ID,
 	})
 
-	return token.SignedString([]byte(signingKey))
+	result, err := token.SignedString([]byte(signingKey))
+
+	return user, result, err
 }
 
 func (s *UserService) generatePasswordHash(password string) string {

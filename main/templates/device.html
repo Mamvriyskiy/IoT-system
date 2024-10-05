@@ -146,8 +146,9 @@
             })
             .catch(error => {
                 console.log(error)
-                alert(error)
-                
+                // alert(error)
+                const devicesListElement = document.getElementById('dev-list');
+                devicesListElement.innerHTML = '';
                 alert('Ошибка получения истории устройства: ' + error.message);
             });
         });
@@ -239,6 +240,7 @@
                     body: JSON.stringify({ home: nameHome, name: nameDevice })
                 })
                 .then(response => {
+                    console.log(response.ok)
                     if (!response.ok) {
                         return response.json().then(data => {
                             throw new Error(data.errors || 'Неизвестная ошибка');
@@ -247,6 +249,7 @@
                     return response.json();  // Если все ок, парсим JSON
                 })
                 .then(data => {
+                    console.log(data.data.idHistory)
                     if (data.data.idHistory == -2) {
                         alert("Устройство уже запущено");
                     }
@@ -255,7 +258,7 @@
                     alert('Устройство ' + nameDevice + ' запущено!');
                 })
                 .catch(error => {
-                    alert('Ошибка запуска устройства: ' + error.message);
+                    alert('Ошибка запуска устройства: ' + 'Неизвестная ошибка');
                 });
             }
         });

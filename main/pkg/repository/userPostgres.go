@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"errors"
 )
 
 type UserPostgres struct {
@@ -38,11 +39,19 @@ func (r *UserPostgres) GetUserByEmail(email string) (int, error) {
 	return count, err
 }
 
+func (r *UserPostgres) GetAccessLevel(userID int, homeID string) (int, error) {
+	var accessLevel int
+	query := fmt.Sprintf("SELECT accessLevel from access where homeid = $1 and clientid = $2")
+	err := r.db.Get(&accessLevel, query, homeID, userID)
+
+	return accessLevel, err
+}
+
 func (r *UserPostgres) GetUser(email, password string) (pkg.User, error) {
 	var user pkg.User
-	query := fmt.Sprintf("SELECT clientid from %s where email = $1 and password = $2", "client")
+	query := fmt.Sprintf("SELECT clientid, login, email from %s where email = $1 and password = $2", "client")
 	err := r.db.Get(&user, query, email, password)
-	
+
 	return user, err
 }
 
@@ -54,7 +63,21 @@ func (r *UserPostgres) ChangePassword(password, token string) (error) {
 		SELECT clientid FROM resetpswrd rp
 		WHERE rp.token = $2
 	);`
-	_, err := r.db.Exec(query, password, token)
+	result, err := r.db.Exec(query, password, token)
+	if err != nil {
+		//fmt.Println("Ошибка выполнения запроса:", err)
+		return err
+	}
+
+	rowsAffected, err := result.RowsAffected()
+	if err != nil {
+		//fmt.Println("Ошибка получения количества обновлённых строк:", err)
+		return err
+	}
+
+	if rowsAffected == 0 {
+		return errors.New("No updated rows")
+	}
 
 	return err
 } 
@@ -71,11 +94,13 @@ func (r *UserPostgres) AddCode(email pkg.Email) error {
 	var userID int
 	query := fmt.Sprintf("select clientID from client where email = $1")
 	err := r.db.Get(&userID, query, email.Email)
+	if err != nil {
+		return err
+	}
 
 	query = fmt.Sprintf(`INSERT INTO resetpswrd (clientID, resetcode, token) 
 	values ($1, $2, $3)`)
-	row := r.db.QueryRow(query, userID, email.Code, email.Token)
-	fmt.Println(row)
+	_ = r.db.QueryRow(query, userID, email.Code, email.Token)
 
 	return err
 }

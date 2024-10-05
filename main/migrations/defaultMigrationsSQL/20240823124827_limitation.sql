@@ -18,38 +18,26 @@ ALTER TABLE resetPswrd
 ALTER TABLE resetPswrd 
     ADD FOREIGN KEY (clientID) REFERENCES client (clientID) ON DELETE CASCADE;
 
+ALTER TABLE home
+    ALTER COLUMN name SET NOT NULL,
+    ALTER COLUMN latitude SET NOT NULL,
+    ALTER COLUMN longitude SET NOT NULL;
+
+ALTER TABLE home 
+    ADD CHECK (name != ''),
+    ADD PRIMARY KEY (homeID);
+   
 ALTER TABLE access
     ALTER COLUMN accessStatus SET NOT NULL,
-    ALTER COLUMN accessLevel SET NOT NULL;
+    ALTER COLUMN accessLevel SET NOT null,
+    ADD FOREIGN KEY (homeID) REFERENCES home (homeID) ON DELETE cascade,
+    ADD FOREIGN KEY (clientID) REFERENCES client (clientID) ON DELETE CASCADE;
 
 ALTER TABLE access
     ADD CHECK (accessStatus != ''),
     ADD CHECK (accessLevel > 0),
     ADD PRIMARY KEY (accessID);
 
-ALTER TABLE accessClient
-    ALTER COLUMN accessID SET NOT NULL,
-    ALTER COLUMN clientID SET NOT NULL;
-
-ALTER TABLE accessClient 
-    ADD FOREIGN KEY (accessID) REFERENCES access (accessID) ON DELETE CASCADE,
-    ADD FOREIGN KEY (clientID) REFERENCES client (clientID) ON DELETE CASCADE;
-
-ALTER TABLE home
-    ALTER COLUMN name SET NOT NULL,
-    ALTER COLUMN coords SET NOT NULL;
-
-ALTER TABLE home 
-    ADD CHECK (name != ''),
-    ADD PRIMARY KEY (homeID);
-
-ALTER TABLE accessHome
-    ALTER COLUMN accessID SET NOT NULL,
-    ALTER COLUMN homeID SET NOT NULL;
-
-ALTER TABLE accessHome 
-    ADD FOREIGN KEY (accessID) REFERENCES access (accessID) ON DELETE CASCADE,
-    ADD FOREIGN KEY (homeID) REFERENCES home (homeID) ON DELETE CASCADE;
 
 ALTER TABLE device
     ALTER COLUMN name SET NOT NULL,
@@ -61,15 +49,8 @@ ALTER TABLE device
     ADD CHECK (name != ''),
     ADD CHECK (typeDevice != ''),
     ADD CHECK (status != ''),
-    ADD PRIMARY KEY (deviceID);
-
-ALTER TABLE deviceHome
-    ALTER COLUMN deviceID SET NOT NULL,
-    ALTER COLUMN homeID SET NOT NULL;
-
-ALTER TABLE deviceHome 
-    ADD FOREIGN KEY (deviceID) REFERENCES device (deviceID) ON DELETE CASCADE,
-    ADD FOREIGN KEY (homeID) REFERENCES home (homeID) ON DELETE CASCADE;
+    ADD PRIMARY KEY (deviceID),
+    ADD FOREIGN KEY (homeID) REFERENCES home (homeID) ON DELETE cascade;
 
 ALTER TABLE historyDev
     ALTER COLUMN timeWork SET NOT NULL,
