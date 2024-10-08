@@ -18,11 +18,11 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 	}{
 		{
 			device: factory.New("device", ""),
-			ID:     1,
+			ID:     0,
 		},
 		{
 			device: factory.New("device", ""),
-			ID:     2,
+			ID:     1,
 		},
 	}
 
@@ -38,14 +38,14 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 			nameDev:    "dev1",
 			status:     "inactive",
 			resultCode: -3,
-			devID:      0,
+			devID:     0,
 		},
 		{
 			nameTest:   "Test2",
 			nameDev:    "dev2",
 			status:     "inactive",
 			resultCode: -3,
-			devID:      1,
+			devID:     1,
 		},
 		{
 			nameTest:   "Test3",
@@ -87,11 +87,11 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 			nameDev:    "dev4",
 			status:     "inactive",
 			resultCode: -1,
-			devID:      400,
+			devID:      3,
 		},
 	}
 
-	devicesID := make([]int, 2)
+	devicesID := make([]string, 2)
 	for i, data := range insertData {
 		id, err := data.device.InsertObject(connDB)
 		t.Require().NoError(err)
@@ -103,10 +103,12 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 
 			var result int
 			queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
-			if test.devID <= 1 {
-				test.devID = devicesID[test.devID]
+			id := "123e4567-e89b-12d3-a456-426614174000"
+			if test.devID < 2 {
+				id = devicesID[test.devID]
 			}
-			err := connDB.Get(&result, queryUpdateStatus, test.devID, test.status)
+
+			err := connDB.Get(&result, queryUpdateStatus, id, test.status)
 			t.Require().NoError(err)
 
 			t.Assert().Equal(test.resultCode, result)
@@ -120,16 +122,12 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 		device    factory.ObjectSystem
 		character factory.ObjectSystem
 		home      factory.ObjectSystem
-		access    factory.ObjectSystem
-		user      factory.ObjectSystem
 		devChar   pkg.DeviceCharacteristics
 	}{
 		{
 			nameTest:  "Test1",
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
 			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
 				Values: 100,
@@ -137,9 +135,7 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 		},
 		{
 			nameTest:  "Test2",
-			user:      factory.New("user", ""),
 			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
 			device:    factory.New("device", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
@@ -149,8 +145,6 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 		{
 			nameTest:  "Test3",
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			access:    factory.New("access", ""),
 			home:      factory.New("home", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
@@ -163,23 +157,10 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			//Создание пользователя
-			newUser := test.user.(*method.TestUser)
-
-			clientID, err := newUser.InsertObject(connDB)
-			t.Require().NoError(err)
-
 			//создание дома
 			newHome := test.home.(*method.TestHome)
 
 			homeID, err := newHome.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			//создание доступа к дому
-			newAccess := test.access.(*method.TestAccess)
-			newAccess.ClientID = clientID
-			newAccess.HomeID = homeID
-			_, err = newAccess.InsertObject(connDB)
 			t.Require().NoError(err)
 
 			//создание харакетристик устройства
@@ -188,7 +169,7 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 			//создание устройства
 			newDevice := test.device.(*method.TestDevice)
 			newDevice.Home = newHome.Name
-			deviceID, err := repos.IDeviceRepo.CreateDevice(clientID, &newDevice.Devices, test.devChar, newChar.TypeCharacter)
+			deviceID, err := repos.IDeviceRepo.CreateDevice(homeID, newDevice.Devices, test.devChar, newChar.TypeCharacter)
 			t.Require().NoError(err)
 
 			query := `SELECT name FROM device WHERE deviceID = $1`
@@ -209,16 +190,12 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 		device    factory.ObjectSystem
 		character factory.ObjectSystem
 		home      factory.ObjectSystem
-		access    factory.ObjectSystem
-		user      factory.ObjectSystem
 		devChar   pkg.DeviceCharacteristics
 	}{
 		{
 			nameTest:  "Test1",
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
 			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
 				Values: 100,
@@ -226,9 +203,7 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 		},
 		{
 			nameTest:  "Test2",
-			user:      factory.New("user", ""),
 			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
 			device:    factory.New("device", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
@@ -238,8 +213,6 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 		{
 			nameTest:  "Test3",
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			access:    factory.New("access", ""),
 			home:      factory.New("home", ""),
 			character: factory.New("character", ""),
 			devChar: pkg.DeviceCharacteristics{
@@ -252,23 +225,10 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			//Создание пользователя
-			newUser := test.user.(*method.TestUser)
-
-			clientID, err := newUser.InsertObject(connDB)
-			t.Require().NoError(err)
-
 			//создание дома
 			newHome := test.home.(*method.TestHome)
 
 			homeID, err := newHome.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			//создание доступа к дому
-			newAccess := test.access.(*method.TestAccess)
-			newAccess.ClientID = clientID
-			newAccess.HomeID = homeID
-			_, err = newAccess.InsertObject(connDB)
 			t.Require().NoError(err)
 
 			//создание устройства
@@ -285,7 +245,7 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 				values ($1, $2, $3)`)
 			_ = connDB.QueryRow(query3, deviceID, test.devChar.Values, typeID)
 
-			err = repos.IDeviceRepo.DeleteDevice(clientID, newDevice.Name, newHome.Name) 
+			err = repos.IDeviceRepo.DeleteDevice(deviceID) 
 			t.Require().NoError(err)
 
 			query := `SELECT name FROM device WHERE deviceID = $1`

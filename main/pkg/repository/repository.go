@@ -8,43 +8,43 @@ import (
 //go:generate mockgen -source=repository.go -destination=mocks/mocks.go
 
 type IUserRepo interface {
-	CreateUser(user pkg.User) (int, error)
+	CreateUser(user pkg.User) (string, error)
 	GetUser(email, password string) (pkg.User, error)
 	ChangePassword(password, token string) error
 	GetCode(token string) (string, error)
 	AddCode(email pkg.Email) error
 	GetUserByEmail(email string) (int, error)
-	GetAccessLevel(userID int, homeID string) (int, error)
+	GetAccessLevel(userID, homeID string) (int, error)
 }
 
 type IHomeRepo interface {
-	CreateHome(home pkg.Home) (int, error)
+	CreateHome(home pkg.Home) (string, error)
 	DeleteHome(homeID string) error
 	UpdateHome(homeID, name string) error
 	GetHomeByID(homeID string) (pkg.Home, error)
-	ListUserHome(userID int) ([]pkg.Home, error)
+	ListUserHome(userID string) ([]pkg.Home, error)
 }
 
 type IAccessHomeRepo interface {
-	AddUser(homeID string, access pkg.Access) (int, error)
+	AddUser(homeID string, access pkg.Access) (string, error)
 	DeleteUser(accessID string) error
 	UpdateLevel(accessID string, updateAccess pkg.Access) error
-	UpdateStatus(userID int, access pkg.AccessHome) error
+	UpdateStatus(userID string, access pkg.AccessHome) error
 	GetListUserHome(homeID string) ([]pkg.ClientHome, error)
-	AddOwner(userID int, homeID string) (int, error)
+	AddOwner(userID, homeID string) (string, error)
 	GetInfoAccessByID(accessID string) (pkg.Access, error)
 }
 
 type IDeviceRepo interface {
 	CreateDevice(homeID string, device pkg.Devices, 
-		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error)
+		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (string, error)
 	DeleteDevice(deviceID string) error
 	GetDeviceByID(deviceID string) (pkg.Devices, error)
 	GetListDevices(homeID string) ([]pkg.DevicesInfo, error)
 }
 
 type IHistoryDeviceRepo interface {
-	CreateDeviceHistory(deviceID string, history pkg.AddHistory) (int, error)
+	CreateDeviceHistory(deviceID string, history pkg.AddHistory) (string, error)
 	GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error)
 }
 

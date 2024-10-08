@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 )
 
 type DevicePostgres struct {
@@ -31,29 +32,31 @@ func (r *DevicePostgres) GetListDevices(homeID string) ([]pkg.DevicesInfo, error
 }
 
 func (r *DevicePostgres) CreateDevice(homeID string, device pkg.Devices, 
-		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error) {
-	var id int
+		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (string, error) {
+	var id string
+	deviceID := uuid.New()
 	query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, 
-		Brand, homeid)
-			values ($1, $2, $3, $4, $5) RETURNING deviceID`, "device")
+		Brand, homeid, deviceID)
+			values ($1, $2, $3, $4, $5, $6) RETURNING deviceID`, "device")
 	row := r.db.QueryRow(query, device.Name, device.TypeDevice,
-		"inactive", device.Brand, homeID)
+		"inactive", device.Brand, homeID, deviceID)
 
 	err := row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into device:", err, &id)
-		return 0, err
+		return "", err
 	}
 	
-	var characterID int
-	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure)
-		values ($1, $2) RETURNING typecharacterID`)
-	row = r.db.QueryRow(query2, typeCharacter.Type, typeCharacter.UnitMeasure)
+	typecharacterID := uuid.New()
+	var characterID string
+	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure, typecharacterID)
+		values ($1, $2, $3) RETURNING typecharacterID`)
+	row = r.db.QueryRow(query2, typeCharacter.Type, typeCharacter.UnitMeasure, typecharacterID)
 	
 	err = row.Scan(&characterID)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into typecharacter:", err, &id)
-		return 0, err
+		return "", err
 	}
 
 	query3 := fmt.Sprintf(`INSERT INTO devicecharacteristics (deviceID, valueschar, typecharacterid)

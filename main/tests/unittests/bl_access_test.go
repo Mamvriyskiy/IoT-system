@@ -14,26 +14,26 @@ func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessUser factory.ObjectSystem
-		userID     int
-		accessID   int
+		userID     string
+		accessID   string
 	}{
 		{
 			nameTest:   "Test1",
 			accessUser: factory.New("access", ""),
-			userID:     10,
-			accessID:   1,
+			userID:     "10",
+			accessID:   "1",
 		},
 		{
 			nameTest:   "Test2",
 			accessUser: factory.New("access", ""),
-			userID:     11,
-			accessID:   2,
+			userID:     "11",
+			accessID:   "2",
 		},
 		{
 			nameTest:   "Test3",
 			accessUser: factory.New("access", ""),
-			userID:     12,
-			accessID:   3,
+			userID:     "12",
+			accessID:   "3",
 		},
 	}
 
@@ -63,22 +63,22 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessUser factory.ObjectSystem
-		userID     int
+		userID     string
 	}{
 		{
 			nameTest:   "Test1",
 			accessUser: factory.New("access", ""),
-			userID:     10,
+			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
 			accessUser: factory.New("access", ""),
-			userID:     11,
+			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
 			accessUser: factory.New("access", ""),
-			userID:     12,
+			userID:     "12",
 		},
 	}
 
@@ -107,28 +107,28 @@ func (s *MyUnitTestsSuite) TestUpdateStatusBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
 		accessHome pkg.AccessHome
-		userID     int
+		userID     string
 	}{
 		{
 			nameTest:   "Test1",
 			accessHome: pkg.AccessHome{
 				AccessStatus: "blocked",
 			},
-			userID:     10,
+			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
 			accessHome: pkg.AccessHome{
 				AccessStatus: "blocked",
 			},
-			userID:     11,
+			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
 			accessHome: pkg.AccessHome{
 				AccessStatus: "blocked",
 			},
-			userID:     12,
+			userID:     "12",
 		},
 	}
 
@@ -156,22 +156,22 @@ func (s *MyUnitTestsSuite) TestGetListUserHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int
-		homeID   int
+		homeID   string
 	}{
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			homeID:   10,
+			homeID:   "10",
 		},
 		{
 			nameTest: "Test2",
 			lenList:  5,
-			homeID:   11,
+			homeID:   "11",
 		},
 		{
 			nameTest: "Test3",
 			lenList:  10,
-			homeID:   12,
+			homeID:   "12",
 		},
 	}
 

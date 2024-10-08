@@ -56,6 +56,6 @@ func (b *TestEmail) generateToken() {
 	b.Token = string(token)
 }
 
-func (tu TestEmail) InsertObject(connDB *sqlx.DB) (int, error) {
-	return 0, nil
+func (tu TestEmail) InsertObject(connDB *sqlx.DB) (string, error) {
+	return "", nil
 }

@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"fmt"
 )
 
@@ -33,22 +34,23 @@ func (b *TestHistory) generateValues() int {
 	return int(n.Int64())
 }
 
-func (tu TestHistory) InsertObject(connDB *sqlx.DB) (int, error) {
-	var id int
+func (tu TestHistory) InsertObject(connDB *sqlx.DB) (string, error) {
+	historyDevID := uuid.New()
+	var id string
 	query := fmt.Sprintf(`INSERT INTO %s 
-		(timeWork, AverageIndicator, EnergyConsumed) 
-			values ($1, $2, $3) RETURNING historyDevID`, "historyDev")
-	row := connDB.QueryRow(query, tu.TimeWork, tu.AverageIndicator, tu.EnergyConsumed)
+		(timeWork, AverageIndicator, EnergyConsumed, historyDevID) 
+			values ($1, $2, $3, $4) RETURNING historyDevID`, "historyDev")
+	row := connDB.QueryRow(query, tu.TimeWork, tu.AverageIndicator, tu.EnergyConsumed, historyDevID)
 	err := row.Scan(&id)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
 	query = fmt.Sprintf("INSERT INTO %s (deviceID, historydevID) VALUES ($1, $2)", "historydevice")
 	_, err = connDB.Exec(query, tu.DeviceID, id)
 	if err != nil {
-		return 0, err
+		return "", err
 	}
 
-	return 0, nil
+	return "", nil
 }

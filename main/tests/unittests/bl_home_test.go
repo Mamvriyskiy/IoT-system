@@ -12,26 +12,24 @@ import (
 
 func (s *MyUnitTestsSuite) TestUpdateHomeBL(t provider.T) {
 	tests := []struct {
-		nameTest   string
-		updateHome pkg.UpdateNameHome
+		nameTest string
+		home     string
+		homeID   string
 	}{
 		{
 			nameTest: "Test1",
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home1",
-			},
+			home: "home1",
+			homeID: "1",
 		},
 		{
 			nameTest: "Test2",
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home2",
-			},
+			home: "home2",
+			homeID: "2",
 		},
 		{
 			nameTest: "Test3",
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home3",
-			},
+			home: "home3",
+			homeID: "3",
 		},
 	}
 
@@ -44,11 +42,11 @@ func (s *MyUnitTestsSuite) TestUpdateHomeBL(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			mockRepo.EXPECT().UpdateHome(test.updateHome).Return(nil)
+			mockRepo.EXPECT().UpdateHome(test.homeID, test.home).Return(nil)
 
 			homeService := service.NewHomeService(mockRepo)
 
-			err := homeService.UpdateHome(test.updateHome)
+			err := homeService.UpdateHome(test.homeID, test.home)
 
 			t.Assert().NoError(err)
 		})
@@ -59,22 +57,22 @@ func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		home     factory.ObjectSystem
-		id       int
+		id       string
 	}{
 		{
 			nameTest: "Test1",
 			home:     factory.New("home", ""),
-			id:       10,
+			id:       "10",
 		},
 		{
 			nameTest: "Test2",
 			home:     factory.New("home", ""),
-			id:       11,
+			id:       "11",
 		},
 		{
 			nameTest: "Test3",
 			home:     factory.New("home", ""),
-			id:       12,
+			id:       "12",
 		},
 	}
 
@@ -104,23 +102,19 @@ func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 func (s *MyUnitTestsSuite) TestDeleteHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
-		home     factory.ObjectSystem
-		userID   int
+		deviceID   string
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", ""),
-			userID:   10,
+			deviceID:   "10",
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", ""),
-			userID:   11,
+			deviceID:   "11",
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", ""),
-			userID:   12,
+			deviceID:   "12",
 		},
 	}
 
@@ -133,13 +127,11 @@ func (s *MyUnitTestsSuite) TestDeleteHomeBL(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			newHome := test.home.(*method.TestHome)
-
-			mockRepo.EXPECT().DeleteHome(test.userID, newHome.Name).Return(nil)
+			mockRepo.EXPECT().DeleteHome(test.deviceID).Return(nil)
 
 			homeService := service.NewHomeService(mockRepo)
 
-			err := homeService.DeleteHome(test.userID, newHome.Name)
+			err := homeService.DeleteHome(test.deviceID)
 
 			t.Assert().NoError(err)
 		})
@@ -150,22 +142,22 @@ func (s *MyUnitTestsSuite) TestGetListHomeBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int
-		userID   int
+		userID   string
 	}{
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			userID:   10,
+			userID:   "10",
 		},
 		{
 			nameTest: "Test2",
 			lenList:  5,
-			userID:   11,
+			userID:   "11",
 		},
 		{
 			nameTest: "Test3",
 			lenList:  10,
-			userID:   12,
+			userID:   "12",
 		},
 	}
 

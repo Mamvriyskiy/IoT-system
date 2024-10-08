@@ -15,22 +15,22 @@ func (s *MyUnitTestsSuite) TestCreateClientBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
-		userID   int
+		userID   string
 	}{
 		{
 			nameTest: "Test1",
 			user:     factory.New("user", ""),
-			userID:   1,
+			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
 			user:     factory.New("user", ""),
-			userID:   2,
+			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
 			user:     factory.New("user", ""),
-			userID:   3,
+			userID:   "3",
 		},
 	}
 
@@ -59,22 +59,22 @@ func (s *MyUnitTestsSuite) TestCheckUserBL(t provider.T) {
 	tests := []struct {
 		nameTest string
 		user     factory.ObjectSystem
-		userID   int
+		userID   string
 	}{
 		{
 			nameTest: "Test1",
 			user:     factory.New("user", ""),
-			userID:   1,
+			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
 			user:     factory.New("user", ""),
-			userID:   2,
+			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
 			user:     factory.New("user", ""),
-			userID:   3,
+			userID:   "3",
 		},
 	}
 

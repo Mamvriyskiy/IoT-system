@@ -32,19 +32,19 @@ func (s *UserService) ChangePassword(password, token string) error {
 	return s.repo.ChangePassword(password, token)
 }
 
-func (s *UserService) CreateUser(user pkg.User) (int, error) {
+func (s *UserService) CreateUser(user pkg.User) (string, error) {
 	user.Password = s.generatePasswordHash(user.Password)
 	return s.repo.CreateUser(user)
 }
 
-func (s *UserService) GetAccessLevel(userID int, homeID string) (int, error) {
+func (s *UserService) GetAccessLevel(userID, homeID string) (int, error) {
 	return s.repo.GetAccessLevel(userID, homeID)
 }
 
-func (s *UserService) CheckUser(user pkg.User) (id int, err error) {
+func (s *UserService) CheckUser(user pkg.User) (id string, err error) {
 	if user.Email == "" {
 		logger.Log("Error", "CheckUser", "Empty email:", nil, "")
-		return -1, err
+		return "", err
 	}
 
 	user, err = s.repo.GetUser(user.Email, user.Password)
@@ -124,7 +124,7 @@ func (s *UserService) CheckCode(code, token string) error {
 
 type tokenClaims struct {
 	jwt.StandardClaims
-	UserID int `json:"userId"`
+	UserID string `json:"userId"`
 }
 
 func (s *UserService) GenerateToken(login, password string) (pkg.User, string, error) {
@@ -143,6 +143,7 @@ func (s *UserService) GenerateToken(login, password string) (pkg.User, string, e
 
 	result, err := token.SignedString([]byte(signingKey))
 
+	fmt.Println(user, err, result)
 	return user, result, err
 }
 
@@ -153,7 +154,7 @@ func (s *UserService) generatePasswordHash(password string) string {
 	return hex.EncodeToString(hash.Sum([]byte(salt)))
 }
 
-func (s *UserService) ParseToken(accessToken string) (int, error) {
+func (s *UserService) ParseToken(accessToken string) (string, error) {
 	token, err := jwt.ParseWithClaims(accessToken, &tokenClaims{},
 		func(token *jwt.Token) (interface{}, error) {
 			if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
@@ -165,13 +166,13 @@ func (s *UserService) ParseToken(accessToken string) (int, error) {
 		})
 	if err != nil {
 		logger.Log("Error", "jwt.ParseWithClaims", "Error parse token:", err, accessToken)
-		return 0, err
+		return "", err
 	}
 
 	claims, ok := token.Claims.(*tokenClaims)
 	if !ok {
 		logger.Log("Error", "token.Claims.(*tokenClaims)", "Error token:", nil)
-		return 0, nil
+		return "", nil
 	}
 
 	return claims.UserID, nil

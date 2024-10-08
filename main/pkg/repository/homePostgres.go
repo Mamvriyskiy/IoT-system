@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 )
 
 type HomePostgres struct {
@@ -16,7 +17,7 @@ func NewHomePostgres(db *sqlx.DB) *HomePostgres {
 	return &HomePostgres{db: db}
 }
 
-func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
+func (r *HomePostgres) ListUserHome(userID string) ([]pkg.Home, error) {
 	getHomeID := `select * from home h 
 	where h.homeid in (select a.homeid from access a 
 		where a.clientid = $1);`
@@ -31,13 +32,14 @@ func (r *HomePostgres) ListUserHome(userID int) ([]pkg.Home, error) {
 	return homeList, nil
 }
 
-func (r *HomePostgres) CreateHome(home pkg.Home) (int, error) {
-	var homeID int
-	query := fmt.Sprintf("INSERT INTO %s (longitude, latitude, name) values ($1, $2, $3) RETURNING homeID", "home")
-	row := r.db.QueryRow(query, home.Longitude, home.Latitude, home.Name)
+func (r *HomePostgres) CreateHome(home pkg.Home) (string, error) {
+	id := uuid.New()
+	var homeID string
+	query := fmt.Sprintf("INSERT INTO %s (longitude, latitude, name, homeID) values ($1, $2, $3, $4) RETURNING homeid", "home")
+	row := r.db.QueryRow(query, home.Longitude, home.Latitude, home.Name, id)
 	if err := row.Scan(&homeID); err != nil {
 		logger.Log("Error", "Scan", "Error insert into home:", err, home.Longitude, home.Latitude, home.Name)
-		return 0, err
+		return "", err
 	}
 
 	return homeID, nil

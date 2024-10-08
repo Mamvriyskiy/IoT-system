@@ -38,7 +38,7 @@ func generateRandomFloat(max float64) float64 {
 	return float64(n.Int64()) / 100.0
 }
 
-func (s *HistoryDeviceService) CreateDeviceHistory(deviceID string) (int, error) {
+func (s *HistoryDeviceService) CreateDeviceHistory(deviceID string) (string, error) {
 	history := pkg.AddHistory{
 		TimeWork: generateRandomInt(101),
 		AverageIndicator: generateRandomFloat(100),

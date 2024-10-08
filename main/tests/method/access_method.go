@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"fmt"
 )
 
@@ -38,10 +39,14 @@ func (b *TestAccess) generateLevel() {
 	b.AccessLevel =  int(n.Int64())
 }
 
-func (tu TestAccess) InsertObject(connDB *sqlx.DB) (int, error) {
-	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, HomeID, clientid) 
-		values ($1, $2, $3, $4) RETURNING accessID`, "access")
-	_ = connDB.QueryRow(query, "active", tu.AccessLevel, tu.HomeID, tu.ClientID)
+func (tu TestAccess) InsertObject(connDB *sqlx.DB) (string, error) {
+	accessID := uuid.New()
+	var id string
+	query := fmt.Sprintf(`INSERT INTO %s (accessID, accessStatus, accessLevel, HomeID, clientid) 
+		values ($1, $2, $3, $4, $5) RETURNING accessID`, "access")
+	row := connDB.QueryRow(query, accessID, "active", tu.AccessLevel, tu.HomeID, tu.ClientID)
 
-	return 0, nil
+	err := row.Scan(&id)
+
+	return id, err
 }

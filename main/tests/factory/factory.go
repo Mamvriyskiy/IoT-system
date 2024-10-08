@@ -6,7 +6,7 @@ import (
 )
 
 type ObjectSystem interface {
-	InsertObject(connDB *sqlx.DB) (int, error)
+	InsertObject(connDB *sqlx.DB) (string, error)
 	//DeleteObject()
 }
 

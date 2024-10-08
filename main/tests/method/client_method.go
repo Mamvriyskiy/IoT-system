@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 )
 
 const (
@@ -92,11 +93,12 @@ func createEmail(a, b, c int) string {
 	return string(email)
 }
 
-func (tu TestUser) InsertObject(connDB *sqlx.DB) (int, error) {
-	query := `INSERT INTO client (password, login, email) values ($1, $2, $3) RETURNING clientid`
-	row := connDB.QueryRow(query, tu.Password, tu.Username, tu.Email)
+func (tu TestUser) InsertObject(connDB *sqlx.DB) (string, error) {
+	clientid := uuid.New()
+	query := `INSERT INTO client (password, login, email, clientid) values ($1, $2, $3, $4) RETURNING clientid`
+	row := connDB.QueryRow(query, tu.Password, tu.Username, tu.Email, clientid)
 
-	var clientID int
+	var clientID string
 	err := row.Scan(&clientID)
 	
 	return clientID, err

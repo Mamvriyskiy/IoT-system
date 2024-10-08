@@ -63,10 +63,10 @@ func (mr *MockIUserRepoMockRecorder) ChangePassword(password, token interface{})
 }
 
 // CreateUser mocks base method.
-func (m *MockIUserRepo) CreateUser(user pkg.User) (int, error) {
+func (m *MockIUserRepo) CreateUser(user pkg.User) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", user)
-	ret0, _ := ret[0].(int)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -75,6 +75,21 @@ func (m *MockIUserRepo) CreateUser(user pkg.User) (int, error) {
 func (mr *MockIUserRepoMockRecorder) CreateUser(user interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateUser", reflect.TypeOf((*MockIUserRepo)(nil).CreateUser), user)
+}
+
+// GetAccessLevel mocks base method.
+func (m *MockIUserRepo) GetAccessLevel(userID, homeID string) (int, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetAccessLevel", userID, homeID)
+	ret0, _ := ret[0].(int)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetAccessLevel indicates an expected call of GetAccessLevel.
+func (mr *MockIUserRepoMockRecorder) GetAccessLevel(userID, homeID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetAccessLevel", reflect.TypeOf((*MockIUserRepo)(nil).GetAccessLevel), userID, homeID)
 }
 
 // GetCode mocks base method.
@@ -146,10 +161,10 @@ func (m *MockIHomeRepo) EXPECT() *MockIHomeRepoMockRecorder {
 }
 
 // CreateHome mocks base method.
-func (m *MockIHomeRepo) CreateHome(home pkg.Home) (int, error) {
+func (m *MockIHomeRepo) CreateHome(home pkg.Home) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateHome", home)
-	ret0, _ := ret[0].(int)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -161,21 +176,21 @@ func (mr *MockIHomeRepoMockRecorder) CreateHome(home interface{}) *gomock.Call {
 }
 
 // DeleteHome mocks base method.
-func (m *MockIHomeRepo) DeleteHome(homeID int, homeName string) error {
+func (m *MockIHomeRepo) DeleteHome(homeID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteHome", homeID, homeName)
+	ret := m.ctrl.Call(m, "DeleteHome", homeID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteHome indicates an expected call of DeleteHome.
-func (mr *MockIHomeRepoMockRecorder) DeleteHome(homeID, homeName interface{}) *gomock.Call {
+func (mr *MockIHomeRepoMockRecorder) DeleteHome(homeID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHome", reflect.TypeOf((*MockIHomeRepo)(nil).DeleteHome), homeID, homeName)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteHome", reflect.TypeOf((*MockIHomeRepo)(nil).DeleteHome), homeID)
 }
 
 // GetHomeByID mocks base method.
-func (m *MockIHomeRepo) GetHomeByID(homeID int) (pkg.Home, error) {
+func (m *MockIHomeRepo) GetHomeByID(homeID string) (pkg.Home, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetHomeByID", homeID)
 	ret0, _ := ret[0].(pkg.Home)
@@ -190,7 +205,7 @@ func (mr *MockIHomeRepoMockRecorder) GetHomeByID(homeID interface{}) *gomock.Cal
 }
 
 // ListUserHome mocks base method.
-func (m *MockIHomeRepo) ListUserHome(userID int) ([]pkg.Home, error) {
+func (m *MockIHomeRepo) ListUserHome(userID string) ([]pkg.Home, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUserHome", userID)
 	ret0, _ := ret[0].([]pkg.Home)
@@ -205,17 +220,17 @@ func (mr *MockIHomeRepoMockRecorder) ListUserHome(userID interface{}) *gomock.Ca
 }
 
 // UpdateHome mocks base method.
-func (m *MockIHomeRepo) UpdateHome(home pkg.UpdateNameHome) error {
+func (m *MockIHomeRepo) UpdateHome(homeID, name string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateHome", home)
+	ret := m.ctrl.Call(m, "UpdateHome", homeID, name)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateHome indicates an expected call of UpdateHome.
-func (mr *MockIHomeRepoMockRecorder) UpdateHome(home interface{}) *gomock.Call {
+func (mr *MockIHomeRepoMockRecorder) UpdateHome(homeID, name interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHome", reflect.TypeOf((*MockIHomeRepo)(nil).UpdateHome), home)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateHome", reflect.TypeOf((*MockIHomeRepo)(nil).UpdateHome), homeID, name)
 }
 
 // MockIAccessHomeRepo is a mock of IAccessHomeRepo interface.
@@ -242,10 +257,10 @@ func (m *MockIAccessHomeRepo) EXPECT() *MockIAccessHomeRepoMockRecorder {
 }
 
 // AddOwner mocks base method.
-func (m *MockIAccessHomeRepo) AddOwner(userID, homeID int) (int, error) {
+func (m *MockIAccessHomeRepo) AddOwner(userID, homeID string) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddOwner", userID, homeID)
-	ret0, _ := ret[0].(int)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -257,75 +272,90 @@ func (mr *MockIAccessHomeRepoMockRecorder) AddOwner(userID, homeID interface{}) 
 }
 
 // AddUser mocks base method.
-func (m *MockIAccessHomeRepo) AddUser(userID int, access pkg.Access) (int, error) {
+func (m *MockIAccessHomeRepo) AddUser(homeID string, access pkg.Access) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "AddUser", userID, access)
-	ret0, _ := ret[0].(int)
+	ret := m.ctrl.Call(m, "AddUser", homeID, access)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // AddUser indicates an expected call of AddUser.
-func (mr *MockIAccessHomeRepoMockRecorder) AddUser(userID, access interface{}) *gomock.Call {
+func (mr *MockIAccessHomeRepoMockRecorder) AddUser(homeID, access interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUser", reflect.TypeOf((*MockIAccessHomeRepo)(nil).AddUser), userID, access)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "AddUser", reflect.TypeOf((*MockIAccessHomeRepo)(nil).AddUser), homeID, access)
 }
 
 // DeleteUser mocks base method.
-func (m *MockIAccessHomeRepo) DeleteUser(idUser int, access pkg.Access) error {
+func (m *MockIAccessHomeRepo) DeleteUser(accessID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteUser", idUser, access)
+	ret := m.ctrl.Call(m, "DeleteUser", accessID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteUser indicates an expected call of DeleteUser.
-func (mr *MockIAccessHomeRepoMockRecorder) DeleteUser(idUser, access interface{}) *gomock.Call {
+func (mr *MockIAccessHomeRepoMockRecorder) DeleteUser(accessID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockIAccessHomeRepo)(nil).DeleteUser), idUser, access)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteUser", reflect.TypeOf((*MockIAccessHomeRepo)(nil).DeleteUser), accessID)
+}
+
+// GetInfoAccessByID mocks base method.
+func (m *MockIAccessHomeRepo) GetInfoAccessByID(accessID string) (pkg.Access, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetInfoAccessByID", accessID)
+	ret0, _ := ret[0].(pkg.Access)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetInfoAccessByID indicates an expected call of GetInfoAccessByID.
+func (mr *MockIAccessHomeRepoMockRecorder) GetInfoAccessByID(accessID interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetInfoAccessByID", reflect.TypeOf((*MockIAccessHomeRepo)(nil).GetInfoAccessByID), accessID)
 }
 
 // GetListUserHome mocks base method.
-func (m *MockIAccessHomeRepo) GetListUserHome(userID int) ([]pkg.ClientHome, error) {
+func (m *MockIAccessHomeRepo) GetListUserHome(homeID string) ([]pkg.ClientHome, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetListUserHome", userID)
+	ret := m.ctrl.Call(m, "GetListUserHome", homeID)
 	ret0, _ := ret[0].([]pkg.ClientHome)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetListUserHome indicates an expected call of GetListUserHome.
-func (mr *MockIAccessHomeRepoMockRecorder) GetListUserHome(userID interface{}) *gomock.Call {
+func (mr *MockIAccessHomeRepoMockRecorder) GetListUserHome(homeID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListUserHome", reflect.TypeOf((*MockIAccessHomeRepo)(nil).GetListUserHome), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListUserHome", reflect.TypeOf((*MockIAccessHomeRepo)(nil).GetListUserHome), homeID)
 }
 
 // UpdateLevel mocks base method.
-func (m *MockIAccessHomeRepo) UpdateLevel(userID int, updateAccess pkg.Access) error {
+func (m *MockIAccessHomeRepo) UpdateLevel(accessID string, updateAccess pkg.Access) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateLevel", userID, updateAccess)
+	ret := m.ctrl.Call(m, "UpdateLevel", accessID, updateAccess)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateLevel indicates an expected call of UpdateLevel.
-func (mr *MockIAccessHomeRepoMockRecorder) UpdateLevel(userID, updateAccess interface{}) *gomock.Call {
+func (mr *MockIAccessHomeRepoMockRecorder) UpdateLevel(accessID, updateAccess interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateLevel", reflect.TypeOf((*MockIAccessHomeRepo)(nil).UpdateLevel), userID, updateAccess)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateLevel", reflect.TypeOf((*MockIAccessHomeRepo)(nil).UpdateLevel), accessID, updateAccess)
 }
 
 // UpdateStatus mocks base method.
-func (m *MockIAccessHomeRepo) UpdateStatus(idUser int, access pkg.AccessHome) error {
+func (m *MockIAccessHomeRepo) UpdateStatus(userID string, access pkg.AccessHome) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "UpdateStatus", idUser, access)
+	ret := m.ctrl.Call(m, "UpdateStatus", userID, access)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // UpdateStatus indicates an expected call of UpdateStatus.
-func (mr *MockIAccessHomeRepoMockRecorder) UpdateStatus(idUser, access interface{}) *gomock.Call {
+func (mr *MockIAccessHomeRepoMockRecorder) UpdateStatus(userID, access interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockIAccessHomeRepo)(nil).UpdateStatus), idUser, access)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateStatus", reflect.TypeOf((*MockIAccessHomeRepo)(nil).UpdateStatus), userID, access)
 }
 
 // MockIDeviceRepo is a mock of IDeviceRepo interface.
@@ -352,36 +382,36 @@ func (m *MockIDeviceRepo) EXPECT() *MockIDeviceRepoMockRecorder {
 }
 
 // CreateDevice mocks base method.
-func (m *MockIDeviceRepo) CreateDevice(userID int, device *pkg.Devices, character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (int, error) {
+func (m *MockIDeviceRepo) CreateDevice(homeID string, device pkg.Devices, character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateDevice", userID, device, character, typeCharacter)
-	ret0, _ := ret[0].(int)
+	ret := m.ctrl.Call(m, "CreateDevice", homeID, device, character, typeCharacter)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateDevice indicates an expected call of CreateDevice.
-func (mr *MockIDeviceRepoMockRecorder) CreateDevice(userID, device, character, typeCharacter interface{}) *gomock.Call {
+func (mr *MockIDeviceRepoMockRecorder) CreateDevice(homeID, device, character, typeCharacter interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDevice", reflect.TypeOf((*MockIDeviceRepo)(nil).CreateDevice), userID, device, character, typeCharacter)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDevice", reflect.TypeOf((*MockIDeviceRepo)(nil).CreateDevice), homeID, device, character, typeCharacter)
 }
 
 // DeleteDevice mocks base method.
-func (m *MockIDeviceRepo) DeleteDevice(idDevice int, name, home string) error {
+func (m *MockIDeviceRepo) DeleteDevice(deviceID string) error {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "DeleteDevice", idDevice, name, home)
+	ret := m.ctrl.Call(m, "DeleteDevice", deviceID)
 	ret0, _ := ret[0].(error)
 	return ret0
 }
 
 // DeleteDevice indicates an expected call of DeleteDevice.
-func (mr *MockIDeviceRepoMockRecorder) DeleteDevice(idDevice, name, home interface{}) *gomock.Call {
+func (mr *MockIDeviceRepoMockRecorder) DeleteDevice(deviceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevice", reflect.TypeOf((*MockIDeviceRepo)(nil).DeleteDevice), idDevice, name, home)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "DeleteDevice", reflect.TypeOf((*MockIDeviceRepo)(nil).DeleteDevice), deviceID)
 }
 
 // GetDeviceByID mocks base method.
-func (m *MockIDeviceRepo) GetDeviceByID(deviceID int) (pkg.Devices, error) {
+func (m *MockIDeviceRepo) GetDeviceByID(deviceID string) (pkg.Devices, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDeviceByID", deviceID)
 	ret0, _ := ret[0].(pkg.Devices)
@@ -396,18 +426,18 @@ func (mr *MockIDeviceRepoMockRecorder) GetDeviceByID(deviceID interface{}) *gomo
 }
 
 // GetListDevices mocks base method.
-func (m *MockIDeviceRepo) GetListDevices(userID int) ([]pkg.Devices, error) {
+func (m *MockIDeviceRepo) GetListDevices(homeID string) ([]pkg.DevicesInfo, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetListDevices", userID)
-	ret0, _ := ret[0].([]pkg.Devices)
+	ret := m.ctrl.Call(m, "GetListDevices", homeID)
+	ret0, _ := ret[0].([]pkg.DevicesInfo)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetListDevices indicates an expected call of GetListDevices.
-func (mr *MockIDeviceRepoMockRecorder) GetListDevices(userID interface{}) *gomock.Call {
+func (mr *MockIDeviceRepoMockRecorder) GetListDevices(homeID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListDevices", reflect.TypeOf((*MockIDeviceRepo)(nil).GetListDevices), userID)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetListDevices", reflect.TypeOf((*MockIDeviceRepo)(nil).GetListDevices), homeID)
 }
 
 // MockIHistoryDeviceRepo is a mock of IHistoryDeviceRepo interface.
@@ -434,31 +464,31 @@ func (m *MockIHistoryDeviceRepo) EXPECT() *MockIHistoryDeviceRepoMockRecorder {
 }
 
 // CreateDeviceHistory mocks base method.
-func (m *MockIHistoryDeviceRepo) CreateDeviceHistory(userID int, history pkg.AddHistory) (int, error) {
+func (m *MockIHistoryDeviceRepo) CreateDeviceHistory(deviceID string, history pkg.AddHistory) (string, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "CreateDeviceHistory", userID, history)
-	ret0, _ := ret[0].(int)
+	ret := m.ctrl.Call(m, "CreateDeviceHistory", deviceID, history)
+	ret0, _ := ret[0].(string)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // CreateDeviceHistory indicates an expected call of CreateDeviceHistory.
-func (mr *MockIHistoryDeviceRepoMockRecorder) CreateDeviceHistory(userID, history interface{}) *gomock.Call {
+func (mr *MockIHistoryDeviceRepoMockRecorder) CreateDeviceHistory(deviceID, history interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeviceHistory", reflect.TypeOf((*MockIHistoryDeviceRepo)(nil).CreateDeviceHistory), userID, history)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "CreateDeviceHistory", reflect.TypeOf((*MockIHistoryDeviceRepo)(nil).CreateDeviceHistory), deviceID, history)
 }
 
 // GetDeviceHistory mocks base method.
-func (m *MockIHistoryDeviceRepo) GetDeviceHistory(userID int, name, home string) ([]pkg.DevicesHistory, error) {
+func (m *MockIHistoryDeviceRepo) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
 	m.ctrl.T.Helper()
-	ret := m.ctrl.Call(m, "GetDeviceHistory", userID, name, home)
+	ret := m.ctrl.Call(m, "GetDeviceHistory", deviceID)
 	ret0, _ := ret[0].([]pkg.DevicesHistory)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
 
 // GetDeviceHistory indicates an expected call of GetDeviceHistory.
-func (mr *MockIHistoryDeviceRepoMockRecorder) GetDeviceHistory(userID, name, home interface{}) *gomock.Call {
+func (mr *MockIHistoryDeviceRepoMockRecorder) GetDeviceHistory(deviceID interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
-	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeviceHistory", reflect.TypeOf((*MockIHistoryDeviceRepo)(nil).GetDeviceHistory), userID, name, home)
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetDeviceHistory", reflect.TypeOf((*MockIHistoryDeviceRepo)(nil).GetDeviceHistory), deviceID)
 }

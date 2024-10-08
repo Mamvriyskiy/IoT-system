@@ -40,14 +40,14 @@ func (s *MyUnitTestsSuite) TestCreateHome(t provider.T) {
 
 			newHome.ID = homeID
 
-			query := `SELECT name, coords FROM home WHERE homeid = $1`
+			query := `SELECT name, latitude, longitude FROM home WHERE homeid = $1`
 			row := connDB.QueryRow(query, homeID)
 
 			retrievedHome := pkg.Home{
 				ID: homeID,
 			}
 
-			err = row.Scan(&retrievedHome.Name, &retrievedHome.GeographCoords)
+			err = row.Scan(&retrievedHome.Name, &retrievedHome.Latitude, &retrievedHome.Longitude)
 			t.Require().NoError(err)
 
 			t.Assert().Equal(newHome.Home, retrievedHome)
@@ -116,37 +116,23 @@ func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 	tests := []struct {
 		nameTest   string
-		user       factory.ObjectSystem
 		home       factory.ObjectSystem
-		access     factory.ObjectSystem
-		updateHome pkg.UpdateNameHome
+		updateHome string
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home1",
-			},
+			updateHome: "home1",
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home1",
-			},
+			updateHome: "home2",
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
-			updateHome: pkg.UpdateNameHome{
-				NewName: "home1",
-			},
+			updateHome: "home3",
 		},
 	}
 
@@ -154,28 +140,12 @@ func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			newUser := test.user.(*method.TestUser)
-
-			clientID, err := newUser.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			test.updateHome.UserID = clientID
 			newHome := test.home.(*method.TestHome)
 
 			homeID, err := newHome.InsertObject(connDB)
 			t.Require().NoError(err)
 
-			newAccess := test.access.(*method.TestAccess)
-			newAccess.ClientID = clientID
-			newAccess.HomeID = homeID
-			_, err = newAccess.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			test.updateHome.LastName = newHome.Name
-			t.Require().NoError(err)
-
-
-			err = repos.IHomeRepo.UpdateHome(test.updateHome)
+			err = repos.IHomeRepo.UpdateHome(homeID, test.updateHome)
 			t.Require().NoError(err)
 
 			query := `SELECT name FROM home WHERE homeid = $1`
@@ -185,36 +155,27 @@ func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 			err = row.Scan(&resultName)
 			t.Require().NoError(err)
 
-			t.Assert().Equal(test.updateHome.NewName, resultName)
+			t.Assert().Equal(test.updateHome, resultName)
 		})
 	}
 }
 
-
 func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 	tests := []struct {
 		nameTest   string
-		user       factory.ObjectSystem
 		home       factory.ObjectSystem
-		access     factory.ObjectSystem
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", ""),
 			home:     factory.New("home", ""),
-			access:   factory.New("access", ""),
 		},
 	}
 
@@ -222,24 +183,12 @@ func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			newUser := test.user.(*method.TestUser)
-
-			clientID, err := newUser.InsertObject(connDB)
-			t.Require().NoError(err)
-
 			newHome := test.home.(*method.TestHome)
 
 			homeID, err := newHome.InsertObject(connDB)
 			t.Require().NoError(err)
 
-			newAccess := test.access.(*method.TestAccess)
-			newAccess.ClientID = clientID
-			newAccess.HomeID = homeID
-			newAccess.AccessLevel = 4
-			_, err = newAccess.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			err = repos.IHomeRepo.DeleteHome(clientID, newHome.Name)
+			err = repos.IHomeRepo.DeleteHome(homeID)
 			t.Require().NoError(err)
 
 			query := `SELECT name FROM home WHERE homeid = $1`

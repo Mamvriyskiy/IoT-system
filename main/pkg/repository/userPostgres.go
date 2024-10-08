@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"errors"
 )
 
@@ -17,14 +18,15 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 	return &UserPostgres{db: db}
 }
 
-func (r *UserPostgres) CreateUser(user pkg.User) (int, error) {
-	var id int
-	query := fmt.Sprintf(`INSERT INTO %s (password, login, email) 
-		values ($1, $2, $3) RETURNING clientid`, "client")
-	row := r.db.QueryRow(query, user.Password, user.Username, user.Email)
+func (r *UserPostgres) CreateUser(user pkg.User) (string, error) {
+	clientID := uuid.New()
+	var id string
+	query := fmt.Sprintf(`INSERT INTO %s (password, login, email, clientID) 
+		values ($1, $2, $3, $4) RETURNING clientid`, "client")
+	row := r.db.QueryRow(query, user.Password, user.Username, user.Email, clientID)
 	if err := row.Scan(&id); err != nil {
 		logger.Log("Error", "Scan", "Error insert into client:", err, id)
-		return 0, err
+		return "", err
 	}
 
 	return id, nil
@@ -34,12 +36,11 @@ func (r *UserPostgres) GetUserByEmail(email string) (int, error) {
 	var count int
 	query := fmt.Sprintf("SELECT count(clientid) from %s where email = $1", "client")
 	err := r.db.Get(&count, query, email)
-	fmt.Println(count)
 	
 	return count, err
 }
 
-func (r *UserPostgres) GetAccessLevel(userID int, homeID string) (int, error) {
+func (r *UserPostgres) GetAccessLevel(userID, homeID string) (int, error) {
 	var accessLevel int
 	query := fmt.Sprintf("SELECT accessLevel from access where homeid = $1 and clientid = $2")
 	err := r.db.Get(&accessLevel, query, homeID, userID)
@@ -91,7 +92,7 @@ func (r *UserPostgres) GetCode(token string) (string, error) {
 }
 
 func (r *UserPostgres) AddCode(email pkg.Email) error {
-	var userID int
+	var userID string
 	query := fmt.Sprintf("select clientID from client where email = $1")
 	err := r.db.Get(&userID, query, email.Email)
 	if err != nil {

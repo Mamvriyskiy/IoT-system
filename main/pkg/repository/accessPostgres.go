@@ -6,6 +6,7 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	pkg "github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 )
 
 type AccessHomePostgres struct {
@@ -16,37 +17,41 @@ func NewAccessHomePostgres(db *sqlx.DB) *AccessHomePostgres {
 	return &AccessHomePostgres{db: db}
 }
 
-func (r *AccessHomePostgres) AddUser(homeID string, access pkg.Access) (int, error) {
-	var userID int
+func (r *AccessHomePostgres) AddUser(homeID string, access pkg.Access) (string, error) {
+	var userID string
 	queryUserID := `select c.clientID from client c where email = $1;`
 	err := r.db.Get(&userID, queryUserID, access.Email)
 	if err != nil {
 		logger.Log("Error", "Get", "Error get newUserID:", err, &userID, queryUserID, access.Email)
-		return 0, err
+		return "", err
 	}
 
-	var id int
-	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, homeid, clientid) 
-		values ($1, $2, $3, $4) RETURNING accessID`, "access")
-	row := r.db.QueryRow(query, "active", access.AccessLevel, homeID, userID)
+	accessID := uuid.New()
+
+	var id string
+	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, homeid, clientid, accessID) 
+		values ($1, $2, $3, $4, $5) RETURNING accessID`, "access")
+	row := r.db.QueryRow(query, "active", access.AccessLevel, homeID, userID, accessID)
 	err = row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into access:", err, access.AccessLevel, homeID, userID, id)
-		return 0, err
+		return "", err
 	}
 
 	return id, nil
 }
 
-func (r *AccessHomePostgres) AddOwner(userID int, homeID string) (int, error) {
-	var id int
-	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, clientid, homeid) 
-		values ($1, $2, $3, $4) RETURNING accessID`, "access")
-	row := r.db.QueryRow(query, "active", 4, userID, homeID)
+func (r *AccessHomePostgres) AddOwner(userID, homeID string) (string, error) {
+	accessID := uuid.New()
+
+	var id string
+	query := fmt.Sprintf(`INSERT INTO %s (accessStatus, accessLevel, clientid, homeid, accessID) 
+		values ($1, $2, $3, $4, $5) RETURNING accessID`, "access")
+	row := r.db.QueryRow(query, "active", 4, userID, homeID, accessID)
 	err := row.Scan(&id)
 	if err != nil {
 		logger.Log("Error", "Scan", "Error insert into access:", err, "")
-		return 0, err
+		return "", err
 	}
 
 	return id, nil
@@ -62,12 +67,12 @@ func (r *AccessHomePostgres) UpdateLevel(accessID string, updateAccess pkg.Acces
 	return err
 }
 
-func (r *AccessHomePostgres) UpdateStatus(userID int, access pkg.AccessHome) error {
+func (r *AccessHomePostgres) UpdateStatus(accessID string, access pkg.AccessHome) error {
 	query := `
 	UPDATE access
-		SET accessstatus = $1
-			WHERE clientid = $2`
-	_, err := r.db.Exec(query, access.AccessStatus, userID)
+	SET accessstatus = $1
+	WHERE accessID = $2;`
+	_, err := r.db.Exec(query, access.AccessStatus, accessID)
 
 	return err
 }

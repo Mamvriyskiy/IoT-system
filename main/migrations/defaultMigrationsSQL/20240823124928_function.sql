@@ -1,6 +1,6 @@
 -- +goose Up
 -- +goose StatementBegin
-CREATE FUNCTION update_status(device_id integer, newStatus varchar(10))
+CREATE FUNCTION update_status(device_id UUID, newStatus varchar(10))
 RETURNS integer AS $$
 DECLARE
   current_status varchar(10);
@@ -44,6 +44,14 @@ $$ LANGUAGE plpgsql;
 
 -- +goose Down
 -- +goose StatementBegin
-DROP FUNCTION update_status(device_id integer, newStatus varchar(10));
-DROP FUNCTION getHomeID(id integer, level integer, nameHome varchar(30));
+DROP FUNCTION update_status (
+    device_id integer,
+    newStatus varchar(10)
+);
+
+DROP FUNCTION getHomeID (
+    id integer,
+    level integer,
+    nameHome varchar(30)
+);
 -- +goose StatementEnd

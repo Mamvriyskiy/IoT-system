@@ -104,25 +104,19 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 	tests := []struct {
 		nameTest string
 		lenList  int
-		user     factory.ObjectSystem
 		device    factory.ObjectSystem
 		home      factory.ObjectSystem
-		access    factory.ObjectSystem
 	}{
 		{
 			nameTest: "Test1",
 			lenList:  1,
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			access:    factory.New("access", ""),
 			home:      factory.New("home", ""),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
 			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			access:    factory.New("access", ""),
 			home:      factory.New("home", ""),
 		},
 	}
@@ -131,23 +125,10 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			//Создание пользователя
-			newUser := test.user.(*method.TestUser)
-
-			clientID, err := newUser.InsertObject(connDB)
-			t.Require().NoError(err)
-
 			//создание дома
 			newHome := test.home.(*method.TestHome)
 
 			homeID, err := newHome.InsertObject(connDB)
-			t.Require().NoError(err)
-
-			//создание доступа к дому
-			newAccess := test.access.(*method.TestAccess)
-			newAccess.ClientID = clientID
-			newAccess.HomeID = homeID
-			_, err = newAccess.InsertObject(connDB)
 			t.Require().NoError(err)
 
 			//создание устройства
@@ -178,7 +159,7 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 				listHistory[i] = currentHistory
 			}
 
-			resultListHistory, err := repos.IHistoryDeviceRepo.GetDeviceHistory(clientID, newDevice.Name, newHome.Name)
+			resultListHistory, err := repos.IHistoryDeviceRepo.GetDeviceHistory(deviceID)
 
 			t.Require().NoError(err)
 

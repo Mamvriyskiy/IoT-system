@@ -6,7 +6,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/tests/factory"
 	method "github.com/Mamvriyskiy/database_course/main/tests/method"
-	//"reflect"
+	"github.com/google/uuid"
 	"errors"
 	"strconv"
 )
@@ -177,7 +177,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 	tests := []struct {
 		nameTest    string
-		ClientID    int
+		ClientID    uuid.UUID
 		Token       string
 		SearchToken string
 		Code        string
@@ -185,7 +185,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			ClientID:    111,
+			ClientID:    uuid.New(),
 			Token:       "mcakmsfkdfkdf",
 			SearchToken: "mcakmsfkdfkdf",
 			Code:        "avbdkk",
@@ -193,7 +193,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 		},
 		{
 			nameTest:    "Test3",
-			ClientID:    131,
+			ClientID:    uuid.New(),
 			Token:       "dasnfjajkcddj",
 			SearchToken: "dasnfjajkcddj",
 			Code:        "czxc",
@@ -201,7 +201,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 		},
 		{
 			nameTest:    "Test4",
-			ClientID:    141,
+			ClientID:    uuid.New(),
 			Token:       "ghfdffcbhjbhjbbf",
 			SearchToken: "asklfkdmjf",
 			Code:        "3214dsaf",

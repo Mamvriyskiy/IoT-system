@@ -6,32 +6,32 @@ import (
 )
 
 type IUser interface {
-	CreateUser(user pkg.User) (int, error)
-	CheckUser(user pkg.User) (int, error)
+	CreateUser(user pkg.User) (string, error)
+	CheckUser(user pkg.User) (string, error)
 	GenerateToken(login, password string) (pkg.User, string, error)
-	ParseToken(token string) (int, error)
+	ParseToken(token string) (string, error)
 	ChangePassword(password, token string) error
 	CheckCode(code, token string) error
 	SendCode(email pkg.Email) error
 	GetUserByEmail(email string) (int, error)
-	GetAccessLevel(userID int, homeID string) (int, error)
+	GetAccessLevel(userID, homeID string) (int, error)
 }
 
 type IHome interface {
-	CreateHome(home pkg.Home) (int, error)
+	CreateHome(home pkg.Home) (string, error)
 	DeleteHome(homeID string) error
 	UpdateHome(homeID, name string) error
 	GetHomeByID(homeID string) (pkg.Home, error)
-	ListUserHome(userID int) ([]pkg.Home, error)
+	ListUserHome(userID string) ([]pkg.Home, error)
 }
 
 type IAccessHome interface {
-	AddUser(homeID string, access pkg.Access) (int, error)
+	AddUser(homeID string, access pkg.Access) (string, error)
 	DeleteUser(accessID string) error
 	UpdateLevel(accessID string, updateAccess pkg.Access) error
-	UpdateStatus(userID int, access pkg.AccessHome) error
+	UpdateStatus(userID string, access pkg.AccessHome) error
 	GetListUserHome(homeID string) ([]pkg.ClientHome, error)
-	AddOwner(userID int, homeID string) (int, error)
+	AddOwner(userID, homeID string) (string, error)
 	GetInfoAccessByID(accessID string) (pkg.Access, error)
 }
 
@@ -44,7 +44,7 @@ type IDevice interface {
 }
 
 type IHistoryDevice interface {
-	CreateDeviceHistory(deviceID string) (int, error)
+	CreateDeviceHistory(deviceID string) (string, error)
 	GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error)
 }
 

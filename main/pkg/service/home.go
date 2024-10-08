@@ -13,7 +13,7 @@ func NewHomeService(repo repository.IHomeRepo) *HomeService {
 	return &HomeService{repo: repo}
 }
 
-func (s *HomeService) CreateHome(home pkg.Home) (int, error) {
+func (s *HomeService) CreateHome(home pkg.Home) (string, error) {
 	return s.repo.CreateHome(home)
 }
 
@@ -29,6 +29,6 @@ func (s *HomeService) GetHomeByID(homeID string) (pkg.Home, error) {
 	return s.repo.GetHomeByID(homeID)
 }
 
-func (s *HomeService) ListUserHome(userID int) ([]pkg.Home, error) {
+func (s *HomeService) ListUserHome(userID string) ([]pkg.Home, error) {
 	return s.repo.ListUserHome(userID)
 }
