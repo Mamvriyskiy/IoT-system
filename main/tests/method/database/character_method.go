@@ -14,10 +14,10 @@ const (
 )
 
 type TestCharacter struct {
-	pkg.TypeCharacter
+	pkg.TypeCharacterService
 }
 
-func NewCharacter() *TestCharacter {
+func NewCharacterDB() *TestCharacter {
 	var b TestCharacter
 
 	return b.BuilderAccess()

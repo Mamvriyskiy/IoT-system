@@ -17,15 +17,15 @@ func (s *MyUnitTestsSuite) TestCreateHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 	}
 
@@ -64,12 +64,12 @@ func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "DB"),
 		},
 	}
 
@@ -121,17 +121,17 @@ func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 			updateHome: "home1",
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 			updateHome: "home2",
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 			updateHome: "home3",
 		},
 	}
@@ -167,15 +167,15 @@ func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 	}
 
@@ -201,5 +201,3 @@ func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 		})
 	}
 }
-
-

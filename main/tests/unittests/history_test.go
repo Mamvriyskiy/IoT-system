@@ -20,27 +20,27 @@ func (s *MyUnitTestsSuite) TestCreateHistory(t provider.T) {
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
-			history:   factory.New("history", ""),
+			device:    factory.New("device", "", "DB"),
+			user:      factory.New("user", "", "DB"),
+			home:      factory.New("home", "", "DB"),
+			access:    factory.New("access", "", "DB"),
+			history:   factory.New("history", "", "DB"),
 		},
 		{
 			nameTest:  "Test2",
-			user:      factory.New("user", ""),
-			home:      factory.New("home", ""),
-			access:    factory.New("access", ""),
-			device:    factory.New("device", ""),
-			history:   factory.New("history", ""),
+			user:      factory.New("user", "", "DB"),
+			home:      factory.New("home", "", "DB"),
+			access:    factory.New("access", "", "DB"),
+			device:    factory.New("device", "", "DB"),
+			history:   factory.New("history", "", "DB"),
 		},
 		{
 			nameTest:  "Test3",
-			device:    factory.New("device", ""),
-			user:      factory.New("user", ""),
-			access:    factory.New("access", ""),
-			home:      factory.New("home", ""),
-			history:   factory.New("history", ""),
+			device:    factory.New("device", "", "DB"),
+			user:      factory.New("user", "", "DB"),
+			access:    factory.New("access", "", "DB"),
+			home:      factory.New("home", "", "DB"),
+			history:   factory.New("history", "", "DB"),
 		},
 	}
 
@@ -110,14 +110,14 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			device:    factory.New("device", ""),
-			home:      factory.New("home", ""),
+			device:    factory.New("device", "", "DB"),
+			home:      factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			device:    factory.New("device", ""),
-			home:      factory.New("home", ""),
+			device:    factory.New("device", "", "DB"),
+			home:      factory.New("home", "", "DB"),
 		},
 	}
 

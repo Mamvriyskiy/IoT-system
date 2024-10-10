@@ -21,9 +21,3 @@ type AddHistory struct {
 	Home             string  `db:"home"   			json:"home"`
 	DeviceID		 string     `db:"deviceid"   		json:"deviceid"`
 }
-
-type Email struct {
-	Email string `db:"email" json:"email"`
-	Code  int    `db:"code" json:"code"`
-	Token string `db:"token"`
-}

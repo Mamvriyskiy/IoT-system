@@ -14,10 +14,10 @@ const (
 )
 
 type TestHome struct {
-	pkg.Home
+	pkg.HomeHandler
 }
 
-func NewHome() *TestHome {
+func NewHomeService() *TestHome {
 	var b TestHome
 
 	return b.BuilderHome()

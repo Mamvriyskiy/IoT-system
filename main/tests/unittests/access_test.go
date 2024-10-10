@@ -20,27 +20,27 @@ func (s *MyUnitTestsSuite) TestAddClient(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			owner:       factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
-			accessOwner: factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			owner:       factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
+			accessOwner: factory.New("access", "", "DB"),
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			owner:       factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
-			accessOwner: factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			owner:       factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
+			accessOwner: factory.New("access", "", "DB"),
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			owner:       factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
-			accessOwner: factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			owner:       factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
+			accessOwner: factory.New("access", "", "DB"),
 		},
 	}
 
@@ -68,9 +68,13 @@ func (s *MyUnitTestsSuite) TestAddClient(t provider.T) {
 			_, err = newAccessOwner.InsertObject(connDB)
 
 			newAccessUser.Email = newUser.Email
-			newAccessUser.Home = newHome.Name
+			// newAccessUser.Home = newHome.Name
 
-			accessID, err := repos.IAccessHomeRepo.AddUser(homeID, newAccessUser.Access)
+			// accessService := pkg.AccessService{
+			// 	Access:
+			// }
+
+			accessID, err := repos.IAccessHomeRepo.AddUser(homeID, newAccessUser.AccessService)
 			t.Require().NoError(err)
 
 			var clientID string
@@ -94,23 +98,23 @@ func (s *MyUnitTestsSuite) TestUpdateLevel(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
 			updateLevel: 10,
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
 			updateLevel: 10,
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", ""),
-			home:        factory.New("home", ""),
-			accessUser:  factory.New("access", ""),
+			user:        factory.New("user", "", "DB"),
+			home:        factory.New("home", "", "DB"),
+			accessUser:  factory.New("access", "", "DB"),
 			updateLevel: 10,
 		},
 	}
@@ -130,14 +134,14 @@ func (s *MyUnitTestsSuite) TestUpdateLevel(t provider.T) {
 			t.Require().NoError(err)
 
 			newAccessUser.Email = newUser.Email
-			newAccessUser.Home = newHome.Name
+			//newAccessUser.Home = newHome.Name
 			newAccessUser.AccessLevel = test.updateLevel
 			newAccessUser.ClientID = userID
 			newAccessUser.HomeID = homeID
 
 			_, err = newAccessUser.InsertObject(connDB)
 
-			err = repos.IAccessHomeRepo.UpdateLevel(userID, newAccessUser.Access)
+			err = repos.IAccessHomeRepo.UpdateLevel(userID, newAccessUser.AccessService)
 			t.Require().NoError(err)
 
 			var accessLevel int
@@ -159,34 +163,40 @@ func (s *MyUnitTestsSuite) TestUpdateStatus(t provider.T) {
 		nameTest   string
 		user       factory.ObjectSystem
 		accessUser factory.ObjectSystem
-		accessHome pkg.AccessHome
+		accessHome pkg.AccessService
 		home       factory.ObjectSystem
 	}{
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", ""),
-			home:       factory.New("home", ""),
-			accessUser: factory.New("access", ""),
-			accessHome: pkg.AccessHome{
-				AccessStatus: "blocked",
+			user:       factory.New("user", "", "DB"),
+			home:       factory.New("home", "", "DB"),
+			accessUser: factory.New("access", "", "DB"),
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 		},
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", ""),
-			home:       factory.New("home", ""),
-			accessUser: factory.New("access", ""),
-			accessHome: pkg.AccessHome{
-				AccessStatus: "blocked",
+			user:       factory.New("user", "", "DB"),
+			home:       factory.New("home", "", "DB"),
+			accessUser: factory.New("access", "", "DB"),
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 		},
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", ""),
-			home:       factory.New("home", ""),
-			accessUser: factory.New("access", ""),
-			accessHome: pkg.AccessHome{
-				AccessStatus: "blocked",
+			user:       factory.New("user", "", "DB"),
+			home:       factory.New("home", "", "DB"),
+			accessUser: factory.New("access", "", "DB"),
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 		},
 	}
@@ -240,12 +250,12 @@ func (s *MyUnitTestsSuite) TestGetListUserHome(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "DB"),
 		},
 	}
 

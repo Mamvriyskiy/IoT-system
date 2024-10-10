@@ -97,4 +97,3 @@ func (s *MyEtoESuite) TestSignUp(t provider.T) {
 		})
 	}
 }
-

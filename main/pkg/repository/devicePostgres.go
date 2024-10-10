@@ -17,22 +17,22 @@ func NewDevicePostgres(db *sqlx.DB) *DevicePostgres {
 	return &DevicePostgres{db: db}
 }
 
-func (r *DevicePostgres) GetListDevices(homeID string) ([]pkg.DevicesInfo, error) {
+func (r *DevicePostgres) GetListDevices(homeID string) ([]pkg.DevicesData, error) {
 	const queryHomeID = `select d.name, d.status, d.Brand, d.deviceid from device d 
 	where d.homeid = $1;`
 
-	var deviceList []pkg.DevicesInfo
+	var deviceList []pkg.DevicesData
 	err := r.db.Select(&deviceList, queryHomeID, homeID)
 	if err != nil {
 		logger.Log("Error", "Select", "Error get list devices:", err, homeID)
-		return []pkg.DevicesInfo{}, err
+		return []pkg.DevicesData{}, err
 	}
 
 	return deviceList, nil 
 }
 
-func (r *DevicePostgres) CreateDevice(homeID string, device pkg.Devices, 
-		character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (string, error) {
+func (r *DevicePostgres) CreateDevice(homeID string, device pkg.DevicesService, 
+		character pkg.DeviceCharacteristicsService, typeCharacter pkg.TypeCharacterService) (string, error) {
 	var id string
 	deviceID := uuid.New()
 	query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, 
@@ -89,8 +89,8 @@ func (r *DevicePostgres) DeleteDevice(deviceID string) error {
 	return err
 }
 
-func (r *DevicePostgres) GetDeviceByID(deviceID string) (pkg.Devices, error) {
-	var device pkg.Devices
+func (r *DevicePostgres) GetDeviceByID(deviceID string) (pkg.DevicesData, error) {
+	var device pkg.DevicesData
 	query := fmt.Sprintf("SELECT * from %s where deviceid = $1", "device")
 	err := r.db.Get(&device, query, deviceID)
 

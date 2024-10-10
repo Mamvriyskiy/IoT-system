@@ -17,12 +17,12 @@ func NewHomePostgres(db *sqlx.DB) *HomePostgres {
 	return &HomePostgres{db: db}
 }
 
-func (r *HomePostgres) ListUserHome(userID string) ([]pkg.Home, error) {
+func (r *HomePostgres) ListUserHome(userID string) ([]pkg.HomeData, error) {
 	getHomeID := `select * from home h 
 	where h.homeid in (select a.homeid from access a 
 		where a.clientid = $1);`
 
-	var homeList []pkg.Home
+	var homeList []pkg.HomeData
 	err := r.db.Select(&homeList, getHomeID, userID)
 	if err != nil {
 		logger.Log("Error", "Select", "Error Select from home:", err, getHomeID, userID)
@@ -32,7 +32,7 @@ func (r *HomePostgres) ListUserHome(userID string) ([]pkg.Home, error) {
 	return homeList, nil
 }
 
-func (r *HomePostgres) CreateHome(home pkg.Home) (string, error) {
+func (r *HomePostgres) CreateHome(home pkg.HomeService) (string, error) {
 	id := uuid.New()
 	var homeID string
 	query := fmt.Sprintf("INSERT INTO %s (longitude, latitude, name, homeID) values ($1, $2, $3, $4) RETURNING homeid", "home")
@@ -105,8 +105,8 @@ func (r *HomePostgres) UpdateHome(homeID, name string) error {
 	return err
 }
 
-func (r *HomePostgres) GetHomeByID(homeID string) (pkg.Home, error) {
-	var home pkg.Home
+func (r *HomePostgres) GetHomeByID(homeID string) (pkg.HomeData, error) {
+	var home pkg.HomeData
 	query := fmt.Sprintf("SELECT * from %s where homeid = $1", "home")
 	err := r.db.Get(&home, query, homeID)
 

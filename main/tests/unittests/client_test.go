@@ -18,15 +18,15 @@ func (s *MyUnitTestsSuite) TestCreateClient(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "DB"),
 		},
 		{
 			nameTest: "Test2",
-			user: 	  factory.New("user", ""),
+			user: 	  factory.New("user", "", "DB"),
 		},
 		{
 			nameTest: "Test3",
-			user: 	  factory.New("user", ""),
+			user: 	  factory.New("user", "", "DB"),
 		},
 	}
 
@@ -63,25 +63,25 @@ func (s *MyUnitTestsSuite) TestGetClient(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", "email4"),
+			user: factory.New("user", "email4", "DB"),
 			SearchEmail: "email4",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", "email5"),
+			user: factory.New("user", "email5", "DB"),
 			SearchEmail: "email5",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test3",
-			user: factory.New("user", "email6"),
+			user: factory.New("user", "email6", "DB"),
 			SearchEmail: "email6",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test4",
-			user: factory.New("user", "email7"),
+			user: factory.New("user", "email7", "DB"),
 			SearchEmail: "email8",
 			ResultError: errors.New("sql: no rows in result set"),
 		},
@@ -119,7 +119,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", ""),
+			user: factory.New("user", "", "DB"),
 			NewPassword:    "pswrd2",
 			Token:          "kakfksdkfmksdv",
 			SearchToken:    "kakfksdkfmksdv",
@@ -127,7 +127,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", ""),
+			user: factory.New("user", "", "DB"),
 			NewPassword:    "pswrd3",
 			Token:          "meqwefdf",
 			SearchToken:    "meqwefdf",
@@ -135,7 +135,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 		},
 		{
 			nameTest: "Test4",
-			user: factory.New("user", ""),
+			user: factory.New("user", "", "DB"),
 			NewPassword:    "pswrd5",
 			Token:          "naskfnjsndjg",
 			SearchToken:    "alkmckmjvnjnfh",
@@ -235,20 +235,20 @@ func (s *MyUnitTestsSuite) TestAddCode(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", "email121"),
-			reset: factory.New("email", "email121"),
+			user: factory.New("user", "email121", "DB"),
+			reset: factory.New("email", "email121", "DB"),
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", "email221"),
-			reset: factory.New("email", "email221"),
+			user: factory.New("user", "email221", "DB"),
+			reset: factory.New("email", "email221", "DB"),
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test3",
-			user: factory.New("user", "email321"),
-			reset: factory.New("email", "email421"),
+			user: factory.New("user", "email321", "DB"),
+			reset: factory.New("email", "email421", "DB"),
 			ResultError: errors.New("sql: no rows in result set"),
 		},
 	}

@@ -39,15 +39,17 @@ func generateRandomFloat(max float64) float64 {
 }
 
 func (s *HistoryDeviceService) CreateDeviceHistory(deviceID string) (string, error) {
-	history := pkg.AddHistory{
-		TimeWork: generateRandomInt(101),
-		AverageIndicator: generateRandomFloat(100),
-		EnergyConsumed: generateRandomInt(101),
+	history := pkg.HistoryService{
+		History: pkg.History{
+			TimeWork: generateRandomInt(101),
+			AverageIndicator: generateRandomFloat(100),
+			EnergyConsumed: generateRandomInt(101),
+		},
 	}
 
 	return s.repo.CreateDeviceHistory(deviceID, history)
 }
 
-func (s *HistoryDeviceService) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
+func (s *HistoryDeviceService) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistoryData, error) {
 	return s.repo.GetDeviceHistory(deviceID)
 }

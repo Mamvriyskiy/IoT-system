@@ -14,10 +14,10 @@ const (
 )
 
 type TestDevice struct {
-	pkg.Devices
+	pkg.DevicesService
 }
 
-func NewDevice() *TestDevice {
+func NewDeviceDB() *TestDevice {
 	var b TestDevice
 
 	return b.BuilderAccess()

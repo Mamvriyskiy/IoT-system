@@ -20,7 +20,7 @@ func NewDeviceHistoryPostgres(db *sqlx.DB) *DeviceHistoryPostgres {
 }
 
 func (r *DeviceHistoryPostgres) CreateDeviceHistory(deviceID string,
-	history pkg.AddHistory) (string, error) {
+	history pkg.HistoryService) (string, error) {
 	var result int
 	queryUpdateStatus := fmt.Sprintf(`select update_status($1, $2);`)
 	err := r.db.Get(&result, queryUpdateStatus, deviceID, "active")
@@ -73,8 +73,8 @@ func (r *DeviceHistoryPostgres) CreateDeviceHistory(deviceID string,
 	return id, nil
 }
 
-func (r *DeviceHistoryPostgres) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
-	var lists []pkg.DevicesHistory
+func (r *DeviceHistoryPostgres) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistoryData, error) {
+	var lists []pkg.DevicesHistoryData
 	query := `select hi.timework, hi.averageindicator, hi.energyconsumed 
 		from historydev as hi join historydevice as hd on hi.historydevid = hd.historydevid 
 			where hd.deviceid = $1`

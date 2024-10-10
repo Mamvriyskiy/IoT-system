@@ -17,11 +17,11 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 		ID     int
 	}{
 		{
-			device: factory.New("device", ""),
+			device: factory.New("device", "", "DB"),
 			ID:     0,
 		},
 		{
-			device: factory.New("device", ""),
+			device: factory.New("device", "", "DB"),
 			ID:     1,
 		},
 	}
@@ -126,9 +126,9 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", ""),
-			home:      factory.New("home", ""),
-			character: factory.New("character", ""),
+			device:    factory.New("device", "", "DB"),
+			home:      factory.New("home", "", "DB"),
+			character: factory.New("character", "", "DB"),
 			devChar: pkg.DeviceCharacteristics{
 				Values: 100,
 			},
@@ -194,9 +194,9 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", ""),
-			home:      factory.New("home", ""),
-			character: factory.New("character", ""),
+			device:    factory.New("device", "", "DB"),
+			home:      factory.New("home", "", "DB"),
+			character: factory.New("character", "", "DB"),
 			devChar: pkg.DeviceCharacteristics{
 				Values: 100,
 			},

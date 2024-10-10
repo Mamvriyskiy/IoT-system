@@ -17,7 +17,7 @@ func NewAccessHomePostgres(db *sqlx.DB) *AccessHomePostgres {
 	return &AccessHomePostgres{db: db}
 }
 
-func (r *AccessHomePostgres) AddUser(homeID string, access pkg.Access) (string, error) {
+func (r *AccessHomePostgres) AddUser(homeID string, access pkg.AccessService) (string, error) {
 	var userID string
 	queryUserID := `select c.clientID from client c where email = $1;`
 	err := r.db.Get(&userID, queryUserID, access.Email)
@@ -57,7 +57,7 @@ func (r *AccessHomePostgres) AddOwner(userID, homeID string) (string, error) {
 	return id, nil
 }
 
-func (r *AccessHomePostgres) UpdateLevel(accessID string, updateAccess pkg.Access) error {
+func (r *AccessHomePostgres) UpdateLevel(accessID string, updateAccess pkg.AccessService) error {
 	query := `
 	UPDATE access
 	SET accesslevel = $1
@@ -67,7 +67,7 @@ func (r *AccessHomePostgres) UpdateLevel(accessID string, updateAccess pkg.Acces
 	return err
 }
 
-func (r *AccessHomePostgres) UpdateStatus(accessID string, access pkg.AccessHome) error {
+func (r *AccessHomePostgres) UpdateStatus(accessID string, access pkg.AccessService) error {
 	query := `
 	UPDATE access
 	SET accessstatus = $1
@@ -77,9 +77,9 @@ func (r *AccessHomePostgres) UpdateStatus(accessID string, access pkg.AccessHome
 	return err
 }
 
-func (r *AccessHomePostgres) GetListUserHome(homeID string) ([]pkg.ClientHome, error) {
-	var lists []pkg.ClientHome
-	query := `SELECT h.name, c.login, c.email, a.accesslevel, a.accessstatus
+func (r *AccessHomePostgres) GetListUserHome(homeID string) ([]pkg.AccessInfoData, error) {
+	var lists []pkg.AccessInfoData
+	query := `SELECT a.accessID, h.name, c.login, c.email, a.accesslevel, a.accessstatus
 		FROM client c 
 			JOIN access a ON a.clientid = c.clientid
 				JOIN home h ON h.homeid = a.homeid
@@ -87,7 +87,7 @@ func (r *AccessHomePostgres) GetListUserHome(homeID string) ([]pkg.ClientHome, e
 					
 	err := r.db.Select(&lists, query, homeID)
 	if err != nil {
-		logger.Log("Error", "Select", "Error select ClientHome:", err, "")
+		logger.Log("Error", "Select", "Error select AccessInfoData:", err, "")
 		return nil, err
 	}
 
@@ -101,11 +101,12 @@ func (r *AccessHomePostgres) DeleteUser(accessID string) error {
 	return err
 }
 
-func (r *AccessHomePostgres) GetInfoAccessByID(accessID string) (pkg.Access, error) {
-	var access pkg.Access
-	query := `SELECT c.login, c.email, a.accesslevel, a.accessid
+func (r *AccessHomePostgres) GetInfoAccessByID(accessID string) (pkg.AccessInfoData, error) {
+	var access pkg.AccessInfoData
+	query := `SELECT c.login, c.email, a.accesslevel, a.accessid, h.name
               FROM client c 
               JOIN access a ON a.clientid = c.clientid
+			  JOIN home h ON h.homeid = a.homeid
               WHERE a.accessID = $1;`
 
 	err := r.db.Get(&access, query, accessID) // Используем одну структуру

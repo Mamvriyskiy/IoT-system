@@ -19,19 +19,19 @@ func (s *MyUnitTestsSuite) TestCreateDeviceBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			device:   factory.New("device", ""),
+			device:   factory.New("device", "", "service"),
 			homeID:   "1",
 			deviceID: "4",
 		},
 		{
 			nameTest: "Test2",
-			device:   factory.New("device", ""),
+			device:   factory.New("device", "", "service"),
 			homeID:   "2",
 			deviceID: "5",
 		},
 		{
 			nameTest: "Test3",
-			device:   factory.New("device", ""),
+			device:   factory.New("device", "", "service"),
 			homeID:   "3",
 			deviceID: "6",
 		},

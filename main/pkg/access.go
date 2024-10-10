@@ -1,18 +1,30 @@
 package pkg
 
-type AccessHome struct {
-	AccessStatus string `json:"status"`
-	ID           string    `db:"accessID" json:"-"`
-	AccessLevel  int    `json:"level"`
+type Access struct {
+	AccessLevel int    `json:"accesslevel" db:"accesslevel"`
+	AccessStatus string `json:"accessstatus" db:"accessstatus"`
 }
 
-type Access struct {
-	ID           string    `db:"accessid"`
-	Home         string `json:"home" db:"home"`
+type AccessInfo struct {
+	ID           string `db:"accessid"`
+	Home         string `json:"home" db:"name"`
 	Email        string `json:"email" db:"email"`
-	AccessLevel  int    `json:"accesslevel" db:"accesslevel"`
-	AccessStatus string `json:"accessstatus" db:"accessstatus"`
-	ClientID     string
-	HomeID       string
 	Login        string `db:"login" json:"login"`
+	Access
+}
+
+type AccessHandler struct {
+	Access
+	Email       string `json:"email" db:"email"`
+}
+
+type AccessService struct {
+	Access
+	Email       string `json:"email" db:"email"`
+	ClientID           string `db:"clientid"`
+	HomeID           string `db:"homeid"`
+}
+
+type AccessInfoData struct {
+	AccessInfo
 }

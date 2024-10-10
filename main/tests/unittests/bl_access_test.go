@@ -19,19 +19,19 @@ func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 	}{
 		{
 			nameTest:   "Test1",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "10",
 			accessID:   "1",
 		},
 		{
 			nameTest:   "Test2",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "11",
 			accessID:   "2",
 		},
 		{
 			nameTest:   "Test3",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "12",
 			accessID:   "3",
 		},
@@ -51,7 +51,7 @@ func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 
 			accessService := service.NewAccessHomeService(mockRepo)
 
-			accessID, err := accessService.AddUser(test.userID, newAccessUser.Access)
+			accessID, err := accessService.AddUser(test.userID, newAccessUser.AccessService)
 
 			t.Assert().NoError(err)
 			t.Assert().Equal(test.accessID, accessID)
@@ -67,17 +67,17 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 	}{
 		{
 			nameTest:   "Test1",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
-			accessUser: factory.New("access", ""),
+			accessUser: factory.New("access", "", "service"),
 			userID:     "12",
 		},
 	}
@@ -96,7 +96,7 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 
 			accessService := service.NewAccessHomeService(mockRepo)
 
-			err := accessService.UpdateLevel(test.userID, newAccessUser.Access)
+			err := accessService.UpdateLevel(test.userID, newAccessUser.AccessService)
 
 			t.Assert().NoError(err)
 		})
@@ -106,26 +106,26 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 func (s *MyUnitTestsSuite) TestUpdateStatusBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
-		accessHome pkg.AccessHome
+		accessHome pkg.AccessHandler
 		userID     string
 	}{
 		{
 			nameTest:   "Test1",
-			accessHome: pkg.AccessHome{
+			accessHome: pkg.AccessHandler{
 				AccessStatus: "blocked",
 			},
 			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
-			accessHome: pkg.AccessHome{
+			accessHome: pkg.AccessHandler{
 				AccessStatus: "blocked",
 			},
 			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
-			accessHome: pkg.AccessHome{
+			accessHome: pkg.AccessHandler{
 				AccessStatus: "blocked",
 			},
 			userID:     "12",

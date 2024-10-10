@@ -19,17 +19,17 @@ func (s *MyUnitTestsSuite) TestCreateClientBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "3",
 		},
 	}
@@ -63,17 +63,17 @@ func (s *MyUnitTestsSuite) TestCheckUserBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", ""),
+			user:     factory.New("user", "", "service"),
 			userID:   "3",
 		},
 	}
@@ -109,15 +109,15 @@ func (s *MyUnitTestsSuite) TestSendCodeBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			email:    factory.New("email", ""),
+			email:    factory.New("email", "", "service"),
 		},
 		{
 			nameTest: "Test2",
-			email:    factory.New("email", ""),
+			email:    factory.New("email", "", "service"),
 		},
 		{
 			nameTest: "Test3",
-			email:    factory.New("email", ""),
+			email:    factory.New("email", "", "service"),
 		},
 	}
 

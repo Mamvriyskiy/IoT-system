@@ -11,10 +11,10 @@ import (
 
 
 type TestHistory struct {
-	pkg.AddHistory
+	pkg.HistoryService
 }
 
-func NewHistory() *TestHistory {
+func NewHistoryDB() *TestHistory {
 	var b TestHistory
 
 	return b.BuilderAccess()
@@ -38,7 +38,7 @@ func (tu TestHistory) InsertObject(connDB *sqlx.DB) (string, error) {
 	historyDevID := uuid.New()
 	var id string
 	query := fmt.Sprintf(`INSERT INTO %s 
-		(timeWork, AverageIndicator, EnergyConsumed, historyDevID) 
+		(timeWork, AverageIndicator, EnergyConsumed, ) 
 			values ($1, $2, $3, $4) RETURNING historyDevID`, "historyDev")
 	row := connDB.QueryRow(query, tu.TimeWork, tu.AverageIndicator, tu.EnergyConsumed, historyDevID)
 	err := row.Scan(&id)

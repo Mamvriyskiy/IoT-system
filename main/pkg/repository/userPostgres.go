@@ -18,7 +18,7 @@ func NewUserPostgres(db *sqlx.DB) *UserPostgres {
 	return &UserPostgres{db: db}
 }
 
-func (r *UserPostgres) CreateUser(user pkg.User) (string, error) {
+func (r *UserPostgres) CreateUser(user pkg.UserService) (string, error) {
 	clientID := uuid.New()
 	var id string
 	query := fmt.Sprintf(`INSERT INTO %s (password, login, email, clientID) 
@@ -48,8 +48,8 @@ func (r *UserPostgres) GetAccessLevel(userID, homeID string) (int, error) {
 	return accessLevel, err
 }
 
-func (r *UserPostgres) GetUser(email, password string) (pkg.User, error) {
-	var user pkg.User
+func (r *UserPostgres) GetUser(email, password string) (pkg.UserData, error) {
+	var user pkg.UserData
 	query := fmt.Sprintf("SELECT clientid, login, email from %s where email = $1 and password = $2", "client")
 	err := r.db.Get(&user, query, email, password)
 
@@ -91,7 +91,7 @@ func (r *UserPostgres) GetCode(token string) (string, error) {
 	return code, err
 }
 
-func (r *UserPostgres) AddCode(email pkg.Email) error {
+func (r *UserPostgres) AddCode(email pkg.EmailService) error {
 	var userID string
 	query := fmt.Sprintf("select clientID from client where email = $1")
 	err := r.db.Get(&userID, query, email.Email)

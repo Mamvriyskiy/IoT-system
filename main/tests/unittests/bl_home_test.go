@@ -61,17 +61,17 @@ func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "service"),
 			id:       "10",
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "service"),
 			id:       "11",
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", ""),
+			home:     factory.New("home", "", "service"),
 			id:       "12",
 		},
 	}

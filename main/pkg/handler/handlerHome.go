@@ -21,13 +21,13 @@ func (h *Handler) createHome(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Home
+	var input pkg.HomeHandler
 	if err := c.BindJSON(&input); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
 	}
 
-	homeID, err := h.services.IHome.CreateHome(input)
+	home, err := h.services.IHome.CreateHome(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка создания дома",
@@ -36,18 +36,16 @@ func (h *Handler) createHome(c *gin.Context) {
 		return
 	}
 
-	_, err = h.services.IAccessHome.AddOwner(userID, homeID)
+	_, err = h.services.IAccessHome.AddOwner(userID, home.ID)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{
 			"errors": "Ошибка добавления хозяина дома",
 		})
-		logger.Log("Error", "AddOwner", "Error add owner:", err, userID, homeID)
+		logger.Log("Error", "AddOwner", "Error add owner:", err, userID, home)
 		return
 	}
 
-	input.ID = homeID
-
-	c.JSON(http.StatusOK, input)
+	c.JSON(http.StatusOK, home)
 
 	logger.Log("Info", "", "A home has been created", nil)
 }
@@ -149,7 +147,7 @@ func (h *Handler) updateHome(c *gin.Context) {
 
 	homeID := c.Param("homeID")
 
-	var input pkg.Home
+	var input pkg.HomeHandler
 	err := c.BindJSON(&input)
 	if err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")

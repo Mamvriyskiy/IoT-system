@@ -32,28 +32,33 @@ func (s *UserService) ChangePassword(password, token string) error {
 	return s.repo.ChangePassword(password, token)
 }
 
-func (s *UserService) CreateUser(user pkg.User) (string, error) {
+func (s *UserService) CreateUser(user pkg.UserHandler) (string, error) {
 	user.Password = s.generatePasswordHash(user.Password)
-	return s.repo.CreateUser(user)
+
+	userDB := pkg.UserService{
+		User: user.User,
+	}
+
+	return s.repo.CreateUser(userDB)
 }
 
 func (s *UserService) GetAccessLevel(userID, homeID string) (int, error) {
 	return s.repo.GetAccessLevel(userID, homeID)
 }
 
-func (s *UserService) CheckUser(user pkg.User) (id string, err error) {
+func (s *UserService) CheckUser(user pkg.UserHandler) (pkg.UserData, error) {
 	if user.Email == "" {
 		logger.Log("Error", "CheckUser", "Empty email:", nil, "")
-		return "", err
+		return pkg.UserData{}, errors.New("Empty email")
 	}
 
-	user, err = s.repo.GetUser(user.Email, user.Password)
+	userAuth, err := s.repo.GetUser(user.Email, user.Password)
 	if err != nil {
 		logger.Log("Error", "GetUser", "Error get user:", err, user.Username, user.Password)
-		return id, err
+		return userAuth, err
 	}
 
-	return user.ID, err
+	return userAuth, err
 }
 
 func (s *UserService) GetUserByEmail(email string) (int, error) {
@@ -75,9 +80,8 @@ func generateMarker() (string, error) {
 	return token.SignedString([]byte(signingKey))
 }
 
-func (s *UserService) SendCode(email pkg.Email) error {
+func (s *UserService) SendCode(email pkg.EmailHandler) error {
 	safeNum := UseCryptoRandIntn(999999)
-	email.Code = safeNum
 
 	markerAccess, err := generateMarker()
 
@@ -103,9 +107,15 @@ func (s *UserService) SendCode(email pkg.Email) error {
 		fmt.Println(err)
 	}
 
-	fmt.Println("Письмо отправлено успешно!")
-	email.Token = markerAccess
-	err = s.repo.AddCode(email)
+	//fmt.Println("Письмо отправлено успешно!")
+
+	emailService := pkg.EmailService{
+		EmailUser: email.EmailUser,
+		Code: safeNum,
+		Token: markerAccess,
+	}
+
+	err = s.repo.AddCode(emailService)
 
 	return err
 }
@@ -127,11 +137,11 @@ type tokenClaims struct {
 	UserID string `json:"userId"`
 }
 
-func (s *UserService) GenerateToken(login, password string) (pkg.User, string, error) {
+func (s *UserService) GenerateToken(login, password string) (pkg.UserData, string, error) {
 	user, err := s.repo.GetUser(login, s.generatePasswordHash(password))
 	if err != nil {
 		logger.Log("Error", "GetUser", "Error get user:", err, login, "s.generatePasswordHash(password)")
-		return pkg.User{}, "", err
+		return pkg.UserData{}, "", err
 	}
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, &tokenClaims{
 		jwt.StandardClaims{
@@ -143,7 +153,6 @@ func (s *UserService) GenerateToken(login, password string) (pkg.User, string, e
 
 	result, err := token.SignedString([]byte(signingKey))
 
-	fmt.Println(user, err, result)
 	return user, result, err
 }
 

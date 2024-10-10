@@ -34,7 +34,7 @@ func (h *Handler) addUser(c *gin.Context) {
 	}
 
 	
-	var access pkg.Access
+	var access pkg.AccessHandler
 	if err := c.BindJSON(&access); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
@@ -57,11 +57,16 @@ func (h *Handler) addUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"ID": accessID,
-		"Email": access.Email,
-		"AccessLevel": access.AccessLevel,
-	})
+	accessInfo, err := h.services.IAccessHome.GetInfoAccessByID(accessID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения списка пользователей",
+		})
+		logger.Log("Error", "GetInfoAccessByID", "Error get access:", err, accessID)
+		return
+	}
+
+	c.JSON(http.StatusOK, accessInfo)
 
 	logger.Log("Info", "", "The user has been granted access", nil)
 }
@@ -132,7 +137,7 @@ func (h *Handler) updateLevel(c *gin.Context) {
 
 	accessID := c.Param("accessID")
 
-	var access pkg.Access
+	var access pkg.AccessHandler
 	if err := c.BindJSON(&access); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
@@ -163,13 +168,7 @@ func (h *Handler) updateLevel(c *gin.Context) {
 		return
 	}
 
-
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"AccessID": accessInfo.ID,
-		"Login": accessInfo.Login,
-		"AccessLevel": accessInfo.AccessLevel,
-		"Email": accessInfo.Email,
-	})
+	c.JSON(http.StatusOK, accessInfo)
 
 	logger.Log("Info", "", "Info of access", nil)
 }
@@ -187,7 +186,7 @@ func (h *Handler) updateStatus(c *gin.Context) {
 		return
 	}
 
-	var input pkg.AccessHome
+	var input pkg.AccessHandler
 	if err := c.BindJSON(&input); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
@@ -236,12 +235,7 @@ func (h *Handler) getInfoAccess(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"AccessID": accessInfo.ID,
-		"Login": accessInfo.Login,
-		"AccessLevel": accessInfo.AccessLevel,
-		"Email": accessInfo.Email,
-	})
+	c.JSON(http.StatusOK, accessInfo)
 
 	logger.Log("Info", "", "Info of access", nil)
 }

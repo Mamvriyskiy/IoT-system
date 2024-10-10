@@ -35,7 +35,7 @@ func (m *MockIUserRepo) EXPECT() *MockIUserRepoMockRecorder {
 }
 
 // AddCode mocks base method.
-func (m *MockIUserRepo) AddCode(email pkg.Email) error {
+func (m *MockIUserRepo) AddCode(email pkg.EmailService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddCode", email)
 	ret0, _ := ret[0].(error)
@@ -63,7 +63,7 @@ func (mr *MockIUserRepoMockRecorder) ChangePassword(password, token interface{})
 }
 
 // CreateUser mocks base method.
-func (m *MockIUserRepo) CreateUser(user pkg.User) (string, error) {
+func (m *MockIUserRepo) CreateUser(user pkg.UserService) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateUser", user)
 	ret0, _ := ret[0].(string)
@@ -108,10 +108,10 @@ func (mr *MockIUserRepoMockRecorder) GetCode(token interface{}) *gomock.Call {
 }
 
 // GetUser mocks base method.
-func (m *MockIUserRepo) GetUser(email, password string) (pkg.User, error) {
+func (m *MockIUserRepo) GetUser(email, password string) (pkg.UserData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetUser", email, password)
-	ret0, _ := ret[0].(pkg.User)
+	ret0, _ := ret[0].(pkg.UserData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -161,7 +161,7 @@ func (m *MockIHomeRepo) EXPECT() *MockIHomeRepoMockRecorder {
 }
 
 // CreateHome mocks base method.
-func (m *MockIHomeRepo) CreateHome(home pkg.Home) (string, error) {
+func (m *MockIHomeRepo) CreateHome(home pkg.HomeService) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateHome", home)
 	ret0, _ := ret[0].(string)
@@ -190,10 +190,10 @@ func (mr *MockIHomeRepoMockRecorder) DeleteHome(homeID interface{}) *gomock.Call
 }
 
 // GetHomeByID mocks base method.
-func (m *MockIHomeRepo) GetHomeByID(homeID string) (pkg.Home, error) {
+func (m *MockIHomeRepo) GetHomeByID(homeID string) (pkg.HomeData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetHomeByID", homeID)
-	ret0, _ := ret[0].(pkg.Home)
+	ret0, _ := ret[0].(pkg.HomeData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -205,10 +205,10 @@ func (mr *MockIHomeRepoMockRecorder) GetHomeByID(homeID interface{}) *gomock.Cal
 }
 
 // ListUserHome mocks base method.
-func (m *MockIHomeRepo) ListUserHome(userID string) ([]pkg.Home, error) {
+func (m *MockIHomeRepo) ListUserHome(userID string) ([]pkg.HomeData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "ListUserHome", userID)
-	ret0, _ := ret[0].([]pkg.Home)
+	ret0, _ := ret[0].([]pkg.HomeData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -272,7 +272,7 @@ func (mr *MockIAccessHomeRepoMockRecorder) AddOwner(userID, homeID interface{}) 
 }
 
 // AddUser mocks base method.
-func (m *MockIAccessHomeRepo) AddUser(homeID string, access pkg.Access) (string, error) {
+func (m *MockIAccessHomeRepo) AddUser(homeID string, access pkg.AccessService) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "AddUser", homeID, access)
 	ret0, _ := ret[0].(string)
@@ -301,10 +301,10 @@ func (mr *MockIAccessHomeRepoMockRecorder) DeleteUser(accessID interface{}) *gom
 }
 
 // GetInfoAccessByID mocks base method.
-func (m *MockIAccessHomeRepo) GetInfoAccessByID(accessID string) (pkg.Access, error) {
+func (m *MockIAccessHomeRepo) GetInfoAccessByID(accessID string) (pkg.AccessInfoData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetInfoAccessByID", accessID)
-	ret0, _ := ret[0].(pkg.Access)
+	ret0, _ := ret[0].(pkg.AccessInfoData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -316,10 +316,10 @@ func (mr *MockIAccessHomeRepoMockRecorder) GetInfoAccessByID(accessID interface{
 }
 
 // GetListUserHome mocks base method.
-func (m *MockIAccessHomeRepo) GetListUserHome(homeID string) ([]pkg.ClientHome, error) {
+func (m *MockIAccessHomeRepo) GetListUserHome(homeID string) ([]pkg.AccessInfoData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListUserHome", homeID)
-	ret0, _ := ret[0].([]pkg.ClientHome)
+	ret0, _ := ret[0].([]pkg.AccessInfoData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -331,7 +331,7 @@ func (mr *MockIAccessHomeRepoMockRecorder) GetListUserHome(homeID interface{}) *
 }
 
 // UpdateLevel mocks base method.
-func (m *MockIAccessHomeRepo) UpdateLevel(accessID string, updateAccess pkg.Access) error {
+func (m *MockIAccessHomeRepo) UpdateLevel(accessID string, updateAccess pkg.AccessService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateLevel", accessID, updateAccess)
 	ret0, _ := ret[0].(error)
@@ -345,7 +345,7 @@ func (mr *MockIAccessHomeRepoMockRecorder) UpdateLevel(accessID, updateAccess in
 }
 
 // UpdateStatus mocks base method.
-func (m *MockIAccessHomeRepo) UpdateStatus(userID string, access pkg.AccessHome) error {
+func (m *MockIAccessHomeRepo) UpdateStatus(userID string, access pkg.AccessService) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateStatus", userID, access)
 	ret0, _ := ret[0].(error)
@@ -382,7 +382,7 @@ func (m *MockIDeviceRepo) EXPECT() *MockIDeviceRepoMockRecorder {
 }
 
 // CreateDevice mocks base method.
-func (m *MockIDeviceRepo) CreateDevice(homeID string, device pkg.Devices, character pkg.DeviceCharacteristics, typeCharacter pkg.TypeCharacter) (string, error) {
+func (m *MockIDeviceRepo) CreateDevice(homeID string, device pkg.DevicesService, character pkg.DeviceCharacteristicsService, typeCharacter pkg.TypeCharacterService) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateDevice", homeID, device, character, typeCharacter)
 	ret0, _ := ret[0].(string)
@@ -411,10 +411,10 @@ func (mr *MockIDeviceRepoMockRecorder) DeleteDevice(deviceID interface{}) *gomoc
 }
 
 // GetDeviceByID mocks base method.
-func (m *MockIDeviceRepo) GetDeviceByID(deviceID string) (pkg.Devices, error) {
+func (m *MockIDeviceRepo) GetDeviceByID(deviceID string) (pkg.DevicesData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDeviceByID", deviceID)
-	ret0, _ := ret[0].(pkg.Devices)
+	ret0, _ := ret[0].(pkg.DevicesData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -426,10 +426,10 @@ func (mr *MockIDeviceRepoMockRecorder) GetDeviceByID(deviceID interface{}) *gomo
 }
 
 // GetListDevices mocks base method.
-func (m *MockIDeviceRepo) GetListDevices(homeID string) ([]pkg.DevicesInfo, error) {
+func (m *MockIDeviceRepo) GetListDevices(homeID string) ([]pkg.DevicesData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetListDevices", homeID)
-	ret0, _ := ret[0].([]pkg.DevicesInfo)
+	ret0, _ := ret[0].([]pkg.DevicesData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -464,7 +464,7 @@ func (m *MockIHistoryDeviceRepo) EXPECT() *MockIHistoryDeviceRepoMockRecorder {
 }
 
 // CreateDeviceHistory mocks base method.
-func (m *MockIHistoryDeviceRepo) CreateDeviceHistory(deviceID string, history pkg.AddHistory) (string, error) {
+func (m *MockIHistoryDeviceRepo) CreateDeviceHistory(deviceID string, history pkg.HistoryService) (string, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "CreateDeviceHistory", deviceID, history)
 	ret0, _ := ret[0].(string)
@@ -479,10 +479,10 @@ func (mr *MockIHistoryDeviceRepoMockRecorder) CreateDeviceHistory(deviceID, hist
 }
 
 // GetDeviceHistory mocks base method.
-func (m *MockIHistoryDeviceRepo) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
+func (m *MockIHistoryDeviceRepo) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistoryData, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetDeviceHistory", deviceID)
-	ret0, _ := ret[0].([]pkg.DevicesHistory)
+	ret0, _ := ret[0].([]pkg.DevicesHistoryData)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }

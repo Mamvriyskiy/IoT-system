@@ -10,18 +10,13 @@ import (
 	"net/mail"
 )
 
-type verifyCode struct {
-	Code  string `db:"code" json:"code"`
-	Token string `db:"token" json:"token"`
-}
-
 func isEmailValid(email string) bool {
 	_, err := mail.ParseAddress(email)
     return err == nil
 }
 
 func (h *Handler) checkCode(c *gin.Context) {
-	var input verifyCode
+	var input pkg.VerifyCode
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
@@ -39,7 +34,7 @@ func (h *Handler) checkCode(c *gin.Context) {
 }
 
 func (h *Handler) code(c *gin.Context) {
-	var input pkg.Email
+	var input pkg.EmailHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
@@ -56,13 +51,8 @@ func (h *Handler) code(c *gin.Context) {
 	c.JSON(http.StatusOK, map[string]interface{}{})
 }
 
-type newpassword struct {
-	Password string `db:"password" json:"password"`
-	Token    string `db:"token" json:"token"`
-}
-
 func (h *Handler) changePassword(c *gin.Context) {
-	var input newpassword
+	var input pkg.UpdatePassword
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
@@ -76,11 +66,11 @@ func (h *Handler) changePassword(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{})
+	c.JSON(http.StatusOK, struct{}{})
 }
 
 func (h *Handler) SignUp(c *gin.Context) {
-	var input pkg.User
+	var input pkg.UserHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
@@ -103,27 +93,20 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
-	id, err := h.services.IUser.CreateUser(input)
+	_, err := h.services.IUser.CreateUser(input)
 	if err != nil {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
+		c.JSON(http.StatusInternalServerError, struct{}{})
 		logger.Log("Error", "h.services.IUser.CreateUser(input)", "Error create user:", err, input)
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"id": id,
-	})
+	c.JSON(http.StatusOK, struct{}{})
 
 	logger.Log("Info", "", fmt.Sprintf("User %s is registered", input.Username), nil)
 }
 
-type signInInput struct {
-	Password string `json:"password"`
-	Email string `json:"email"`
-}
-
 func (h *Handler) signIn(c *gin.Context) {
-	var input signInInput
+	var input pkg.UserHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")

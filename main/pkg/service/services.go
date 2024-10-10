@@ -6,46 +6,46 @@ import (
 )
 
 type IUser interface {
-	CreateUser(user pkg.User) (string, error)
-	CheckUser(user pkg.User) (string, error)
-	GenerateToken(login, password string) (pkg.User, string, error)
+	CreateUser(user pkg.UserHandler) (string, error)
+	CheckUser(user pkg.UserHandler) (pkg.UserData, error)
+	GenerateToken(login, password string) (pkg.UserData, string, error)
 	ParseToken(token string) (string, error)
 	ChangePassword(password, token string) error
 	CheckCode(code, token string) error
-	SendCode(email pkg.Email) error
+	SendCode(email pkg.EmailHandler) error
 	GetUserByEmail(email string) (int, error)
 	GetAccessLevel(userID, homeID string) (int, error)
 }
 
 type IHome interface {
-	CreateHome(home pkg.Home) (string, error)
+	CreateHome(home pkg.HomeHandler) (pkg.HomeData, error)
 	DeleteHome(homeID string) error
 	UpdateHome(homeID, name string) error
-	GetHomeByID(homeID string) (pkg.Home, error)
-	ListUserHome(userID string) ([]pkg.Home, error)
+	GetHomeByID(homeID string) (pkg.HomeData, error)
+	ListUserHome(userID string) ([]pkg.HomeData, error)
 }
 
 type IAccessHome interface {
-	AddUser(homeID string, access pkg.Access) (string, error)
+	AddUser(homeID string, access pkg.AccessHandler) (string, error)
 	DeleteUser(accessID string) error
-	UpdateLevel(accessID string, updateAccess pkg.Access) error
-	UpdateStatus(userID string, access pkg.AccessHome) error
-	GetListUserHome(homeID string) ([]pkg.ClientHome, error)
+	UpdateLevel(accessID string, updateAccess pkg.AccessHandler) error
+	UpdateStatus(userID string, access pkg.AccessHandler) error
+	GetListUserHome(homeID string) ([]pkg.AccessInfoData, error)
 	AddOwner(userID, homeID string) (string, error)
-	GetInfoAccessByID(accessID string) (pkg.Access, error)
+	GetInfoAccessByID(accessID string) (pkg.AccessInfoData, error)
 }
 
 type IDevice interface {
-	CreateDevice(homeID string, device pkg.Devices) (pkg.Devices, error)
+	CreateDevice(homeID string, device pkg.DevicesHandler) (pkg.DevicesData, error)
 	DeleteDevice(deviceID string) error
-	GetDeviceByID(deviceID string) (pkg.Devices, error)
-	GetListDevices(homeID string) ([]pkg.DevicesInfo, error)
-	GetInfoDevice(deviceID string) (pkg.Devices, error)
+	GetDeviceByID(deviceID string) (pkg.DevicesData, error)
+	GetListDevices(homeID string) ([]pkg.DevicesData, error)
+	GetInfoDevice(deviceID string) (pkg.DevicesData, error)
 }
 
 type IHistoryDevice interface {
 	CreateDeviceHistory(deviceID string) (string, error)
-	GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error)
+	GetDeviceHistory(deviceID string) ([]pkg.DevicesHistoryData, error)
 }
 
 type Services struct {

@@ -11,10 +11,6 @@ import (
 
 var ErrNoFloat64Interface = errors.New("отсутствует интерфейс {} для float64")
 
-type getAllListDevices struct {
-	Data []pkg.Devices `json:"data"`
-}
-
 func (h *Handler) getListDevice(c *gin.Context) {
 	homeID := c.Param("homeID")
 
@@ -65,7 +61,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Devices
+	var input pkg.DevicesHandler
 	if err := c.BindJSON(&input); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
@@ -80,12 +76,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"DeviceID": device.DeviceID,
-		"Name": device.Name,
-		"Brand": device.Brand,
-		"Status": device.Status,
-	})
+	c.JSON(http.StatusOK, device)
 
 	logger.Log("Info", "", "A device has been created", nil)
 }
@@ -142,12 +133,7 @@ func (h *Handler) getInfoDevice(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"DeviceID": device.DeviceID,
-		"Name": device.Name,
-		"Brand": device.Brand,
-		"Status": device.Status,
-	})
+	c.JSON(http.StatusOK, device)
 
 	logger.Log("Info", "", "A device has been deleted", nil)
 }
