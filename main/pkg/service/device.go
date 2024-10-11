@@ -35,9 +35,11 @@ func (s *DeviceService) CreateDevice(homeID string, device pkg.DevicesHandler) (
 
 	deviceService := pkg.DevicesService{
 		Devices: device.Devices,
-		TypeDevice: deviceTypes[UseCryptoRandIntn(len(deviceTypes))],
-		Status: "Inactive", 
-		Brand: brands[UseCryptoRandIntn(len(brands))],
+		DevicesInfo: pkg.DevicesInfo{
+			TypeDevice: deviceTypes[UseCryptoRandIntn(len(deviceTypes))],
+			Status: "Inactive", 
+			Brand: brands[UseCryptoRandIntn(len(brands))],
+		},
 	}
 
 	character := pkg.DeviceCharacteristicsService{

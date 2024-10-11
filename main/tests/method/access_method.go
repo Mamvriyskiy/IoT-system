@@ -15,10 +15,10 @@ const (
 )
 
 type TestAccess struct {
-	pkg.AccessHandler
+	pkg.AccessInfoData
 }
 
-func NewAccessService() *TestAccess {
+func NewAccess() *TestAccess {
 	var b TestAccess
 
 	return b.BuilderAccess()

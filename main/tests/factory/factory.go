@@ -10,54 +10,22 @@ type ObjectSystem interface {
 	//DeleteObject()
 }
 
-func New(typeObject, keyСharacter, typeСharacter string) ObjectSystem {
-	switch typeObject {
-	case "service":
-		return NewService(typeObject, keyСharacter)
-	case "DB":
-		return NewDB(typeObject, keyСharacter)
-	default:
-		return nil
-	} 
-}
-
-func NewDB(typeObject, keyСharacter string) {
+func New(typeObject, keyСharacter string) ObjectSystem {
 	switch typeObject {
 	case "user":
-		return method.NewUserDB(keyСharacter)
+		return method.NewUser(keyСharacter)
 	case "email":
-		return method.NewEmailDB(keyСharacter)
+		return method.NewEmail(keyСharacter)
 	case "home":
-		return method.NewHomeDB()
+		return method.NewHome()
 	case "access":
-		return method.NewAccessDB()
+		return method.NewAccess()
 	case "device":
-		return method.NewDeviceDB()
+		return method.NewDevice()
 	case "character":
-		return method.NewCharacterDB()
+		return method.NewCharacter()
 	case "history":
-		return method.NewHistoryDB()
-	default:
-		return nil
-	} 
-}
- 
-func NewService(typeObject, keyСharacter string) {
-	switch typeObject {
-	case "user":
-		return method.NewUserService(keyСharacter)
-	case "email":
-		return method.NewEmailService(keyСharacter)
-	case "home":
-		return method.NewHomeService()
-	case "access":
-		return method.NewAccessService()
-	case "device":
-		return method.NewDeviceService()
-	case "character":
-		return method.NewCharacterService()
-	case "history":
-		return method.NewHistoryService()
+		return method.NewHistory()
 	default:
 		return nil
 	} 

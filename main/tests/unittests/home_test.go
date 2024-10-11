@@ -17,15 +17,15 @@ func (s *MyUnitTestsSuite) TestCreateHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 	}
 
@@ -35,22 +35,28 @@ func (s *MyUnitTestsSuite) TestCreateHome(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newHome := test.home.(*method.TestHome)
 
-			homeID, err := repos.IHomeRepo.CreateHome(newHome.Home)
+			homeService := pkg.HomeService{
+				Home: pkg.Home{
+					Name: newHome.Name,
+					Latitude: newHome.Latitude,
+					Longitude: newHome.Longitude,
+				},
+			}
+
+			homeID, err := repos.IHomeRepo.CreateHome(homeService)
 			t.Require().NoError(err)
 
 			newHome.ID = homeID
 
-			query := `SELECT name, latitude, longitude FROM home WHERE homeid = $1`
+			query := `SELECT name, latitude, longitude, homeid FROM home WHERE homeid = $1`
 			row := connDB.QueryRow(query, homeID)
 
-			retrievedHome := pkg.Home{
-				ID: homeID,
-			}
+			var retrievedHome pkg.HomeData
 
-			err = row.Scan(&retrievedHome.Name, &retrievedHome.Latitude, &retrievedHome.Longitude)
+			err = row.Scan(&retrievedHome.Name, &retrievedHome.Latitude, &retrievedHome.Longitude, &retrievedHome.ID)
 			t.Require().NoError(err)
 
-			t.Assert().Equal(newHome.Home, retrievedHome)
+			t.Assert().Equal(newHome.HomeData, retrievedHome)
 		})
 	}
 }
@@ -64,12 +70,12 @@ func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			user:     factory.New("user", "", "DB"),
+			user:     factory.New("user", ""),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			user:     factory.New("user", "", "DB"),
+			user:     factory.New("user", ""),
 		},
 	}
 
@@ -83,7 +89,7 @@ func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 
 			t.Require().NoError(err)
 
-			listHome := make([]pkg.Home, test.lenList)
+			listHome := make([]pkg.HomeData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				newHome := factory.New("home", "")
 				home := newHome.(*method.TestHome)
@@ -91,8 +97,8 @@ func (s *MyUnitTestsSuite) TestGetListHome(t provider.T) {
 				homeID, err := home.InsertObject(connDB)
 				t.Require().NoError(err)
 
-				home.Home.ID = homeID
-				listHome[i] = home.Home
+				home.ID = homeID
+				listHome[i] = home.HomeData
 
 				newAccess := factory.New("access", "")
 				access := newAccess.(*method.TestAccess)
@@ -121,17 +127,17 @@ func (s *MyUnitTestsSuite) TestUpdateHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 			updateHome: "home1",
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 			updateHome: "home2",
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 			updateHome: "home3",
 		},
 	}
@@ -167,15 +173,15 @@ func (s *MyUnitTestsSuite) TestDeleteHome(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 	}
 

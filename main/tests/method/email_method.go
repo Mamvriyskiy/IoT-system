@@ -13,18 +13,18 @@ const (
 )
 
 type TestEmail struct {
-	pkg.EmailHandler
+	pkg.EmailService
 }
 
-func NewEmailService(email string) *TestEmail {
+func NewEmail(email string) *TestEmail {
 	var b TestEmail
 
 	return b.BuilderEmail(email)
 }
 
 func (b *TestEmail) BuilderEmail(email string) *TestEmail {
-	// b.generateCode()
-	// b.generateToken()
+	b.generateCode()
+	b.generateToken()
 	if email == "" {
 		b.generateEmail()
 	} else {
@@ -34,27 +34,27 @@ func (b *TestEmail) BuilderEmail(email string) *TestEmail {
 	return b
 }
 
-// func (b *TestEmail) generateCode() {
-// 	n, err := rand.Int(rand.Reader, big.NewInt(int64(lengthCode)))
-// 	if err != nil {
-// 		b.Code = 111111
-// 	}
-// 	b.Code = int(n.Int64())
-// }
+func (b *TestEmail) generateCode() {
+	n, err := rand.Int(rand.Reader, big.NewInt(int64(lengthCode)))
+	if err != nil {
+		b.Code = 111111
+	}
+	b.Code = int(n.Int64())
+}
 
 func (b *TestEmail) generateEmail() {
 	b.Email = createEmail(lengthEmail, lengtDomainLeft, lengtDomainRight)
 }
 
-// func (b *TestEmail) generateToken() {
-// 	token := make([]byte, lengthToken)
-// 	for j := 0; j < lengthToken; j++ {
-// 		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
-// 		token[j] = charset[n.Int64()]
-// 	}
+func (b *TestEmail) generateToken() {
+	token := make([]byte, lengthToken)
+	for j := 0; j < lengthToken; j++ {
+		n, _ := rand.Int(rand.Reader, big.NewInt(int64(len(charset))))
+		token[j] = charset[n.Int64()]
+	}
 
-// 	b.Token = string(token)
-// }
+	b.Token = string(token)
+}
 
 func (tu TestEmail) InsertObject(connDB *sqlx.DB) (string, error) {
 	return "", nil

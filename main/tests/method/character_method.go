@@ -17,7 +17,7 @@ type TestCharacter struct {
 	pkg.TypeCharacterService
 }
 
-func NewCharacterDB() *TestCharacter {
+func NewCharacter() *TestCharacter {
 	var b TestCharacter
 
 	return b.BuilderAccess()

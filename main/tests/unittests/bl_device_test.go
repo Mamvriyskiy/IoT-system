@@ -1,7 +1,7 @@
 package unittests
 
 import (
-	//"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	mocks_service "github.com/Mamvriyskiy/database_course/main/pkg/repository/mocks"
 	"github.com/Mamvriyskiy/database_course/main/pkg/service"
 	"github.com/Mamvriyskiy/database_course/main/tests/factory"
@@ -19,19 +19,19 @@ func (s *MyUnitTestsSuite) TestCreateDeviceBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			device:   factory.New("device", "", "service"),
+			device:   factory.New("device", ""),
 			homeID:   "1",
 			deviceID: "4",
 		},
 		{
 			nameTest: "Test2",
-			device:   factory.New("device", "", "service"),
+			device:   factory.New("device", ""),
 			homeID:   "2",
 			deviceID: "5",
 		},
 		{
 			nameTest: "Test3",
-			device:   factory.New("device", "", "service"),
+			device:   factory.New("device", ""),
 			homeID:   "3",
 			deviceID: "6",
 		},
@@ -45,17 +45,21 @@ func (s *MyUnitTestsSuite) TestCreateDeviceBL(t provider.T) {
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
 			newDevice := test.device.(*method.TestDevice)
+			newDevice.ID = test.deviceID
 
 			mockRepo.EXPECT().CreateDevice(test.homeID, gomock.Any(), gomock.Any(), gomock.Any()).Return(test.deviceID, nil)
-
-			newDevice.Devices.DeviceID = test.deviceID
+			mockRepo.EXPECT().GetDeviceByID(test.deviceID).Return(newDevice.DevicesData, nil)
 
 			userService := service.NewDeviceService(mockRepo)
 
-			devices, err := userService.CreateDevice(test.homeID, newDevice.Devices)
+			devicesHandler := pkg.DevicesHandler{
+				Devices: newDevice.Devices,
+			}
+
+			devices, err := userService.CreateDevice(test.homeID, devicesHandler)
 			
 			t.Assert().NoError(err)
-			t.Assert().Equal(test.deviceID, devices.DeviceID)
+			t.Assert().Equal(newDevice.DevicesData, devices)
 		})
 	}
 }

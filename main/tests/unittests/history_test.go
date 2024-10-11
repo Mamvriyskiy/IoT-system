@@ -20,27 +20,27 @@ func (s *MyUnitTestsSuite) TestCreateHistory(t provider.T) {
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", "", "DB"),
-			user:      factory.New("user", "", "DB"),
-			home:      factory.New("home", "", "DB"),
-			access:    factory.New("access", "", "DB"),
-			history:   factory.New("history", "", "DB"),
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			history:   factory.New("history", ""),
 		},
 		{
 			nameTest:  "Test2",
-			user:      factory.New("user", "", "DB"),
-			home:      factory.New("home", "", "DB"),
-			access:    factory.New("access", "", "DB"),
-			device:    factory.New("device", "", "DB"),
-			history:   factory.New("history", "", "DB"),
+			user:      factory.New("user", ""),
+			home:      factory.New("home", ""),
+			access:    factory.New("access", ""),
+			device:    factory.New("device", ""),
+			history:   factory.New("history", ""),
 		},
 		{
 			nameTest:  "Test3",
-			device:    factory.New("device", "", "DB"),
-			user:      factory.New("user", "", "DB"),
-			access:    factory.New("access", "", "DB"),
-			home:      factory.New("home", "", "DB"),
-			history:   factory.New("history", "", "DB"),
+			device:    factory.New("device", ""),
+			user:      factory.New("user", ""),
+			access:    factory.New("access", ""),
+			home:      factory.New("home", ""),
+			history:   factory.New("history", ""),
 		},
 	}
 
@@ -69,29 +69,31 @@ func (s *MyUnitTestsSuite) TestCreateHistory(t provider.T) {
 
 			//создание устройства
 			newDevice := test.device.(*method.TestDevice)
-			newDevice.Home = newHome.Name
+			// newDevice.Home = newHome.Name
 			newDevice.HomeID = homeID
 			_, err = newDevice.InsertObject(connDB)
 			t.Require().NoError(err)
 
 			newHistory := test.history.(*method.TestHistory)
 
-			newHistory.Home = newHome.Name
-			newHistory.Name = newDevice.Name
-			historyID, err := repos.IHistoryDeviceRepo.CreateDeviceHistory(clientID, newHistory.AddHistory)
+			// newHistory.Home = newHome.Name
+			// newHistory.Name = newDevice.Name
+			historyID, err := repos.IHistoryDeviceRepo.CreateDeviceHistory(clientID, newHistory.HistoryService)
 			t.Require().NoError(err)
 
-			testHistory := pkg.DevicesHistory{
+			testHistory := pkg.DevicesHistoryData{
 				ID: historyID,
-				TimeWork: newHistory.TimeWork,
-				AverageIndicator: newHistory.AverageIndicator,
-				EnergyConsumed: newHistory.EnergyConsumed,
+				History: pkg.History{
+					TimeWork: newHistory.TimeWork,
+					AverageIndicator: newHistory.AverageIndicator,
+					EnergyConsumed: newHistory.EnergyConsumed,
+				},
 			}
 
 			query := `SELECT * FROM historyDev WHERE historydevID = $1`
 			row := connDB.QueryRow(query, historyID)
 
-			var resultHistory pkg.DevicesHistory
+			var resultHistory pkg.DevicesHistoryData
 			err = row.Scan(&resultHistory.ID, &resultHistory.TimeWork, &resultHistory.AverageIndicator, &resultHistory.EnergyConsumed)
 			t.Require().NoError(err)
 
@@ -110,14 +112,14 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			device:    factory.New("device", "", "DB"),
-			home:      factory.New("home", "", "DB"),
+			device:    factory.New("device", ""),
+			home:      factory.New("home", ""),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			device:    factory.New("device", "", "DB"),
-			home:      factory.New("home", "", "DB"),
+			device:    factory.New("device", ""),
+			home:      factory.New("home", ""),
 		},
 	}
 
@@ -133,27 +135,29 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistory(t provider.T) {
 
 			//создание устройства
 			newDevice := test.device.(*method.TestDevice)
-			newDevice.Home = newHome.Name
+			// newDevice.Home = newHome.Name
 			newDevice.HomeID = homeID
 			deviceID, err := newDevice.InsertObject(connDB)
 			t.Require().NoError(err)
 
-			listHistory := make([]pkg.DevicesHistory, test.lenList)
+			listHistory := make([]pkg.DevicesHistoryData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				history := factory.New("history", "")
 				newHistory := history.(*method.TestHistory)
 
-				newHistory.Home = newHome.Name
-				newHistory.Name = newDevice.Name
+				// newHistory.Home = newHome.Name
+				// newHistory.Name = newDevice.Name
 				newHistory.DeviceID = deviceID
 				historyID, err := newHistory.InsertObject(connDB)
 				t.Require().NoError(err)
 
-				currentHistory := pkg.DevicesHistory{
+				currentHistory := pkg.DevicesHistoryData{
 					ID: historyID,
-					TimeWork: newHistory.TimeWork,
-					AverageIndicator: newHistory.AverageIndicator,
-					EnergyConsumed: newHistory.EnergyConsumed,
+					History: pkg.History{
+						TimeWork: newHistory.TimeWork,
+						AverageIndicator: newHistory.AverageIndicator,
+						EnergyConsumed: newHistory.EnergyConsumed,
+					},
 				}
 
 				listHistory[i] = currentHistory

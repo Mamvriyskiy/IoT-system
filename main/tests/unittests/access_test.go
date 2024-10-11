@@ -20,27 +20,27 @@ func (s *MyUnitTestsSuite) TestAddClient(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			owner:       factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
-			accessOwner: factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			owner:       factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
+			accessOwner: factory.New("access", ""),
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			owner:       factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
-			accessOwner: factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			owner:       factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
+			accessOwner: factory.New("access", ""),
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			owner:       factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
-			accessOwner: factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			owner:       factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
+			accessOwner: factory.New("access", ""),
 		},
 	}
 
@@ -70,11 +70,11 @@ func (s *MyUnitTestsSuite) TestAddClient(t provider.T) {
 			newAccessUser.Email = newUser.Email
 			// newAccessUser.Home = newHome.Name
 
-			// accessService := pkg.AccessService{
-			// 	Access:
-			// }
+			accessService := pkg.AccessService{
+				Access: newAccessUser.Access,
+			}
 
-			accessID, err := repos.IAccessHomeRepo.AddUser(homeID, newAccessUser.AccessService)
+			accessID, err := repos.IAccessHomeRepo.AddUser(homeID, accessService)
 			t.Require().NoError(err)
 
 			var clientID string
@@ -98,23 +98,23 @@ func (s *MyUnitTestsSuite) TestUpdateLevel(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
 			updateLevel: 10,
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
 			updateLevel: 10,
 		},
 		{
 			nameTest:    "Test1",
-			user:        factory.New("user", "", "DB"),
-			home:        factory.New("home", "", "DB"),
-			accessUser:  factory.New("access", "", "DB"),
+			user:        factory.New("user", ""),
+			home:        factory.New("home", ""),
+			accessUser:  factory.New("access", ""),
 			updateLevel: 10,
 		},
 	}
@@ -141,7 +141,11 @@ func (s *MyUnitTestsSuite) TestUpdateLevel(t provider.T) {
 
 			_, err = newAccessUser.InsertObject(connDB)
 
-			err = repos.IAccessHomeRepo.UpdateLevel(userID, newAccessUser.AccessService)
+			accessService := pkg.AccessService{
+				Access: newAccessUser.Access,
+			}
+
+			err = repos.IAccessHomeRepo.UpdateLevel(userID, accessService)
 			t.Require().NoError(err)
 
 			var accessLevel int
@@ -168,9 +172,9 @@ func (s *MyUnitTestsSuite) TestUpdateStatus(t provider.T) {
 	}{
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", "", "DB"),
-			home:       factory.New("home", "", "DB"),
-			accessUser: factory.New("access", "", "DB"),
+			user:       factory.New("user", ""),
+			home:       factory.New("home", ""),
+			accessUser: factory.New("access", ""),
 			accessHome: pkg.AccessService{
 				Access: pkg.Access{
 					AccessStatus: "blocked",
@@ -179,9 +183,9 @@ func (s *MyUnitTestsSuite) TestUpdateStatus(t provider.T) {
 		},
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", "", "DB"),
-			home:       factory.New("home", "", "DB"),
-			accessUser: factory.New("access", "", "DB"),
+			user:       factory.New("user", ""),
+			home:       factory.New("home", ""),
+			accessUser: factory.New("access", ""),
 			accessHome: pkg.AccessService{
 				Access: pkg.Access{
 					AccessStatus: "blocked",
@@ -190,9 +194,9 @@ func (s *MyUnitTestsSuite) TestUpdateStatus(t provider.T) {
 		},
 		{
 			nameTest:   "Test1",
-			user:       factory.New("user", "", "DB"),
-			home:       factory.New("home", "", "DB"),
-			accessUser: factory.New("access", "", "DB"),
+			user:       factory.New("user", ""),
+			home:       factory.New("home", ""),
+			accessUser: factory.New("access", ""),
 			accessHome: pkg.AccessService{
 				Access: pkg.Access{
 					AccessStatus: "blocked",
@@ -250,12 +254,12 @@ func (s *MyUnitTestsSuite) TestGetListUserHome(t provider.T) {
 		{
 			nameTest: "Test1",
 			lenList:  1,
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 		{
 			nameTest: "Test2",
 			lenList:  10,
-			home:     factory.New("home", "", "DB"),
+			home:     factory.New("home", ""),
 		},
 	}
 
@@ -269,7 +273,7 @@ func (s *MyUnitTestsSuite) TestGetListUserHome(t provider.T) {
 
 			t.Require().NoError(err)
 
-			listHome := make([]pkg.ClientHome, test.lenList)
+			listHome := make([]pkg.AccessInfoData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				newUser := factory.New("user", "")
 				user := newUser.(*method.TestUser)
@@ -282,13 +286,14 @@ func (s *MyUnitTestsSuite) TestGetListUserHome(t provider.T) {
 
 				access.ClientID = userID
 				access.HomeID = homeID
-				_, err = access.InsertObject(connDB)
+				accessID, err := access.InsertObject(connDB)
 				t.Require().NoError(err)
 
 				listHome[i].Home = newHome.Name
-				listHome[i].Username = user.Username
+				listHome[i].Login = user.Username
 				listHome[i].Email = user.Email
 				listHome[i].AccessLevel = access.AccessLevel
+				listHome[i].ID = accessID
 				listHome[i].AccessStatus = "active"
 			}
 

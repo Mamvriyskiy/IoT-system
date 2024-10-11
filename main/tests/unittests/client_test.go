@@ -18,15 +18,15 @@ func (s *MyUnitTestsSuite) TestCreateClient(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", "", "DB"),
+			user:     factory.New("user", ""),
 		},
 		{
 			nameTest: "Test2",
-			user: 	  factory.New("user", "", "DB"),
+			user: 	  factory.New("user", ""),
 		},
 		{
 			nameTest: "Test3",
-			user: 	  factory.New("user", "", "DB"),
+			user: 	  factory.New("user", ""),
 		},
 	}
 
@@ -36,20 +36,24 @@ func (s *MyUnitTestsSuite) TestCreateClient(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newUser := test.user.(*method.TestUser)
 			
-			resultID, err := repos.IUserRepo.CreateUser(newUser.User)
+			userService := pkg.UserService{
+				User: newUser.User,
+			}
+
+			resultID, err := repos.IUserRepo.CreateUser(userService)
 			t.Require().NoError(err)
 
-			newUser.User.ID = resultID
+			newUser.UserData.ID = resultID
 			query := `SELECT password, login, email FROM client WHERE clientid = $1`
 			row := connDB.QueryRow(query, resultID)
 
-			retrievedUser := pkg.User{
+			retrievedUser := pkg.UserData{
 				ID: resultID,
 			}
 
 			err = row.Scan(&retrievedUser.Password, &retrievedUser.Username, &retrievedUser.Email)
 			t.Require().NoError(err)
-			t.Assert().Equal(newUser.User, retrievedUser)
+			t.Assert().Equal(newUser.UserData, retrievedUser)
 		})
 	}
 }
@@ -63,25 +67,25 @@ func (s *MyUnitTestsSuite) TestGetClient(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", "email4", "DB"),
+			user: factory.New("user", "email4"),
 			SearchEmail: "email4",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", "email5", "DB"),
+			user: factory.New("user", "email5"),
 			SearchEmail: "email5",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test3",
-			user: factory.New("user", "email6", "DB"),
+			user: factory.New("user", "email6"),
 			SearchEmail: "email6",
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test4",
-			user: factory.New("user", "email7", "DB"),
+			user: factory.New("user", "email7"),
 			SearchEmail: "email8",
 			ResultError: errors.New("sql: no rows in result set"),
 		},
@@ -119,7 +123,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", "", "DB"),
+			user: factory.New("user", ""),
 			NewPassword:    "pswrd2",
 			Token:          "kakfksdkfmksdv",
 			SearchToken:    "kakfksdkfmksdv",
@@ -127,7 +131,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", "", "DB"),
+			user: factory.New("user", ""),
 			NewPassword:    "pswrd3",
 			Token:          "meqwefdf",
 			SearchToken:    "meqwefdf",
@@ -135,7 +139,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 		},
 		{
 			nameTest: "Test4",
-			user: factory.New("user", "", "DB"),
+			user: factory.New("user", ""),
 			NewPassword:    "pswrd5",
 			Token:          "naskfnjsndjg",
 			SearchToken:    "alkmckmjvnjnfh",
@@ -235,20 +239,20 @@ func (s *MyUnitTestsSuite) TestAddCode(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user: factory.New("user", "email121", "DB"),
-			reset: factory.New("email", "email121", "DB"),
+			user: factory.New("user", "email121"),
+			reset: factory.New("email", "email121"),
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test2",
-			user: factory.New("user", "email221", "DB"),
-			reset: factory.New("email", "email221", "DB"),
+			user: factory.New("user", "email221"),
+			reset: factory.New("email", "email221"),
 			ResultError: nil,
 		},
 		{
 			nameTest: "Test3",
-			user: factory.New("user", "email321", "DB"),
-			reset: factory.New("email", "email421", "DB"),
+			user: factory.New("user", "email321"),
+			reset: factory.New("email", "email421"),
 			ResultError: errors.New("sql: no rows in result set"),
 		},
 	}
@@ -264,7 +268,7 @@ func (s *MyUnitTestsSuite) TestAddCode(t provider.T) {
 
 			t.Require().NoError(err)
 
-			err = repos.IUserRepo.AddCode(newEmail.Email)
+			err = repos.IUserRepo.AddCode(newEmail.EmailService)
 			if err != nil {
 				t.Require().Equal(err, test.ResultError)
 				return

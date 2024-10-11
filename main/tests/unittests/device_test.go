@@ -17,11 +17,11 @@ func (s *MyUnitTestsSuite) TestUpdateStatusFunc(t provider.T) {
 		ID     int
 	}{
 		{
-			device: factory.New("device", "", "DB"),
+			device: factory.New("device", ""),
 			ID:     0,
 		},
 		{
-			device: factory.New("device", "", "DB"),
+			device: factory.New("device", ""),
 			ID:     1,
 		},
 	}
@@ -122,14 +122,14 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 		device    factory.ObjectSystem
 		character factory.ObjectSystem
 		home      factory.ObjectSystem
-		devChar   pkg.DeviceCharacteristics
+		devChar   pkg.DeviceCharacteristicsService
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", "", "DB"),
-			home:      factory.New("home", "", "DB"),
-			character: factory.New("character", "", "DB"),
-			devChar: pkg.DeviceCharacteristics{
+			device:    factory.New("device", ""),
+			home:      factory.New("home", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 100,
 			},
 		},
@@ -138,7 +138,7 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 			home:      factory.New("home", ""),
 			device:    factory.New("device", ""),
 			character: factory.New("character", ""),
-			devChar: pkg.DeviceCharacteristics{
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 200,
 			},
 		},
@@ -147,7 +147,7 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 			device:    factory.New("device", ""),
 			home:      factory.New("home", ""),
 			character: factory.New("character", ""),
-			devChar: pkg.DeviceCharacteristics{
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 300,
 			},
 		},
@@ -168,8 +168,14 @@ func (s *MyUnitTestsSuite) TestCreateDevice(t provider.T) {
 
 			//создание устройства
 			newDevice := test.device.(*method.TestDevice)
-			newDevice.Home = newHome.Name
-			deviceID, err := repos.IDeviceRepo.CreateDevice(homeID, newDevice.Devices, test.devChar, newChar.TypeCharacter)
+			// newDevice.Home = newHome.Name
+
+			deviceService := pkg.DevicesService{
+				Devices: newDevice.Devices,
+				DevicesInfo: newDevice.DevicesInfo,
+			}
+
+			deviceID, err := repos.IDeviceRepo.CreateDevice(homeID, deviceService, test.devChar, newChar.TypeCharacterService)
 			t.Require().NoError(err)
 
 			query := `SELECT name FROM device WHERE deviceID = $1`
@@ -190,14 +196,14 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 		device    factory.ObjectSystem
 		character factory.ObjectSystem
 		home      factory.ObjectSystem
-		devChar   pkg.DeviceCharacteristics
+		devChar   pkg.DeviceCharacteristicsService
 	}{
 		{
 			nameTest:  "Test1",
-			device:    factory.New("device", "", "DB"),
-			home:      factory.New("home", "", "DB"),
-			character: factory.New("character", "", "DB"),
-			devChar: pkg.DeviceCharacteristics{
+			device:    factory.New("device", ""),
+			home:      factory.New("home", ""),
+			character: factory.New("character", ""),
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 100,
 			},
 		},
@@ -206,7 +212,7 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 			home:      factory.New("home", ""),
 			device:    factory.New("device", ""),
 			character: factory.New("character", ""),
-			devChar: pkg.DeviceCharacteristics{
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 200,
 			},
 		},
@@ -215,7 +221,7 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 			device:    factory.New("device", ""),
 			home:      factory.New("home", ""),
 			character: factory.New("character", ""),
-			devChar: pkg.DeviceCharacteristics{
+			devChar: pkg.DeviceCharacteristicsService{
 				Values: 300,
 			},
 		},
@@ -241,7 +247,7 @@ func (s *MyUnitTestsSuite) TestDeleteDevice(t provider.T) {
 			typeID, err := newChar.InsertObject(connDB)
 			t.Require().NoError(err)
 			
-			query3 := fmt.Sprintf(`INSERT INTO devicecharacteristics (deviceID, valueschar, typecharacterid)
+			query3 := fmt.Sprintf(`INSERT INTO DeviceCharacteristicsService (deviceID, valueschar, typecharacterid)
 				values ($1, $2, $3)`)
 			_ = connDB.QueryRow(query3, deviceID, test.devChar.Values, typeID)
 

@@ -1,7 +1,7 @@
 package unittests
 
 import (
-	//"github.com/Mamvriyskiy/database_course/main/pkg"
+	"github.com/Mamvriyskiy/database_course/main/pkg"
 	mocks_service "github.com/Mamvriyskiy/database_course/main/pkg/repository/mocks"
 	"github.com/Mamvriyskiy/database_course/main/pkg/service"
 	"github.com/Mamvriyskiy/database_course/main/tests/factory"
@@ -19,17 +19,17 @@ func (s *MyUnitTestsSuite) TestCreateClientBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "3",
 		},
 	}
@@ -47,7 +47,11 @@ func (s *MyUnitTestsSuite) TestCreateClientBL(t provider.T) {
 
 			userService := service.NewUserService(mockRepo)
 
-			userID, err := userService.CreateUser(newUser.User)
+			userHandler := pkg.UserHandler{
+				User: newUser.User,
+			}
+
+			userID, err := userService.CreateUser(userHandler)
 
 			t.Assert().NoError(err)
 			t.Assert().Equal(test.userID, userID)
@@ -63,17 +67,17 @@ func (s *MyUnitTestsSuite) TestCheckUserBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "1",
 		},
 		{
 			nameTest: "Test2",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "2",
 		},
 		{
 			nameTest: "Test3",
-			user:     factory.New("user", "", "service"),
+			user:     factory.New("user", ""),
 			userID:   "3",
 		},
 	}
@@ -89,14 +93,18 @@ func (s *MyUnitTestsSuite) TestCheckUserBL(t provider.T) {
 			newUser := test.user.(*method.TestUser)
 			newUser.ID = test.userID
 
-			mockRepo.EXPECT().GetUser(newUser.User.Email, newUser.User.Password).Return(newUser.User, nil)
+			mockRepo.EXPECT().GetUser(newUser.User.Email, newUser.User.Password).Return(newUser.UserData, nil)
 
 			userService := service.NewUserService(mockRepo)
 
-			resultID, err := userService.CheckUser(newUser.User)
+			userHandler := pkg.UserHandler{
+				User: newUser.User,
+			}
+
+			resultID, err := userService.CheckUser(userHandler)
 
 			t.Assert().NoError(err)
-			t.Assert().Equal(resultID, test.userID)
+			t.Assert().Equal(resultID, newUser.UserData)
 		})
 	}
 }
@@ -109,15 +117,15 @@ func (s *MyUnitTestsSuite) TestSendCodeBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			email:    factory.New("email", "", "service"),
+			email:    factory.New("email", ""),
 		},
 		{
 			nameTest: "Test2",
-			email:    factory.New("email", "", "service"),
+			email:    factory.New("email", ""),
 		},
 		{
 			nameTest: "Test3",
-			email:    factory.New("email", "", "service"),
+			email:    factory.New("email", ""),
 		},
 	}
 
@@ -135,7 +143,11 @@ func (s *MyUnitTestsSuite) TestSendCodeBL(t provider.T) {
 
 			userService := service.NewUserService(mockRepo)
 
-			err := userService.SendCode(newEmail.Email)
+			handlerEmail := pkg.EmailHandler{
+				EmailUser: newEmail.EmailUser,
+			}
+
+			err := userService.SendCode(handlerEmail)
 
 			t.Assert().NoError(err)
 		})

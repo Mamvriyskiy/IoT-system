@@ -39,6 +39,7 @@ func (s *AccessHomeService) UpdateStatus(userID string, access pkg.AccessHandler
 	updateAccess := pkg.AccessService{
 		Access: access.Access,
 	}
+	
 	return s.repo.UpdateStatus(userID, updateAccess)
 }
 

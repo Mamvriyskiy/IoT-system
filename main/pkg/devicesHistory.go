@@ -8,11 +8,11 @@ type History struct {
 
 type DevicesHistoryData struct {
 	History
-	ID               string     `db:"historydevid"       json:"-"`
+	ID       string `db:"historydevid"       json:"-"`
+	DeviceID string `db:"historydevid"`
 }
-
 
 type HistoryService struct {
 	History
+	DeviceID string
 }
-

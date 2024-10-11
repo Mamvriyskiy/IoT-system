@@ -18,10 +18,10 @@ const (
 )
 
 type TestUser struct {
-	pkg.UserService
+	pkg.UserData
 }
 
-func NewUserDB(email string) *TestUser {
+func NewUser(email string) *TestUser {
 	var b TestUser
 
 	return b.BuilderUser(email)

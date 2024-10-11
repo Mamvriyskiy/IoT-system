@@ -19,19 +19,19 @@ func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 	}{
 		{
 			nameTest:   "Test1",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "10",
 			accessID:   "1",
 		},
 		{
 			nameTest:   "Test2",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "11",
 			accessID:   "2",
 		},
 		{
 			nameTest:   "Test3",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "12",
 			accessID:   "3",
 		},
@@ -47,11 +47,20 @@ func (s *MyUnitTestsSuite) TestAddClientBL(t provider.T) {
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
 			newAccessUser := test.accessUser.(*method.TestAccess)
-			mockRepo.EXPECT().AddUser(test.userID, newAccessUser.Access).Return(test.accessID, nil)
+
+			serviceAccess := pkg.AccessService{
+				Access: newAccessUser.Access,
+			}
+
+			mockRepo.EXPECT().AddUser(test.userID, serviceAccess).Return(test.accessID, nil)
 
 			accessService := service.NewAccessHomeService(mockRepo)
 
-			accessID, err := accessService.AddUser(test.userID, newAccessUser.AccessService)
+			handlerAccess := pkg.AccessHandler{
+				Access: newAccessUser.Access,
+			}
+
+			accessID, err := accessService.AddUser(test.userID, handlerAccess)
 
 			t.Assert().NoError(err)
 			t.Assert().Equal(test.accessID, accessID)
@@ -67,17 +76,17 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 	}{
 		{
 			nameTest:   "Test1",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
-			accessUser: factory.New("access", "", "service"),
+			accessUser: factory.New("access", ""),
 			userID:     "12",
 		},
 	}
@@ -92,11 +101,20 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
 			newAccessUser := test.accessUser.(*method.TestAccess)
-			mockRepo.EXPECT().UpdateLevel(test.userID, newAccessUser.Access).Return(nil)
+
+			serviceAccess := pkg.AccessService{
+				Access: newAccessUser.Access,
+			}
+
+			mockRepo.EXPECT().UpdateLevel(test.userID, serviceAccess).Return(nil)
 
 			accessService := service.NewAccessHomeService(mockRepo)
 
-			err := accessService.UpdateLevel(test.userID, newAccessUser.AccessService)
+			handlerAccess := pkg.AccessHandler{
+				Access: newAccessUser.Access,
+			}
+
+			err := accessService.UpdateLevel(test.userID, handlerAccess)
 
 			t.Assert().NoError(err)
 		})
@@ -106,27 +124,33 @@ func (s *MyUnitTestsSuite) TestUpdateLevelBL(t provider.T) {
 func (s *MyUnitTestsSuite) TestUpdateStatusBL(t provider.T) {
 	tests := []struct {
 		nameTest   string
-		accessHome pkg.AccessHandler
+		accessHome pkg.AccessService
 		userID     string
 	}{
 		{
 			nameTest:   "Test1",
-			accessHome: pkg.AccessHandler{
-				AccessStatus: "blocked",
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 			userID:     "10",
 		},
 		{
 			nameTest:   "Test2",
-			accessHome: pkg.AccessHandler{
-				AccessStatus: "blocked",
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 			userID:     "11",
 		},
 		{
 			nameTest:   "Test3",
-			accessHome: pkg.AccessHandler{
-				AccessStatus: "blocked",
+			accessHome: pkg.AccessService{
+				Access: pkg.Access{
+					AccessStatus: "blocked",
+				},
 			},
 			userID:     "12",
 		},
@@ -145,7 +169,11 @@ func (s *MyUnitTestsSuite) TestUpdateStatusBL(t provider.T) {
 
 			accessService := service.NewAccessHomeService(mockRepo)
 
-			err := accessService.UpdateStatus(test.userID, test.accessHome)
+			handlerAccess := pkg.AccessHandler{
+				Access: test.accessHome.Access,
+			}
+
+			err := accessService.UpdateStatus(test.userID, handlerAccess)
 
 			t.Assert().NoError(err)
 		})
@@ -182,7 +210,7 @@ func (s *MyUnitTestsSuite) TestGetListUserHomeBL(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			listUser := make([]pkg.ClientHome, test.lenList)
+			listUser := make([]pkg.AccessInfoData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				newUser := factory.New("user", "")
 				user := newUser.(*method.TestUser)
@@ -194,7 +222,7 @@ func (s *MyUnitTestsSuite) TestGetListUserHomeBL(t provider.T) {
 				access := newAccess.(*method.TestAccess)
 
 				listUser[i].Home = home.Name
-				listUser[i].Username = user.Username
+				listUser[i].Login = user.Username
 				listUser[i].Email = user.Email
 				listUser[i].AccessLevel = access.AccessLevel
 				listUser[i].AccessStatus = "active"

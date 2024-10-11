@@ -85,15 +85,17 @@ func (s *MyUnitTestsSuite) TestGetDeviceHistoryBL(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			listHistory := make([]pkg.DevicesHistory, test.lenList)
+			listHistory := make([]pkg.DevicesHistoryData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				newHistory := factory.New("history", "")
 				history := newHistory.(*method.TestHistory)
 	
-				curHistory := pkg.DevicesHistory{
-					TimeWork: history.TimeWork,
-					AverageIndicator: history.AverageIndicator,
-					EnergyConsumed: history.EnergyConsumed,
+				curHistory := pkg.DevicesHistoryData{
+					History: pkg.History{
+						TimeWork: history.TimeWork,
+						AverageIndicator: history.AverageIndicator,
+						EnergyConsumed: history.EnergyConsumed,
+					},
 				}
 
 				listHistory[i] = curHistory

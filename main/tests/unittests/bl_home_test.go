@@ -61,17 +61,17 @@ func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 	}{
 		{
 			nameTest: "Test1",
-			home:     factory.New("home", "", "service"),
+			home:     factory.New("home", ""),
 			id:       "10",
 		},
 		{
 			nameTest: "Test2",
-			home:     factory.New("home", "", "service"),
+			home:     factory.New("home", ""),
 			id:       "11",
 		},
 		{
 			nameTest: "Test3",
-			home:     factory.New("home", "", "service"),
+			home:     factory.New("home", ""),
 			id:       "12",
 		},
 	}
@@ -87,14 +87,23 @@ func (s *MyUnitTestsSuite) TestCreateHomeBL(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newHome := test.home.(*method.TestHome)
 
-			mockRepo.EXPECT().CreateHome(newHome.Home).Return(test.id, nil)
+			homeService := pkg.HomeService{
+				Home: newHome.Home,
+			}
 
-			homeService := service.NewHomeService(mockRepo)
+			mockRepo.EXPECT().CreateHome(homeService).Return(test.id, nil)
+			mockRepo.EXPECT().GetHomeByID(test.id).Return(newHome.HomeData, nil)
 
-			homeID, err := homeService.CreateHome(newHome.Home)
+			homeSRV := service.NewHomeService(mockRepo)
+
+			homeHandler := pkg.HomeHandler{
+				Home: newHome.Home,
+			}
+
+			insertHome, err := homeSRV.CreateHome(homeHandler)
 
 			t.Assert().NoError(err)
-			t.Assert().Equal(test.id, homeID)
+			t.Assert().Equal(newHome.HomeData, insertHome)
 		})
 	}
 }
@@ -168,12 +177,12 @@ func (s *MyUnitTestsSuite) TestGetListHomeBL(t provider.T) {
 
 	for _, test := range tests {
 		t.Run(test.nameTest, func(t provider.T) {
-			listHome := make([]pkg.Home, test.lenList)
+			listHome := make([]pkg.HomeData, test.lenList)
 			for i := 0; i < test.lenList; i++ {
 				newHome := factory.New("home", "")
 				home := newHome.(*method.TestHome)
 
-				listHome[i] = home.Home
+				listHome[i] = home.HomeData
 			}
 
 			mockRepo.EXPECT().ListUserHome(test.userID).Return(listHome, nil)
