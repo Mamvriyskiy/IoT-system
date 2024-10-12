@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"fmt"
 )
 
@@ -13,7 +14,7 @@ const (
 )
 
 type TestCharacter struct {
-	pkg.TypeCharacter
+	pkg.TypeCharacterService
 }
 
 func NewCharacter() *TestCharacter {
@@ -39,11 +40,12 @@ func (b *TestCharacter) generateChar() string {
 	return string(chr)
 }
 
-func (tu TestCharacter) InsertObject(connDB *sqlx.DB) (int, error) {
-	var characterID int
-	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure)
-		values ($1, $2) RETURNING typecharacterID`)
-	row := connDB.QueryRow(query2, tu.Type, tu.UnitMeasure)
+func (tu TestCharacter) InsertObject(connDB *sqlx.DB) (string, error) {
+	typecharacterID := uuid.New()
+	var characterID string
+	query2 := fmt.Sprintf(`INSERT INTO typecharacter (typecharacter, unitmeasure, typecharacterID)
+		values ($1, $2, $3) RETURNING typecharacterID`)
+	row := connDB.QueryRow(query2, tu.Type, tu.UnitMeasure, typecharacterID)
 	
 	err := row.Scan(&characterID)
 

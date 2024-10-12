@@ -13,7 +13,7 @@ const (
 )
 
 type TestEmail struct {
-	pkg.Email
+	pkg.EmailService
 }
 
 func NewEmail(email string) *TestEmail {
@@ -28,7 +28,7 @@ func (b *TestEmail) BuilderEmail(email string) *TestEmail {
 	if email == "" {
 		b.generateEmail()
 	} else {
-		b.Email.Email = email
+		b.Email = email
 	}
 
 	return b
@@ -43,7 +43,7 @@ func (b *TestEmail) generateCode() {
 }
 
 func (b *TestEmail) generateEmail() {
-	b.Email.Email = createEmail(lengthEmail, lengtDomainLeft, lengtDomainRight)
+	b.Email = createEmail(lengthEmail, lengtDomainLeft, lengtDomainRight)
 }
 
 func (b *TestEmail) generateToken() {
@@ -56,6 +56,6 @@ func (b *TestEmail) generateToken() {
 	b.Token = string(token)
 }
 
-func (tu TestEmail) InsertObject(connDB *sqlx.DB) (int, error) {
-	return 0, nil
+func (tu TestEmail) InsertObject(connDB *sqlx.DB) (string, error) {
+	return "", nil
 }

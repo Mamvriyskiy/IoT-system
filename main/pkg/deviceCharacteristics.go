@@ -1,14 +1,14 @@
 package pkg
 
-type DeviceCharacteristics struct {
-	ID              int     `db:"id"       json:"-"`
-	DeviceID        int     `db:"deviceid"         json:"deviceid"`
+type DeviceCharacteristicsService struct {
+	ID              string     `db:"id"       json:"-"`
+	DeviceID        string     `db:"deviceid"         json:"deviceid"`
 	Values          float64 `db:"valueschar" json:"values"`
 	TypeCharacterID int     `db:"typecharacterid"   json:"typecharacterid"`
 }
 
-type TypeCharacter struct {
-	ID          int     `db:"id"       json:"-"`
+type TypeCharacterService struct {
+	ID          string     `db:"id"       json:"-"`
 	Type        string     `db:"typecharacter"         json:"type"`
 	UnitMeasure string`db:"unitmeasure" json:"unitmeasure"`
 }

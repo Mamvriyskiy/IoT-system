@@ -11,10 +11,6 @@ import (
 
 var ErrNoFloat64Interface = errors.New("отсутствует интерфейс {} для float64")
 
-type getAllListDevices struct {
-	Data []pkg.Devices `json:"data"`
-}
-
 func (h *Handler) getListDevice(c *gin.Context) {
 	homeID := c.Param("homeID")
 
@@ -44,22 +40,19 @@ func (h *Handler) getListDevice(c *gin.Context) {
 func (h *Handler) createDevice(c *gin.Context) {
 	id, ok := c.Get("userId")
 	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
+		logger.Log("Warning", "Get", "Error get userID from context", nil, id)
 		return
 	}
 
-	userID, ok := id.(float64)
+	userID, ok := id.(string)
 	if !ok {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"errors": "Ошибка обновления статуса",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		logger.Log("Warning", "Get", "userID is not a string", nil, "userID")
 		return
 	}
 	
 	homeID := c.Param("homeID")
 
-	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	accessLevel, err := h.services.IUser.GetAccessLevel(userID, homeID)
 	if accessLevel != 4 || err != nil {
 		c.JSON(http.StatusForbidden, map[string]string{
 			"errors": "Недостаточно прав для удаления",
@@ -68,7 +61,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 		return
 	}
 
-	var input pkg.Devices
+	var input pkg.DevicesHandler
 	if err := c.BindJSON(&input); err != nil {
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
@@ -83,12 +76,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"DeviceID": device.DeviceID,
-		"Name": device.Name,
-		"Brand": device.Brand,
-		"Status": device.Status,
-	})
+	c.JSON(http.StatusOK, device)
 
 	logger.Log("Info", "", "A device has been created", nil)
 }
@@ -96,22 +84,19 @@ func (h *Handler) createDevice(c *gin.Context) {
 func (h *Handler) deleteDevice(c *gin.Context) {
 	id, ok := c.Get("userId")
 	if !ok {
-		logger.Log("Warning", "Get", "Error get userID from context", nil, "userID")
+		logger.Log("Warning", "Get", "Error get userID from context", nil, id)
 		return
 	}
 
-	userID, ok := id.(float64)
+	userID, ok := id.(string)
 	if !ok {
-		c.JSON(http.StatusInternalServerError, map[string]interface{}{
-			"errors": "Ошибка обновления статуса",
-		})
-		logger.Log("Error", "userID.(float64)", "Error:", ErrNoFloat64Interface, "")
+		logger.Log("Warning", "Get", "userID is not a string", nil, "userID")
 		return
 	}
 	
 	homeID := c.Param("homeID")
 
-	accessLevel, err := h.services.IUser.GetAccessLevel(int(userID), homeID)
+	accessLevel, err := h.services.IUser.GetAccessLevel(userID, homeID)
 	if accessLevel != 4 || err != nil {
 		c.JSON(http.StatusForbidden, map[string]string{
 			"errors": "Недостаточно прав для удаления",
@@ -148,12 +133,7 @@ func (h *Handler) getInfoDevice(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{
-		"DeviceID": device.DeviceID,
-		"Name": device.Name,
-		"Brand": device.Brand,
-		"Status": device.Status,
-	})
+	c.JSON(http.StatusOK, device)
 
 	logger.Log("Info", "", "A device has been deleted", nil)
 }

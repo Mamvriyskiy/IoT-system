@@ -16,7 +16,6 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/tests/factory"
 	method "github.com/Mamvriyskiy/database_course/main/tests/method"
-	//"fmt"
 )
 
 const (
@@ -24,7 +23,7 @@ const (
 )
 
 type Response struct {
-    ID int `json:"id"`
+    ID string `json:"id"`
 }
 
 func generatePasswordHash(password string) string {
@@ -82,19 +81,19 @@ func (s *MyEtoESuite) TestSignUp(t provider.T) {
 			t.Require().NoError(err)
 
 
-			newUser.User.ID = response.ID
-			query := `SELECT password, login, email FROM client WHERE clientid = $1`
-			row := connDB.QueryRow(query, response.ID)
+			newUser.ID = response.ID
 
-			retrievedUser := pkg.User{
-				ID: response.ID,
-			}
+			retrievedUser := pkg.UserData{}
 
 			newUser.Password = generatePasswordHash(newUser.Password)
+
+			query := `SELECT password, login, email FROM client WHERE email = $1`
+			row := connDB.QueryRow(query, newUser.Email)
+
+
 			err = row.Scan(&retrievedUser.Password, &retrievedUser.Username, &retrievedUser.Email)
 			t.Require().NoError(err)
-			t.Assert().Equal(newUser.User, retrievedUser)
+			t.Assert().Equal(newUser.UserData, retrievedUser)
 		})
 	}
 }
-

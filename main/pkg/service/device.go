@@ -25,41 +25,49 @@ func UseCryptoRandIntn(max int) int {
 	return int(n.Int64())
 }
 
-func (s *DeviceService) GetListDevices(homeID string) ([]pkg.DevicesInfo, error) {
+func (s *DeviceService) GetListDevices(homeID string) ([]pkg.DevicesData, error) {
 	return s.repo.GetListDevices(homeID)
 }
 
-func (s *DeviceService) CreateDevice(homeID string, device pkg.Devices) (pkg.Devices, error) {
+func (s *DeviceService) CreateDevice(homeID string, device pkg.DevicesHandler) (pkg.DevicesData, error) {
 	deviceTypes := []string{"Type1", "Type2", "Type3"}
 	brands := []string{"Brand1", "Brand2", "Brand3"}
 
-	device.TypeDevice = deviceTypes[UseCryptoRandIntn(len(deviceTypes))]
-	device.Status = "Inactive"
-	device.Brand = brands[UseCryptoRandIntn(len(brands))]
+	deviceService := pkg.DevicesService{
+		Devices: device.Devices,
+		DevicesInfo: pkg.DevicesInfo{
+			TypeDevice: deviceTypes[UseCryptoRandIntn(len(deviceTypes))],
+			Status: "Inactive", 
+			Brand: brands[UseCryptoRandIntn(len(brands))],
+		},
+	}
 
-	character := pkg.DeviceCharacteristics{
+	character := pkg.DeviceCharacteristicsService{
 		Values: 123.45,
 	}
 
-	typeCharacter := pkg.TypeCharacter{
+	typeCharacter := pkg.TypeCharacterService{
 		Type: "weight",
 		UnitMeasure: "kg",
 	}
 
 	var err error
-	device.DeviceID, err = s.repo.CreateDevice(homeID, device, character, typeCharacter)
-
-	return device, err
+	deviceID, err := s.repo.CreateDevice(homeID, deviceService, character, typeCharacter)
+	if err != nil {
+		return pkg.DevicesData{}, err
+	}
+	
+	return s.repo.GetDeviceByID(deviceID)
 }
 
 func (s *DeviceService) DeleteDevice(deviceID string) error {
 	return s.repo.DeleteDevice(deviceID)
 }
 
-func (s *DeviceService) GetDeviceByID(deviceID string) (pkg.Devices, error) {
+func (s *DeviceService) GetDeviceByID(deviceID string) (pkg.DevicesData, error) {
 	return s.repo.GetDeviceByID(deviceID)
 }
 
-func (s *DeviceService) GetInfoDevice(deviceID string) (pkg.Devices, error) {
+func (s *DeviceService) GetInfoDevice(deviceID string) (pkg.DevicesData, error) {
 	return s.repo.GetDeviceByID(deviceID)
 }

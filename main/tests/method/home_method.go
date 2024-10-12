@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"fmt"
 )
 
@@ -13,7 +14,7 @@ const (
 )
 
 type TestHome struct {
-	pkg.Home
+	pkg.HomeData
 }
 
 func NewHome() *TestHome {
@@ -42,19 +43,21 @@ func (b *TestHome) generateName() {
 func (b *TestHome) generateGeographCoords() {
 	n, err := rand.Int(rand.Reader, big.NewInt(int64(lengthGeographCoords)))
 	if err != nil {
-		b.GeographCoords = 11111111
+		b.Latitude = 11111111
+		b.Longitude = 11111111
 	}
 
-	b.GeographCoords = int(n.Int64())
+	b.Latitude = float64(n.Int64())
+	b.Longitude = float64(n.Int64())
 }
 
-func (tu TestHome) InsertObject(connDB *sqlx.DB) (int, error) {
-	var homeID int
-	query := fmt.Sprintf("INSERT INTO %s (coords, name) values ($1, $2) RETURNING homeID", "home")
-	row := connDB.QueryRow(query, tu.GeographCoords, tu.Name)
-	if err := row.Scan(&homeID); err != nil {
-		return 0, err
-	}
+func (tu TestHome) InsertObject(connDB *sqlx.DB) (string, error) {
+	homeID := uuid.New()
+	var id string
+	query := fmt.Sprintf("INSERT INTO %s (latitude, longitude, name, homeID) values ($1, $2, $3, $4) RETURNING homeID", "home")
+	row := connDB.QueryRow(query, tu.Latitude, tu.Longitude, tu.Name, homeID)
 
-	return homeID, nil
+	err := row.Scan(&id)
+
+	return id, err
 }

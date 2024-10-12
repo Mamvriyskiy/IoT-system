@@ -49,15 +49,15 @@ func (s *MyIntroTestsSuite) TestCreateClientIntro(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newUser := test.user.(*method.TestUser)
 
-			resultID, err := services.IUser.CreateUser(newUser.User)
+			clientID, err := services.IUser.CreateUser(newUser.User)
 			t.Require().NoError(err)
 
-			newUser.User.ID = resultID
+			newUser.User.ID = clientID
 			query := `SELECT password, login, email FROM client WHERE clientid = $1`
-			row := connDB.QueryRow(query, resultID)
+			row := connDB.QueryRow(query, clientID)
 
 			retrievedUser := pkg.User{
-				ID: resultID,
+				ID: clientID,
 			}
 			newUser.Password = generatePasswordHash(newUser.Password)
 
@@ -196,7 +196,7 @@ func (s *MyIntroTestsSuite) TestChangePasswordIntro(t provider.T) {
 func (s *MyIntroTestsSuite) TestCheckCodeIntro(t provider.T) {
 	tests := []struct {
 		nameTest    string
-		ClientID    int
+		ClientID    string
 		Token       string
 		SearchToken string
 		Code        string
@@ -205,7 +205,7 @@ func (s *MyIntroTestsSuite) TestCheckCodeIntro(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			ClientID:    111,
+			ClientID:    "123e4567-e89b-12d3-a456-426614174000",
 			Token:       "mcakmsfkdfkdf",
 			SearchToken: "mcakmsfkdfkdf",
 			Code:        "avbdkk",
@@ -213,8 +213,8 @@ func (s *MyIntroTestsSuite) TestCheckCodeIntro(t provider.T) {
 			ResultError: nil,
 		},
 		{
-			nameTest:    "Test3",
-			ClientID:    131,
+			nameTest:    "Test2",
+			ClientID:    "123e4567-e89b-12d3-a456-426614174001",
 			Token:       "dasnfjajkcddj",
 			SearchToken: "dasnfjajkcddj",
 			Code:        "czxc",
@@ -222,8 +222,8 @@ func (s *MyIntroTestsSuite) TestCheckCodeIntro(t provider.T) {
 			ResultError: errors.New("Negative code"),
 		},
 		{
-			nameTest:    "Test4",
-			ClientID:    141,
+			nameTest:    "Test3",
+			ClientID:    "123e4567-e89b-12d3-a456-426614174002",
 			Token:       "ghfdffcbhjbhjbbf",
 			SearchToken: "asklfkdmjf",
 			Code:        "3214dsaf",

@@ -38,16 +38,18 @@ func generateRandomFloat(max float64) float64 {
 	return float64(n.Int64()) / 100.0
 }
 
-func (s *HistoryDeviceService) CreateDeviceHistory(deviceID string) (int, error) {
-	history := pkg.AddHistory{
-		TimeWork: generateRandomInt(101),
-		AverageIndicator: generateRandomFloat(100),
-		EnergyConsumed: generateRandomInt(101),
+func (s *HistoryDeviceService) CreateDeviceHistory(deviceID string) (string, error) {
+	history := pkg.HistoryService{
+		History: pkg.History{
+			TimeWork: generateRandomInt(101),
+			AverageIndicator: generateRandomFloat(100),
+			EnergyConsumed: generateRandomInt(101),
+		},
 	}
 
 	return s.repo.CreateDeviceHistory(deviceID, history)
 }
 
-func (s *HistoryDeviceService) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistory, error) {
+func (s *HistoryDeviceService) GetDeviceHistory(deviceID string) ([]pkg.DevicesHistoryData, error) {
 	return s.repo.GetDeviceHistory(deviceID)
 }

@@ -5,6 +5,7 @@ import (
 	"math/big"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/jmoiron/sqlx"
+	"github.com/google/uuid"
 	"fmt"
 )
 
@@ -13,7 +14,7 @@ const (
 )
 
 type TestDevice struct {
-	pkg.Devices
+	pkg.DevicesData
 }
 
 func NewDevice() *TestDevice {
@@ -41,16 +42,26 @@ func (b *TestDevice) generateDev() string {
 	return string(dev)
 }
 
-func (tu TestDevice) InsertObject(connDB *sqlx.DB) (int, error) {
-	query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, Brand, homeID)
-			values ($1, $2, $3, $4, $5) RETURNING deviceID`, "device")
+func (tu TestDevice) InsertObject(connDB *sqlx.DB) (string, error) {
+	deviceID := uuid.New()
+
+	query := fmt.Sprintf(`INSERT INTO %s (name, TypeDevice, Status, Brand, homeID, deviceID)
+			values ($1, $2, $3, $4, $5, $6) RETURNING deviceID`, "device")
+
 	row := connDB.QueryRow(query, tu.Name, tu.TypeDevice,
-		tu.Status, tu.Brand, tu.HomeID)
+		tu.Status, tu.Brand, uuid.New(), deviceID)
+		// fmt.Println(reflect.TypeOf(row))
+	
+	// if tu.HomeID == "" {
+	// 	row = connDB.QueryRow(query, tu.Name, tu.TypeDevice,
+	// 		tu.Status, tu.Brand, uuid.New(), deviceID)
+	// } else {
+	// 	row = connDB.QueryRow(query, tu.Name, tu.TypeDevice,
+	// 		tu.Status, tu.Brand, tu.HomeID, deviceID)
+	// }
 
-	var deviceID int
-	if err := row.Scan(&deviceID); err != nil {
-		return 0, err
-	}
+	var id string
+	err := row.Scan(&id)
 
-	return deviceID, nil
+	return id, err
 }

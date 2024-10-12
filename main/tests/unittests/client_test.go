@@ -6,7 +6,7 @@ import (
 	"github.com/ozontech/allure-go/pkg/framework/provider"
 	"github.com/Mamvriyskiy/database_course/main/tests/factory"
 	method "github.com/Mamvriyskiy/database_course/main/tests/method"
-	//"reflect"
+	"github.com/google/uuid"
 	"errors"
 	"strconv"
 )
@@ -36,20 +36,24 @@ func (s *MyUnitTestsSuite) TestCreateClient(t provider.T) {
 		t.Run(test.nameTest, func(t provider.T) {
 			newUser := test.user.(*method.TestUser)
 			
-			resultID, err := repos.IUserRepo.CreateUser(newUser.User)
+			userService := pkg.UserService{
+				User: newUser.User,
+			}
+
+			resultID, err := repos.IUserRepo.CreateUser(userService)
 			t.Require().NoError(err)
 
-			newUser.User.ID = resultID
+			newUser.UserData.ID = resultID
 			query := `SELECT password, login, email FROM client WHERE clientid = $1`
 			row := connDB.QueryRow(query, resultID)
 
-			retrievedUser := pkg.User{
+			retrievedUser := pkg.UserData{
 				ID: resultID,
 			}
 
 			err = row.Scan(&retrievedUser.Password, &retrievedUser.Username, &retrievedUser.Email)
 			t.Require().NoError(err)
-			t.Assert().Equal(newUser.User, retrievedUser)
+			t.Assert().Equal(newUser.UserData, retrievedUser)
 		})
 	}
 }
@@ -177,7 +181,7 @@ func (s *MyUnitTestsSuite) TestChangePassword(t provider.T) {
 func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 	tests := []struct {
 		nameTest    string
-		ClientID    int
+		ClientID    uuid.UUID
 		Token       string
 		SearchToken string
 		Code        string
@@ -185,7 +189,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 	}{
 		{
 			nameTest:    "Test1",
-			ClientID:    111,
+			ClientID:    uuid.New(),
 			Token:       "mcakmsfkdfkdf",
 			SearchToken: "mcakmsfkdfkdf",
 			Code:        "avbdkk",
@@ -193,7 +197,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 		},
 		{
 			nameTest:    "Test3",
-			ClientID:    131,
+			ClientID:    uuid.New(),
 			Token:       "dasnfjajkcddj",
 			SearchToken: "dasnfjajkcddj",
 			Code:        "czxc",
@@ -201,7 +205,7 @@ func (s *MyUnitTestsSuite) TestGetCode(t provider.T) {
 		},
 		{
 			nameTest:    "Test4",
-			ClientID:    141,
+			ClientID:    uuid.New(),
 			Token:       "ghfdffcbhjbhjbbf",
 			SearchToken: "asklfkdmjf",
 			Code:        "3214dsaf",
@@ -264,7 +268,7 @@ func (s *MyUnitTestsSuite) TestAddCode(t provider.T) {
 
 			t.Require().NoError(err)
 
-			err = repos.IUserRepo.AddCode(newEmail.Email)
+			err = repos.IUserRepo.AddCode(newEmail.EmailService)
 			if err != nil {
 				t.Require().Equal(err, test.ResultError)
 				return

@@ -19,11 +19,5 @@ type AddHistory struct {
 	AverageIndicator float64 `db:"averageindicator" json:"average"`
 	EnergyConsumed   int     `db:"energyconsumed"   json:"energy"`
 	Home             string  `db:"home"   			json:"home"`
-	DeviceID		 int     `db:"deviceid"   		json:"deviceid"`
-}
-
-type Email struct {
-	Email string `db:"email" json:"email"`
-	Code  int    `db:"code" json:"code"`
-	Token string `db:"token"`
+	DeviceID		 string     `db:"deviceid"   		json:"deviceid"`
 }

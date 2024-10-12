@@ -1,18 +1,27 @@
 package pkg
 
 type Devices struct {
-	Home       string `json:"home"`
-	Name       string `db:"name"             json:"name"`
-	TypeDevice string `db:"typedevice"       json:"typeDevice"`
-	Status     string `db:"status"           json:"status"`
-	Brand      string `db:"brand"            json:"brand"`
-	DeviceID   int    `db:"deviceid"         json:"deviceID"`
-	HomeID 	   int
+	Name string `db:"name" json:"name"`
+}
+
+type DevicesHandler struct {
+	Devices
 }
 
 type DevicesInfo struct {
-	Name       string `db:"name"             json:"name"`
-	Status     string `db:"status"           json:"status"`
-	Brand      string `db:"brand"            json:"brand"`
-	DeviceID   int    `db:"deviceid"         json:"deviceID"`
+	TypeDevice string `db:"typedevice" json:"typedevice"`
+	Status     string `db:"status" json:"status"`
+	Brand      string `db:"brand" json:"brand"`
+}
+
+type DevicesService struct {
+	Devices
+	DevicesInfo
+}
+
+type DevicesData struct {
+	Devices
+	ID         string `db:"deviceid"`
+	HomeID         string `db:"homeid"`
+	DevicesInfo
 }

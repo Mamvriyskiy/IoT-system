@@ -1,30 +1,30 @@
 -- +goose Up
 -- +goose StatementBegin
 CREATE TABLE IF NOT EXISTS client (
-    clientID SERIAL,
+    clientID UUID,
     password varchar(255),
     login varchar(255),
     email varchar(255)
 );
 
 CREATE TABLE IF NOT EXISTS access (
-    accessID SERIAL,
-    clientID int,
-    homeID int,
+    accessID UUID,
+    clientID UUID,
+    homeID UUID,
     accessStatus varchar(15),
     accessLevel int
 );
 
 CREATE TABLE IF NOT EXISTS home (
-    homeID SERIAL,
+    homeID UUID,
     latitude REAL,
     longitude REAL,
     name varchar(20)
 );
 
 CREATE TABLE IF NOT EXISTS device (
-    deviceID SERIAL,
-    homeID int,
+    deviceID UUID,
+    homeID UUID,
     name varchar(20),
     typeDevice varchar(20),
     status varchar(10),
@@ -32,33 +32,33 @@ CREATE TABLE IF NOT EXISTS device (
 );
 
 CREATE TABLE IF NOT EXISTS deviceCharacteristics (
-    characterid serial,
-    deviceID int,
+    characterid UUID,
+    deviceID UUID,
     valuesChar DECIMAL,
-    typecharacterid int
+    typecharacterid UUID
 );
 
 CREATE TABLE IF NOT EXISTS typeCharacter (
-    typecharacterid serial,
+    typecharacterid UUID,
     typecharacter varchar(25),
     unitmeasure varchar(15)
 );
 
 CREATE TABLE IF NOT EXISTS historyDev (
-    historyDevID SERIAL,
+    historyDevID UUID,
     timeWork int,
     AverageIndicator decimal,
     EnergyConsumed int
 );
 
 CREATE TABLE IF NOT EXISTS historyDevice (
-    historyDevID int,
-    deviceID int
+    historyDevID UUID,
+    deviceID UUID
 );
 
 CREATE TABLE IF NOT EXISTS resetPswrd (
     resetCode varchar(6),
-    clientID int,
+    clientID UUID,
     token text
 );
 -- +goose StatementEnd
