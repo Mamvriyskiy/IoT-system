@@ -3,11 +3,13 @@ package handler
 import (
 	"net/http"
 	"strings"
-
+	_ "github.com/santosh/gingo/docs"
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg/service"
 	jwt "github.com/dgrijalva/jwt-go"
 	"github.com/gin-gonic/gin"
+	"github.com/swaggo/files"
+	"github.com/swaggo/gin-swagger"
 )
 
 const signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
@@ -74,6 +76,7 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+// @title     Gingo Bookstore API
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
 
@@ -81,6 +84,12 @@ func (h *Handler) InitRouters() *gin.Engine {
 
 	router.Static("/css", "./templates/css")
 	router.LoadHTMLGlob("templates/*.html")
+
+	router.Static("/docs", "./docs")
+
+    // Настройка Swagger UI
+    router.GET("/api/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+        ginSwagger.URL("/docs/swagger.yaml")))
 
 	app := router.Group("/app")
 	app.GET("/menu", func(ctx *gin.Context) {

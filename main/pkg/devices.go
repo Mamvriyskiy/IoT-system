@@ -21,7 +21,7 @@ type DevicesService struct {
 
 type DevicesData struct {
 	Devices
-	ID         string `db:"deviceid"`
-	HomeID         string `db:"homeid"`
+	ID     string `db:"deviceid"`
+	HomeID string `db:"homeid"`
 	DevicesInfo
 }

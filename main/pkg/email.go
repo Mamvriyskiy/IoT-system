@@ -4,7 +4,6 @@ type EmailUser struct {
 	Email string `db:"email" json:"email"`
 }
 
-
 type EmailHandler struct {
 	EmailUser
 }
