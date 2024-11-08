@@ -1,0 +1,10 @@
+{"level":"info","ts":1730549111.967508,"msg":"event: InitConfig"}
+{"level":"info","ts":1730549111.993286,"msg":"event: Load env"}
+{"level":"info","ts":1730549112.036909,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1730549112.064348,"msg":"event: Create router"}
+{"level":"info","ts":1730549119.504023,"msg":"event: User already register: eewl@mail.ru"}
+{"level":"info","ts":1730549210.952944,"msg":"event: User user is registered"}
+{"level":"info","ts":1730833536.182826,"msg":"event: InitConfig"}
+{"level":"info","ts":1730833536.207169,"msg":"event: Load env"}
+{"level":"info","ts":1730833536.364463,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1730833536.392363,"msg":"event: Create router"}

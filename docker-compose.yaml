@@ -2,55 +2,109 @@ version: "3.5"
 
 services:
   db:
-    image: postgres:15.4-alpine
+    image: postgres:latest
+    environment:
+      POSTGRES_USER: Misfio32
+      POSTGRES_DB: postgres
+      POSTGRES_PASSWORD: Smena
     ports:
       - "5432:5432"
-    environment:
-      - POSTGRES_PASSWORD=Smena
-      - POSTGRES_USER=Misfio32
     volumes:
       - type: bind
-        source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData
-        target: /mnt
+        source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/master
+        target: /var/lib/postgresql/data
+      - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/init.sql:/docker-entrypoint-initdb.d/init.sql
+    command: |
+      postgres 
+      -c wal_level=replica 
+      -c hot_standby=on 
+      -c max_wal_senders=10 
+      -c max_replication_slots=10 
+      -c hot_standby_feedback=on
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
-      interval: 1s
-      timeout: 3s
+      interval: 5s
+      timeout: 10s
       retries: 5
+    networks:
+      - pgnetwork
 
-  mail:
-    image: mailhog/mailhog
-    ports:
-      - 1025:1025
-      - 8025:8025
-
-  server:
-    image: my-golang-server
-    ports:
-      - "8000:8000"
-    depends_on:
-      db:
-        condition: service_healthy
-
-  nginx:
-    image: nginx:alpine
-    depends_on:
-      - server
-    restart: always
-    ports:
-      - "8081:8081"
-    volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
-      - ./nginx/access.log:/etc/nginx/access.log
-      - ./nginx/error.log:/etc/nginx/error.log
-      - ./nginx/html:/etc/nginx/html
-
-
-  swagger:
-    image: swaggerapi/swagger-ui
-    ports:
-      - "8080:8080"
+  replica1:
+    image: postgres:latest
     environment:
-      - SWAGGER_JSON=./mnt/swagger.yaml
+      POSTGRES_USER: replica1
+      POSTGRES_PASSWORD: Smena
+    ports:
+      - "5438:5432"
+    depends_on:
+      - db
     volumes:
-      - ./main/swagger.yaml:/mnt/swagger.yaml
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/replica1
+        target: /var/lib/postgresql/data
+    command: |
+      bash -c "
+      rm -rf /var/lib/postgresql/data/*
+      sleep 15s
+      until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot --host=db --port=5432 --username=Misfio32
+      do
+        echo 'Waiting for primary to connect...'
+        sleep 1s
+      done
+      echo 'Backup done, starting replica...'
+      chmod 0700 /var/lib/postgresql/data
+      postgres"
+    networks:
+      - pgnetwork
+
+  # mail:
+  #   image: mailhog/mailhog
+  #   ports:
+  #     - 1025:1025
+  #     - 8025:8025
+
+  # server:
+  #   image: my-golang-server
+  #   ports:
+  #     - "8000:8000"
+  #   depends_on:
+  #     db:
+  #       condition: service_healthy
+
+  # nginx:
+  #   image: nginx:alpine
+  #   depends_on:
+  #     - server
+  #   restart: always
+  #   ports:
+  #     - "8081:8081"
+  #   volumes:
+  #     - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+  #     - ./nginx/access.log:/etc/nginx/access.log
+  #     - ./nginx/error.log:/etc/nginx/error.log
+  #     - ./nginx/html:/etc/nginx/html
+
+  # pgadmin:
+  #   image: dpage/pgadmin4
+  #   ports:
+  #     - "5050:80" # доступ к pgAdmin через http://localhost:5050
+  #   environment:
+  #     PGADMIN_DEFAULT_EMAIL: prostolist32@list.ru # email для входа
+  #     PGADMIN_DEFAULT_PASSWORD: 12345 # пароль для входа
+  #   volumes:
+  #     - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData # постоянное хранилище для данных pgAdmin
+  #   networks:
+  #     - pgnetwork
+
+  # swagger:
+  #   image: swaggerapi/swagger-ui
+  #   ports:
+  #     - "8080:8080"
+  #   environment:
+  #     - SWAGGER_JSON=./mnt/swagger.yaml
+  #   volumes:
+  #     - ./main/swagger.yaml:/mnt/swagger.yaml
+
+networks:
+  pgnetwork:
+    driver: bridge

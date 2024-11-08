@@ -106,6 +106,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 }
 
 func (h *Handler) signIn(c *gin.Context) {
+	fmt.Println("+")
 	var input pkg.UserHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
@@ -128,6 +129,7 @@ func (h *Handler) signIn(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(user, token, err)
 	c.JSON(http.StatusOK, map[string]interface{}{
 		"Token": token,
 		"Login": user.Username,

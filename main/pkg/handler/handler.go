@@ -3,6 +3,7 @@ package handler
 import (
 	"net/http"
 	"strings"
+	"fmt"
 	_ "github.com/santosh/gingo/docs"
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg/service"
@@ -10,6 +11,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
+	"go.uber.org/zap"
+	"time"
 )
 
 const signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
@@ -76,9 +79,36 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
+func TrafficLoggingMiddleware() gin.HandlerFunc {
+    return func(c *gin.Context) {
+        start := time.Now()
+
+        // Логируем запрос
+        zap.L().Info("Incoming request",
+            zap.String("method", c.Request.Method),
+            zap.String("url", c.Request.URL.String()),
+            zap.String("client_ip", c.ClientIP()),
+            zap.Any("headers", c.Request.Header),
+        )
+
+        // Выполняем запрос
+        c.Next()
+
+        // Логируем ответ
+        zap.L().Info("Outgoing response",
+            zap.Int("status", c.Writer.Status()),
+            zap.Duration("latency", time.Since(start)),
+            zap.String("client_ip", c.ClientIP()),
+        )
+    }
+}
+
+
 // @title     Gingo Bookstore API
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
+
+	//router.Use(TrafficLoggingMiddleware())
 
 	router.Use(AuthMiddleware())
 
@@ -87,8 +117,9 @@ func (h *Handler) InitRouters() *gin.Engine {
 
 	router.Static("/docs", "./docs")
 
+	fmt.Println("+++")
     // Настройка Swagger UI
-    router.GET("/api/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
+    router.GET("/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
         ginSwagger.URL("/docs/swagger.yaml")))
 
 	app := router.Group("/app")
