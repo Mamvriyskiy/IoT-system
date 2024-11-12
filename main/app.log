@@ -8,3 +8,20 @@
 {"level":"info","ts":1730833536.207169,"msg":"event: Load env"}
 {"level":"info","ts":1730833536.364463,"msg":"event: The connection to the database is established"}
 {"level":"info","ts":1730833536.392363,"msg":"event: Create router"}
+{"level":"info","ts":1731152362.1129758,"msg":"event: InitConfig"}
+{"level":"info","ts":1731152362.137984,"msg":"event: Load env"}
+{"level":"info","ts":1731152362.969156,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1731152362.9956732,"msg":"event: Create router"}
+{"level":"info","ts":1731427106.171786,"msg":"event: InitConfig"}
+{"level":"info","ts":1731427106.1973839,"msg":"event: Load env"}
+{"level":"info","ts":1731427106.524108,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1731427106.5494242,"msg":"event: Create router"}
+{"level":"info","ts":1731434280.466012,"msg":"event: InitConfig"}
+{"level":"info","ts":1731434280.502495,"msg":"event: Load env"}
+{"level":"error","ts":1731434280.5270998,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error check connection:","func":"Ping()","param":[""]}
+{"level":"error","ts":1731434280.5483892,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error connect DB:","func":" sqlx.Open","param":["postgres","host=localhost port=5432 user=Misfio32 dbname=postgres password='' sslmode=Smena%!(EXTRA string=postgres, string=disable)"]}
+{"level":"error","ts":1731434280.5813172,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error config DB:","func":"initCongig","param":[""]}
+{"level":"info","ts":1731434351.058592,"msg":"event: InitConfig"}
+{"level":"info","ts":1731434351.08864,"msg":"event: Load env"}
+{"level":"info","ts":1731434351.495254,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1731434351.529023,"msg":"event: Create router"}

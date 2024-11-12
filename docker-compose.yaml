@@ -1,12 +1,19 @@
 version: "3.5"
 
 services:
-  db:
-    image: postgres:latest
+  postgres:
+    container_name: postgres_container
+    image: bitnami/postgresql
     environment:
-      POSTGRES_USER: Misfio32
-      POSTGRES_DB: postgres
-      POSTGRES_PASSWORD: Smena
+      POSTGRESQL_PGAUDIT_LOG: READ,WRITE
+      POSTGRESQL_LOG_HOSTNAME: true
+      POSTGRESQL_REPLICATION_MODE: master
+      POSTGRESQL_REPLICATION_USER: repl_user
+      POSTGRESQL_REPLICATION_PASSWORD: Smena
+      POSTGRESQL_USERNAME: Misfio32
+      POSTGRESQL_PASSWORD: Smena
+      POSTGRESQL_DATABASE: postgres
+      POSTGRESQL_REPLICATION_USE_PASSFILE: no 
     ports:
       - "5432:5432"
     volumes:
@@ -14,13 +21,6 @@ services:
         source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/master
         target: /var/lib/postgresql/data
       - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/init.sql:/docker-entrypoint-initdb.d/init.sql
-    command: |
-      postgres 
-      -c wal_level=replica 
-      -c hot_standby=on 
-      -c max_wal_senders=10 
-      -c max_replication_slots=10 
-      -c hot_standby_feedback=on
     healthcheck:
       test: ["CMD-SHELL", "pg_isready"]
       interval: 5s
@@ -29,31 +29,24 @@ services:
     networks:
       - pgnetwork
 
-  replica1:
-    image: postgres:latest
+  postgres_replica:
+    container_name: postgres_replica_container
+    image: bitnami/postgresql
     environment:
-      POSTGRES_USER: replica1
-      POSTGRES_PASSWORD: Smena
+      POSTGRESQL_PASSWORD: Smena
+      POSTGRESQL_MASTER_HOST: postgres
+      POSTGRESQL_PGAUDIT_LOG: READ
+      POSTGRESQL_LOG_HOSTNAME: true
+      POSTGRESQL_REPLICATION_MODE: slave
+      POSTGRESQL_REPLICATION_USER: repl_user
+      POSTGRESQL_REPLICATION_PASSWORD: Smena
+      POSTGRESQL_MASTER_PORT_NUMBER: 5432
+      POSTGRESQL_REPLICATION_USE_PASSFILE: no 
+      ALLOW_EMPTY_PASSWORD: yes
     ports:
-      - "5438:5432"
+      - "5433:5432"
     depends_on:
-      - db
-    volumes:
-      - type: bind
-        source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/replica1
-        target: /var/lib/postgresql/data
-    command: |
-      bash -c "
-      rm -rf /var/lib/postgresql/data/*
-      sleep 15s
-      until pg_basebackup --pgdata=/var/lib/postgresql/data -R --slot=replication_slot --host=db --port=5432 --username=Misfio32
-      do
-        echo 'Waiting for primary to connect...'
-        sleep 1s
-      done
-      echo 'Backup done, starting replica...'
-      chmod 0700 /var/lib/postgresql/data
-      postgres"
+      - postgres
     networks:
       - pgnetwork
 
@@ -63,13 +56,37 @@ services:
   #     - 1025:1025
   #     - 8025:8025
 
-  # server:
-  #   image: my-golang-server
-  #   ports:
-  #     - "8000:8000"
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy
+  server:
+    # image: my-golang-server
+    build:
+      dockerfile: main/Dockerfile
+    ports:
+      - "8000:8000"
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+    networks:
+      - pgnetwork
+
+  mirror_server1:
+    # image: my-golang-server
+    build:
+      dockerfile: main/Dockerfile2
+    ports:
+      - "8001:8000"
+    depends_on:
+      postgres_replica:
+        condition: service_healthy
+
+  mirror_server2:
+    # image: my-golang-server
+    build:
+      dockerfile: main/Dockerfile2
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres_replica:
+        condition: service_healthy
 
   # nginx:
   #   image: nginx:alpine
@@ -84,17 +101,17 @@ services:
   #     - ./nginx/error.log:/etc/nginx/error.log
   #     - ./nginx/html:/etc/nginx/html
 
-  # pgadmin:
-  #   image: dpage/pgadmin4
-  #   ports:
-  #     - "5050:80" # доступ к pgAdmin через http://localhost:5050
-  #   environment:
-  #     PGADMIN_DEFAULT_EMAIL: prostolist32@list.ru # email для входа
-  #     PGADMIN_DEFAULT_PASSWORD: 12345 # пароль для входа
-  #   volumes:
-  #     - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData # постоянное хранилище для данных pgAdmin
-  #   networks:
-  #     - pgnetwork
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80" # доступ к pgAdmin через http://localhost:5050
+    environment:
+      PGADMIN_DEFAULT_EMAIL: prostolist32@list.ru # email для входа
+      PGADMIN_DEFAULT_PASSWORD: 12345 # пароль для входа
+    volumes:
+      - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData # постоянное хранилище для данных pgAdmin
+    networks:
+      - pgnetwork
 
   # swagger:
   #   image: swaggerapi/swagger-ui

@@ -2,7 +2,6 @@ package main
 
 import (
 	"os"
-
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/Mamvriyskiy/database_course/main/pkg/handler"
@@ -11,17 +10,20 @@ import (
 	"github.com/Mamvriyskiy/database_course/main/migrations"
 	"github.com/joho/godotenv"
 	"github.com/spf13/viper"
+	"fmt"
 )
 
 func main() {
 	if err := initConfig(); err != nil {
 		logger.Log("Error", "initCongig", "Error config DB:", err, "")
+		fmt.Println(err)
 		return
 	}
 	logger.Log("Info", "", "InitConfig", nil)
 
 	if err := godotenv.Load(); err != nil {
 		logger.Log("Error", "Load", "Load env file:", err, "")
+		fmt.Println(err)
 		return
 	}
 	logger.Log("Info", "", "Load env", nil)

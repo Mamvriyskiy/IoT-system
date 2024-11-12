@@ -1,4 +1,4 @@
-image: dashori/golang-dind:1.21.3
+image: misfio32/golang-dind:1.21.3
 
 variables:
   DOCKER_DRIVER: overlay2
