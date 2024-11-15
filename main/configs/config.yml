@@ -1,8 +1,8 @@
 port: "8000"
 
 db: 
-  username: "repl_user"
-  host: "postgres_replica_container"
+  username: "Misfio32"
+  host: "localhost"
   port: "5432"
   dbname: "postgres"
   sslmode: "disable"

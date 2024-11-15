@@ -3,7 +3,8 @@ package handler
 import (
 	"fmt"
 	"net/http"
-
+	"bytes"
+	"io"
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
@@ -70,6 +71,17 @@ func (h *Handler) changePassword(c *gin.Context) {
 }
 
 func (h *Handler) SignUp(c *gin.Context) {
+	body, err := io.ReadAll(c.Request.Body)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to read request body"})
+        return
+    }
+
+    // Логируем тело запроса
+    fmt.Println("Request Body:", string(body))
+
+    // Восстанавливаем тело запроса, чтобы его можно было использовать позже
+    c.Request.Body = io.NopCloser(bytes.NewReader(body))
 	var input pkg.UserHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
@@ -93,7 +105,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
-	_, err := h.services.IUser.CreateUser(input)
+	_, err = h.services.IUser.CreateUser(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, struct{}{})
 		logger.Log("Error", "h.services.IUser.CreateUser(input)", "Error create user:", err, input)
@@ -106,24 +118,39 @@ func (h *Handler) SignUp(c *gin.Context) {
 }
 
 func (h *Handler) signIn(c *gin.Context) {
-	fmt.Println("+")
+	body, err := io.ReadAll(c.Request.Body)
+    if err != nil {
+        c.JSON(http.StatusInternalServerError, gin.H{"error": "failed to read request body"})
+        return
+    }
+
+    // Логируем тело запроса
+    fmt.Println("Request Body:", string(body))
+
+    // Восстанавливаем тело запроса, чтобы его можно было использовать позже
+    c.Request.Body = io.NopCloser(bytes.NewReader(body))
+
 	var input pkg.UserHandler
 	if err := c.BindJSON(&input); err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")
 		return
-	}
+	}	
 
-	if !isEmailValid(input.Email) {
-		logger.Log("Info", "isEmailValid", fmt.Sprintf("Invalid email: %s", input.Email), nil)
-		c.JSON(http.StatusBadRequest, map[string]interface{}{
-			"errors": "Неверный формат почты",
-		})
-		return
-	}
+	fmt.Println(input.Email)
+
+	// if !isEmailValid(input.Email) {
+	// 	fmt.Println("Invalid mail")
+	// 	logger.Log("Info", "isEmailValid", fmt.Sprintf("Invalid email: %s", input.Email), nil)
+	// 	c.JSON(http.StatusBadRequest, map[string]interface{}{
+	// 		"errors": "Неверный формат почты",
+	// 	})
+	// 	return
+	// }
 
 	user, token, err := h.services.IUser.GenerateToken(input.Email, input.Password)
 	if err != nil {
+		fmt.Println(err)
 		c.JSON(http.StatusUnauthorized, map[string]interface{}{})
 		logger.Log("Error", "GenerateToken", "Error GenerateToken:", err, input)
 		return

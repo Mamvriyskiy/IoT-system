@@ -14,6 +14,7 @@ import (
 )
 
 func main() {
+	fmt.Println("Server start...")
 	if err := initConfig(); err != nil {
 		logger.Log("Error", "initCongig", "Error config DB:", err, "")
 		fmt.Println(err)
@@ -38,6 +39,7 @@ func main() {
 	})
 
 	if err != nil {
+		fmt.Println(err)
 		logger.Log("Error", "initCongig", "Error config DB:", err, "")
 		return
 	}
@@ -45,6 +47,7 @@ func main() {
 	err = migrations.MigrationsDataBaseUp(db)
 
 	if err != nil {
+		fmt.Println(err)
 		logger.Log("Error", "MigrationsDataBaseUp", "Error migrations:", err, "")
 		return
 	}

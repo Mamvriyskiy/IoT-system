@@ -3,7 +3,7 @@ FROM golang:latest
 WORKDIR /app
 
 COPY ./main ./
-COPY ./configs/config2.yml ./configs/
+# COPY ./configs/config2.yml ./configs/config.yaml
 
 RUN go mod download
 

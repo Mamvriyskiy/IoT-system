@@ -21,11 +21,11 @@ services:
         source: /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/master
         target: /var/lib/postgresql/data
       - /Users/ivanmamvriyskiy/Desktop/web/main/postgresData/init.sql:/docker-entrypoint-initdb.d/init.sql
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready"]
-      interval: 5s
-      timeout: 10s
-      retries: 5
+    # healthcheck:
+    #   test: ["CMD-SHELL", "pg_isready"]
+    #   interval: 5s
+    #   timeout: 10s
+    #   retries: 5
     networks:
       - pgnetwork
 
@@ -34,19 +34,21 @@ services:
     image: bitnami/postgresql
     environment:
       POSTGRESQL_PASSWORD: Smena
-      POSTGRESQL_MASTER_HOST: postgres
+      POSTGRESQL_MASTER_HOST: postgres_container
       POSTGRESQL_PGAUDIT_LOG: READ
       POSTGRESQL_LOG_HOSTNAME: true
       POSTGRESQL_REPLICATION_MODE: slave
       POSTGRESQL_REPLICATION_USER: repl_user
       POSTGRESQL_REPLICATION_PASSWORD: Smena
       POSTGRESQL_MASTER_PORT_NUMBER: 5432
-      POSTGRESQL_REPLICATION_USE_PASSFILE: no 
       ALLOW_EMPTY_PASSWORD: yes
+      POSTGRESQL_REPLICATION_USE_PASSFILE: no 
     ports:
       - "5433:5432"
-    depends_on:
-      - postgres
+    # depends_on:
+    #   postgres:
+    #     condition: service_healthy
+
     networks:
       - pgnetwork
 
@@ -62,9 +64,9 @@ services:
       dockerfile: main/Dockerfile
     ports:
       - "8000:8000"
-    # depends_on:
-    #   postgres:
-    #     condition: service_healthy
+    depends_on:
+      postgres:
+        condition: service_healthy
     networks:
       - pgnetwork
 
@@ -74,9 +76,15 @@ services:
       dockerfile: main/Dockerfile2
     ports:
       - "8001:8000"
+    volumes:
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/configs/config2.yml
+        target: /app/configs/config.yml
     depends_on:
       postgres_replica:
         condition: service_healthy
+    networks:
+      - pgnetwork
 
   mirror_server2:
     # image: my-golang-server
@@ -84,9 +92,15 @@ services:
       dockerfile: main/Dockerfile2
     ports:
       - "8002:8000"
+    volumes:
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/configs/config2.yml
+        target: /app/configs/config.yml
     depends_on:
       postgres_replica:
         condition: service_healthy
+    networks:
+      - pgnetwork
 
   # nginx:
   #   image: nginx:alpine

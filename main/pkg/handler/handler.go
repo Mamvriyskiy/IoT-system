@@ -108,9 +108,14 @@ func TrafficLoggingMiddleware() gin.HandlerFunc {
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
 
-	//router.Use(TrafficLoggingMiddleware())
+	router.Use(func(ctx *gin.Context) {
+        fmt.Println("Requested URL:", ctx.Request.URL.String()) // Логируем URL запроса
+        ctx.Next() // Продолжаем обработку запроса
+    })
+	
+	router.Use(TrafficLoggingMiddleware())
 
-	router.Use(AuthMiddleware())
+	//router.Use(AuthMiddleware())
 
 	router.Static("/css", "./templates/css")
 	router.LoadHTMLGlob("templates/*.html")

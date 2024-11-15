@@ -29,19 +29,39 @@ func MigrationsTestDataBase(connDB *sqlx.DB, dataFile string) error {
 	return nil
 }
 
-func MigrationsDataBaseUp(connDB *sqlx.DB) error {
-	err := connDB.Ping()
-	if err != nil {
-		return fmt.Errorf("get db: %w", err)
-	}
+func isPrimaryDB(connDB *sqlx.DB) (bool, error) {
+    var inRecovery bool
+    err := connDB.QueryRow("SELECT pg_is_in_recovery()").Scan(&inRecovery)
+    if err != nil {
+        return false, fmt.Errorf("checking recovery status: %w", err)
+    }
+    return !inRecovery, nil // true, если это основной сервер
+}
 
-	if err = goose.Up(connDB.DB, "./migrations/defaultMigrationsSQL/"); err != nil {
-		return fmt.Errorf("up migrations: %w", err)
-	}
+
+func MigrationsDataBaseUp(connDB *sqlx.DB) error {
+    err := connDB.Ping()
+    if err != nil {
+        return fmt.Errorf("get db: %w", err)
+    }
+
+    // Проверка, является ли база данных основной
+    isPrimary, err := isPrimaryDB(connDB)
+    if err != nil {
+        return err
+    }
+
+    if !isPrimary {
+        fmt.Println("Database is in recovery mode (replica). Skipping migrations.")
+        return nil // Завершить с успешным кодом
+    }
+
+    if err = goose.Up(connDB.DB, "./migrations/defaultMigrationsSQL/"); err != nil {
+        return fmt.Errorf("up migrations: %w", err)
+    }
 
 	return nil
 }
-
 
 func MigrationsDataBaseDown(connDB *sqlx.DB) error {
 	err := connDB.Ping()

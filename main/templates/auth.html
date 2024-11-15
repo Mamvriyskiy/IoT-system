@@ -72,7 +72,7 @@
 <body>
     <div class="container">
         <h1>Войти</h1>
-        <input type="text" id="login" placeholder="Почта" required>
+        <input type="text" id="email" placeholder="Почта" required>
         <input type="password" id="password" placeholder="Пароль" required>
         <button onclick="login()">Войти</button>
         <button class="register-button" onclick="register()">Регистрация</button>
@@ -80,7 +80,7 @@
     </div>
     <script>
         function login() {
-            const email = document.getElementById('login').value;
+            const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
 
             if (!email || !password) {
@@ -88,12 +88,13 @@
                 return;
             }
 
-            fetch('/auth/sign-in', {
+            console.log(email, password)
+            fetch('/api/v1/auth/sign-in', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ email, password })
+                body: JSON.stringify({ password, email })
             })
             .then(response => {
                 if (!response.ok) {
@@ -104,11 +105,11 @@
                 return response.json();  // Если все ок, парсим JSON
             })
             .then(data => {
-                console.log(data.token)
-                if (data.token) {
+                console.log(data.Token)
+                if (data.Token) {
                     localStorage.setItem('jwt', data.token);
-                    console.log('Authorization token:', data.token);
-                    window.location.href = '/app/menu';
+                    console.log('Authorization token:', data.Token);
+                    window.location.href = '/api/v1/app/menu';
                 } else {
                     alert('Ошибка авторизации');
                 }
