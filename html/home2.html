@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Home</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background: linear-gradient(135deg, #1e90ff, #32cd32);
+            color: #fff;
+        }
+        h1, h2 {
+            text-align: center;
+            color: #fff;
+        }
+        h1 {
+            font-size: 3rem;
+        }
+        h2 {
+            font-size: 2rem;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+            background: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        th {
+            background-color: #1e90ff;
+            color: white;
+        }
+        td {
+            text-align: center;
+            padding: 10px;
+            border: 1px solid #ddd;
+            color: #333;
+        }
+        a {
+            color: #1e90ff;
+            text-decoration: none;
+        }
+        .controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .controls input, .controls button {
+            padding: 10px;
+            font-size: 14px;
+            border: none;
+            border-radius: 4px;
+        }
+        .controls button {
+            background-color: #32cd32;
+            color: white;
+            cursor: pointer;
+        }
+        .controls button:hover {
+            background-color: #2eb82e;
+        }
+        .status-on {
+            color: #32cd32;
+            font-weight: bold;
+        }
+        .status-off {
+            color: #ff4500;
+            font-weight: bold;
+        }
+        .image-container {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .image-container img {
+            max-width: 100%;
+            height: auto;
+            border-radius: 15px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+    </style>
+</head>
+<body>
+    <h1>Smart Home: CozyNest</h1>
+
+    <div class="image-container">
+        <img src="https://via.placeholder.com/800x300.png?text=Smart+Home+Control" alt="Smart Home">
+    </div>
+
+    <section>
+        <h2>Devices</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Device Name</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="devicesTable">
+                <tr>
+                    <td><a href="/device-settings?device=Light">Light</a></td>
+                    <td class="status-on">On</td>
+                    <td>
+                        <button onclick="deleteDevice('Light')">Delete</button>
+                        <button onclick="runDevice('Light')">Run</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="controls">
+            <input type="text" id="newDeviceName" placeholder="Device Name">
+            <button onclick="addDevice()">Add Device</button>
+        </div>
+    </section>
+
+    <section>
+        <h2>Users</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>Email</th>
+                    <th>Access Level</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody id="usersTable">
+                <tr>
+                    <td><a href="/user-settings?user=john@example.com">john@example.com</a></td>
+                    <td>2</td>
+                    <td><button onclick="deleteUser('john@example.com')">Delete</button></td>
+                </tr>
+            </tbody>
+        </table>
+        <div class="controls">
+            <input type="email" id="newUserEmail" placeholder="Email">
+            <input type="number" id="newUserAccess" placeholder="Access Level (1-4)" min="1" max="4">
+            <button onclick="addUser()">Add User</button>
+        </div>
+    </section>
+
+    <script>
+        const devices = [
+            { name: 'Light', status: true },
+            { name: 'Heater', status: false }
+        ];
+
+        const users = [
+            { email: 'john@example.com', accessLevel: 2 },
+            { email: 'jane@example.com', accessLevel: 3 }
+        ];
+
+        function renderDevices() {
+            const table = document.getElementById('devicesTable');
+            table.innerHTML = '';
+            devices.forEach(device => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><a href="/device-settings?device=${device.name}">${device.name}</a></td>
+                    <td class="${device.status ? 'status-on' : 'status-off'}">${device.status ? 'On' : 'Off'}</td>
+                    <td>
+                        <button onclick="deleteDevice('${device.name}')">Delete</button>
+                        <button onclick="runDevice('${device.name}')">Run</button>
+                    </td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        function renderUsers() {
+            const table = document.getElementById('usersTable');
+            table.innerHTML = '';
+            users.forEach(user => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><a href="/user-settings?user=${user.email}">${user.email}</a></td>
+                    <td>${user.accessLevel}</td>
+                    <td><button onclick="deleteUser('${user.email}')">Delete</button></td>
+                `;
+                table.appendChild(row);
+            });
+        }
+
+        function addDevice() {
+            const name = document.getElementById('newDeviceName').value;
+            if (name) {
+                devices.push({ name, status: Math.random() < 0.5 });
+                document.getElementById('newDeviceName').value = '';
+                renderDevices();
+            }
+        }
+
+        function deleteDevice(name) {
+            const index = devices.findIndex(device => device.name === name);
+            if (index > -1) {
+                devices.splice(index, 1);
+                renderDevices();
+            }
+        }
+
+        function runDevice(name) {
+            alert(`Device ${name} is running!`);
+        }
+
+        function addUser() {
+            const email = document.getElementById('newUserEmail').value;
+            const accessLevel = parseInt(document.getElementById('newUserAccess').value);
+            if (email && accessLevel >= 1 && accessLevel <= 4) {
+                users.push({ email, accessLevel });
+                document.getElementById('newUserEmail').value = '';
+                document.getElementById('newUserAccess').value = '';
+                renderUsers();
+            }
+        }
+
+        function deleteUser(email) {
+            const index = users.findIndex(user => user.email === email);
+            if (index > -1) {
+                users.splice(index, 1);
+                renderUsers();
+            }
+        }
+
+        renderDevices();
+        renderUsers();
+
+        setInterval(() => {
+            devices.forEach(device => {
+                device.status = Math.random() < 0.5;
+            });
+            renderDevices();
+        }, 5000);
+    </script>
+</body>
+</html>

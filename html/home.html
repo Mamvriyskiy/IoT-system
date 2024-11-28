@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умный дом - {{Название дома}}</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f9;
+            color: #333;
+        }
+        header {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+        }
+        main {
+            margin: 20px;
+        }
+        section {
+            margin-bottom: 20px;
+        }
+        h2 {
+            color: #4CAF50;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 8px;
+            text-align: left;
+        }
+        th {
+            background-color: #f4f4f4;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Умный дом - {{Название дома}}</h1>
+    </header>
+    <main>
+        <section id="devices">
+            <h2>Список устройств</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Название устройства</th>
+                        <th>Статус</th>
+                        <th>Тип</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>Термостат</td>
+                        <td>Включено</td>
+                        <td>Климат-контроль</td>
+                    </tr>
+                    <tr>
+                        <td>Умный свет</td>
+                        <td>Выключено</td>
+                        <td>Освещение</td>
+                    </tr>
+                    <tr>
+                        <td>Камера наблюдения</td>
+                        <td>Включено</td>
+                        <td>Безопасность</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+        <section id="users">
+            <h2>Список пользователей</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Почта</th>
+                        <th>Логин</th>
+                        <th>Уровень доступа</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>admin@home.com</td>
+                        <td>admin</td>
+                        <td>4</td>
+                    </tr>
+                    <tr>
+                        <td>user1@home.com</td>
+                        <td>user1</td>
+                        <td>2</td>
+                    </tr>
+                    <tr>
+                        <td>guest@home.com</td>
+                        <td>guest</td>
+                        <td>1</td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+    </main>
+</body>
+</html>

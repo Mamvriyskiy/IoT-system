@@ -23,7 +23,7 @@ externalDocs:
   description: Find out more about Swagger
   url: http://swagger.io
 servers:
-- url: https://petstore3.swagger.io/api/v3
+- url: http://localhost:8000/
 tags:
 - name: auth
   description: Access to the system
@@ -148,7 +148,7 @@ paths:
           description: Access denied
         "500":
           description: Internal error on the server
-  /homes:
+  /api/homes:
     get:
       tags:
       - home
@@ -195,7 +195,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}:
+  /api/homes/{homeID}:
     get:
       tags:
       - home
@@ -282,7 +282,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/accesses:
+  /api/homes/{homeID}/accesses:
     get:
       tags:
       - access
@@ -345,7 +345,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/accesses/{accessID}:
+  /api/homes/{homeID}/accesses/{accessID}:
     get:
       tags:
       - access
@@ -450,7 +450,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/devices:
+  /api/homes/{homeID}/devices:
     get:
       tags:
       - devices
@@ -517,7 +517,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/devices/{deviceID}:
+  /api/homes/{homeID}/devices/{deviceID}:
     get:
       tags:
       - devices
@@ -584,7 +584,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/devices/{deviceID}/status:
+  /api/homes/{homeID}/devices/{deviceID}/status:
     put:
       tags:
       - devices
@@ -616,7 +616,7 @@ paths:
           description: The resource does not exist
         "500":
           description: Internal error on the server
-  /homes/{homeID}/devices/{deviceID}/history:
+  /api/homes/{homeID}/devices/{deviceID}/history:
     get:
       tags:
       - devices

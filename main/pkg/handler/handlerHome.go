@@ -2,7 +2,7 @@ package handler
 
 import (
 	"net/http"
-
+	"fmt"
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
 	"github.com/gin-gonic/gin"
@@ -10,6 +10,7 @@ import (
 
 func (h *Handler) createHome(c *gin.Context) {
 	id, ok := c.Get("userId")
+	fmt.Println(id)
 	if !ok {
 		logger.Log("Warning", "Get", "Error get userID from context", nil, id)
 		return

@@ -103,11 +103,10 @@ func TrafficLoggingMiddleware() gin.HandlerFunc {
     }
 }
 
-
 // @title     Gingo Bookstore API
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
-
+	fmt.Println("+")
 	router.Use(func(ctx *gin.Context) {
         fmt.Println("Requested URL:", ctx.Request.URL.String()) // Логируем URL запроса
         ctx.Next() // Продолжаем обработку запроса

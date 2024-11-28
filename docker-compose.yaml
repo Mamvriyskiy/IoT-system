@@ -64,6 +64,10 @@ services:
       dockerfile: main/Dockerfile
     ports:
       - "8000:8000"
+    volumes:
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/main/swagger.yaml
+        target: /app/docs/swagger.yaml
     depends_on:
       postgres:
         condition: service_healthy
@@ -80,6 +84,9 @@ services:
       - type: bind
         source: /Users/ivanmamvriyskiy/Desktop/web/configs/config2.yml
         target: /app/configs/config.yml
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/docs/mirror1/swagger.yaml
+        target: /app/docs/swagger.yaml
     depends_on:
       postgres_replica:
         condition: service_healthy
@@ -96,6 +103,9 @@ services:
       - type: bind
         source: /Users/ivanmamvriyskiy/Desktop/web/configs/config2.yml
         target: /app/configs/config.yml
+      - type: bind
+        source: /Users/ivanmamvriyskiy/Desktop/web/docs/mirror2/swagger.yaml
+        target: /app/docs/swagger.yaml
     depends_on:
       postgres_replica:
         condition: service_healthy
@@ -127,14 +137,14 @@ services:
     networks:
       - pgnetwork
 
-  # swagger:
-  #   image: swaggerapi/swagger-ui
-  #   ports:
-  #     - "8080:8080"
-  #   environment:
-  #     - SWAGGER_JSON=./mnt/swagger.yaml
-  #   volumes:
-  #     - ./main/swagger.yaml:/mnt/swagger.yaml
+  swagger:
+    image: swaggerapi/swagger-ui
+    ports:
+      - "8080:8080"
+    environment:
+      - SWAGGER_JSON=./mnt/swagger.yaml
+    volumes:
+      - ./main/swagger.yaml:/mnt/swagger.yaml
 
 networks:
   pgnetwork:

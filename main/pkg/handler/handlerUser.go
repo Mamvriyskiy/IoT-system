@@ -89,6 +89,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(input)
 	if !isEmailValid(input.Email) {
 		logger.Log("Info", "isEmailValid", fmt.Sprintf("Invalid email: %s", input.Email), nil)
 		c.JSON(http.StatusBadRequest, map[string]interface{}{
@@ -104,7 +105,7 @@ func (h *Handler) SignUp(c *gin.Context) {
 		})
 		return
 	}
-
+	fmt.Println("+")
 	_, err = h.services.IUser.CreateUser(input)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, struct{}{})
