@@ -16,3 +16,17 @@
 {"level":"info","ts":1731682134.818485,"msg":"event: Load env"}
 {"level":"info","ts":1731682136.109299,"msg":"event: The connection to the database is established"}
 {"level":"info","ts":1731682136.140446,"msg":"event: Create router"}
+{"level":"info","ts":1733416046.2001028,"msg":"event: InitConfig"}
+{"level":"info","ts":1733416046.850464,"msg":"event: Load env"}
+{"level":"error","ts":1733416046.874679,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error check connection:","func":"Ping()","param":[""]}
+{"level":"error","ts":1733416046.8934,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error connect DB:","func":" sqlx.Open","param":["postgres","host=localhost port=5432 user=Misfio32 dbname=postgres password='' sslmode=Smena%!(EXTRA string=postgres, string=disable)"]}
+{"level":"error","ts":1733416046.913911,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error config DB:","func":"initCongig","param":[""]}
+{"level":"info","ts":1733416055.568916,"msg":"event: InitConfig"}
+{"level":"info","ts":1733416055.591926,"msg":"event: Load env"}
+{"level":"error","ts":1733416055.615011,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error check connection:","func":"Ping()","param":[""]}
+{"level":"error","ts":1733416055.640299,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error connect DB:","func":" sqlx.Open","param":["postgres","host=localhost port=5432 user=Misfio32 dbname=postgres password='' sslmode=Smena%!(EXTRA string=postgres, string=disable)"]}
+{"level":"error","ts":1733416055.66153,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error config DB:","func":"initCongig","param":[""]}
+{"level":"info","ts":1733416226.089033,"msg":"event: InitConfig"}
+{"level":"info","ts":1733416226.136271,"msg":"event: Load env"}
+{"level":"info","ts":1733416226.242591,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733416228.4976928,"msg":"event: Create router"}

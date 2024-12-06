@@ -1,10 +1,173 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html>
- <head>
-  <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-  <title>Вечер в хату!</title>
- </head>
- <body>
-    <h1>Вечер в хату</h1>
- </body>
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Умный дом</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(to bottom, #4a90e2, #8dd695);
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+
+        .dropdown-content {
+            display: none;
+            position: absolute;
+            background-color: #f9f9f9;
+            min-width: 200px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 1;
+        }
+
+        .dropdown-content label {
+            display: block;
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown-content input {
+            margin-right: 10px;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        h1, h2 {
+            text-align: center;
+            color: white;
+        }
+        table {
+            width: 60%;
+            margin: 20px auto;
+            border-collapse: collapse;
+            background-color: #f9f9f9;
+        }
+        th, td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: center;
+        }
+        th {
+            background-color: #655dcb;
+            color: white;
+        }
+        button {
+            padding: 5px 10px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .delete {
+            background-color: #d9534f;
+            color: white;
+        }
+        .start {
+            background-color: #5cb85c;
+            color: white;
+        }
+        input[type="text"], input[type="email"], input[type="number"] {
+            padding: 5px;
+            margin-right: 10px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+        .add-button {
+            background-color: #5cb85c;
+            color: white;
+            padding: 5px 15px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <h1>Умный дом</h1>
+    <h2>Устройства</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Устройство</th>
+                <th>Статус</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>Пылесос</td>
+                <td>On</td>
+                <td>
+                    <button class="delete">Удалить</button>
+                    <button class="start">Запустить</button>
+                </td>
+            </tr>
+            <tr>
+                <td>Чайник</td>
+                <td>Off</td>
+                <td>
+                    <button class="delete">Удалить</button>
+                    <button class="start">Запустить</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <input type="text" placeholder="Имя устройства">
+        <button class="add-button">Добавить</button>
+    </div>
+
+    <h2>Пользователи</h2>
+    <table>
+        <thead>
+            <tr>
+                <th>Пользователь</th>
+                <th>Уровень доступа</th>
+                <th>Действия</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>mamre@mail.ru</td>
+                <td>4</td>
+                <td>
+                    <button class="delete">Удалить</button>
+                </td>
+            </tr>
+            <tr>
+                <td>ivan@yandex.ru</td>
+                <td>
+                    <div class="dropdown">
+                        <button>Выберите элементы</button>
+                        <div class="dropdown-content">
+                            <label>
+                                <input type="checkbox" name="option1" value="1"> Опция 1
+                            </label>
+                            <label>
+                                <input type="checkbox" name="option2" value="2"> Опция 2
+                            </label>
+                            <label>
+                                <input type="checkbox" name="option3" value="3"> Опция 3
+                            </label>
+                        </div>
+                    </div>
+                </td>
+                <td>
+                    <button class="delete">Удалить</button>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <div style="text-align: center;">
+        <input type="email" placeholder="Почта">
+        <input type="number" placeholder="Доступ">
+        <button class="add-button">Добавить</button>
+    </div>
+</body>
 </html>
