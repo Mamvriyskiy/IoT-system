@@ -1,32 +1,123 @@
-{"level":"error","ts":1731681566.746861,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681566.769155,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681566.794015,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681566.813807,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681566.8426461,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681566.863311,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681566.895863,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681566.916957,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681566.945127,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681566.9652,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681566.995755,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681567.01754,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"error","ts":1731681567.816687,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["142563@mail.ru","s.generatePasswordHash(password)"]}
-{"level":"error","ts":1731681567.8369741,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"142563@mail.ru","login":""}]}
-{"level":"info","ts":1731682134.787084,"msg":"event: InitConfig"}
-{"level":"info","ts":1731682134.818485,"msg":"event: Load env"}
-{"level":"info","ts":1731682136.109299,"msg":"event: The connection to the database is established"}
-{"level":"info","ts":1731682136.140446,"msg":"event: Create router"}
-{"level":"info","ts":1733416046.2001028,"msg":"event: InitConfig"}
-{"level":"info","ts":1733416046.850464,"msg":"event: Load env"}
-{"level":"error","ts":1733416046.874679,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error check connection:","func":"Ping()","param":[""]}
-{"level":"error","ts":1733416046.8934,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error connect DB:","func":" sqlx.Open","param":["postgres","host=localhost port=5432 user=Misfio32 dbname=postgres password='' sslmode=Smena%!(EXTRA string=postgres, string=disable)"]}
-{"level":"error","ts":1733416046.913911,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error config DB:","func":"initCongig","param":[""]}
-{"level":"info","ts":1733416055.568916,"msg":"event: InitConfig"}
-{"level":"info","ts":1733416055.591926,"msg":"event: Load env"}
-{"level":"error","ts":1733416055.615011,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error check connection:","func":"Ping()","param":[""]}
-{"level":"error","ts":1733416055.640299,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error connect DB:","func":" sqlx.Open","param":["postgres","host=localhost port=5432 user=Misfio32 dbname=postgres password='' sslmode=Smena%!(EXTRA string=postgres, string=disable)"]}
-{"level":"error","ts":1733416055.66153,"msg":"dial tcp [::1]:5432: connect: connection refused","event: ":"Error config DB:","func":"initCongig","param":[""]}
-{"level":"info","ts":1733416226.089033,"msg":"event: InitConfig"}
-{"level":"info","ts":1733416226.136271,"msg":"event: Load env"}
-{"level":"info","ts":1733416226.242591,"msg":"event: The connection to the database is established"}
-{"level":"info","ts":1733416228.4976928,"msg":"event: Create router"}
+{"level":"error","ts":1733476414.482246,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476414.4863958,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1733476433.136734,"msg":"event: InitConfig"}
+{"level":"info","ts":1733476433.162071,"msg":"event: Load env"}
+{"level":"info","ts":1733476433.205821,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733476433.22825,"msg":"event: Create router"}
+{"level":"info","ts":1733476553.797374,"msg":"event: InitConfig"}
+{"level":"info","ts":1733476553.815197,"msg":"event: Load env"}
+{"level":"info","ts":1733476553.8918521,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733476553.914769,"msg":"event: Create router"}
+{"level":"info","ts":1733476594.714143,"msg":"event: InitConfig"}
+{"level":"info","ts":1733476594.737164,"msg":"event: Load env"}
+{"level":"info","ts":1733476594.785181,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733476594.805726,"msg":"event: Create router"}
+{"level":"info","ts":1733476624.326999,"msg":"event: InitConfig"}
+{"level":"info","ts":1733476624.3524969,"msg":"event: Load env"}
+{"level":"info","ts":1733476624.404175,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733476624.425857,"msg":"event: Create router"}
+{"level":"info","ts":1733476666.0782819,"msg":"event: InitConfig"}
+{"level":"info","ts":1733476666.105728,"msg":"event: Load env"}
+{"level":"info","ts":1733476666.15584,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733476666.1783712,"msg":"event: Create router"}
+{"level":"error","ts":1733476738.783701,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["678@mail.ru","s.generatePasswordHash(password)"]}
+{"level":"error","ts":1733476738.8046541,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"678","email":"678@mail.ru","login":""}]}
+{"level":"error","ts":1733476742.040391,"msg":"sql: no rows in result set","event: ":"Error get user:","func":"GetUser","param":["678@mail.ru","s.generatePasswordHash(password)"]}
+{"level":"error","ts":1733476742.062182,"msg":"sql: no rows in result set","event: ":"Error GenerateToken:","func":"GenerateToken","param":[{"password":"123","email":"678@mail.ru","login":""}]}
+{"level":"info","ts":1733476753.019062,"msg":"event: User mamre is registered"}
+{"level":"info","ts":1733476763.011586,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"error","ts":1733476763.05231,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476763.052661,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476767.37837,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476767.378734,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476840.4991071,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476840.499647,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1733476883.106932,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"error","ts":1733476883.147352,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733476883.147692,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1733476923.245131,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733476974.181317,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733477012.310292,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733477013.9208362,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733477042.854765,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733477058.014954,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"info","ts":1733477084.946901,"msg":"event: User mamre@mail.ru ganied access"}
+{"level":"error","ts":1733477084.98069,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477084.992824,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477161.1245341,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477165.126136,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477166.7705731,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477167.923615,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477167.923615,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477185.4058611,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477185.762041,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1733477185.76303,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1733477189.814889,"msg":"event: A home has been created"}
+{"level":"error","ts":1733477189.8400562,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1733477281.561601,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733477294.519982,"msg":"event: A home has been created"}
+{"level":"info","ts":1733477294.560437,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733477308.8344908,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733477308.877374,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733477328.13594,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733477330.760454,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478229.513532,"msg":"event: InitConfig"}
+{"level":"info","ts":1733478229.550785,"msg":"event: Load env"}
+{"level":"info","ts":1733478229.6004422,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1733478229.6211462,"msg":"event: Create router"}
+{"level":"info","ts":1733478259.182636,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478265.5056121,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478265.56185,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478280.134767,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478286.1344929,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478288.136512,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478302.1355221,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478304.137611,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478312.136221,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478321.138666,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478323.132618,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478327.133394,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478403.1357062,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478413.137717,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478426.188745,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478440.140266,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478462.1435552,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478464.1406069,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478466.144032,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478491.171564,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478505.141071,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478567.141276,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478583.13326,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478629.148741,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478640.147588,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478642.578818,"msg":"event: A home has been deleted"}
+{"level":"info","ts":1733478642.656348,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478658.132755,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478673.13433,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478678.983886,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478679.015069,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478681.094304,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478681.1383018,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478683.213328,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478683.24963,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478684.946847,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478684.995744,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478686.988779,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478687.033046,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478693.027841,"msg":"event: A home has been created"}
+{"level":"info","ts":1733478693.068956,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478700.2432761,"msg":"event: A home has been deleted"}
+{"level":"info","ts":1733478700.2720482,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478701.1167092,"msg":"event: A home has been deleted"}
+{"level":"info","ts":1733478701.155612,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478702.0674791,"msg":"event: A home has been deleted"}
+{"level":"info","ts":1733478702.102828,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478702.833038,"msg":"event: A home has been deleted"}
+{"level":"info","ts":1733478702.87555,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478898.1017962,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478902.106623,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733478903.083315,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733479026.490186,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733479026.490496,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733479059.613651,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1733479059.6236658,"msg":"event: The list of users has been received"}

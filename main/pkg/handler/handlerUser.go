@@ -24,6 +24,7 @@ func (h *Handler) checkCode(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(input)
 	err := h.services.CheckCode(input.Code, input.Token)
 	if err != nil {
 		logger.Log("Error", "h.services.CheckCode(codeID)", "Error CheckCode:", err, input)
@@ -60,7 +61,9 @@ func (h *Handler) changePassword(c *gin.Context) {
 		return
 	}
 
+	fmt.Println(input)
 	err := h.services.IUser.ChangePassword(input.Password, input.Token)
+	fmt.Println(err)
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, map[string]interface{}{})
 		logger.Log("Error", "c.BindJSON()", "Error bind json:", err, "")

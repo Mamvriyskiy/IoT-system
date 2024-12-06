@@ -13,8 +13,9 @@ const AuthForm: React.FC = () => {
         event.preventDefault();
         try {
             const response = await loginUser({ email, password });
-            localStorage.setItem("jwt", response.token);
-            navigate("/menu");
+            console.log(response);
+            localStorage.setItem("jwt", response.Token);
+            navigate("/api/homes");
         } catch (error) {
             alert("Ошибка авторизации");
         }
@@ -22,11 +23,11 @@ const AuthForm: React.FC = () => {
 
     return (
         <div className={globStyles.authContainer}>
-            <div className="formHeader">
+            <div className={globStyles.formHeader}>
                 <h1>Добро пожаловать</h1>
                 <p>Войдите, чтобы управлять вашим умным домом</p>
             </div>
-            <form className={styles.loginForm} onSubmit={handleSubmit}>
+            <form className={globStyles.registrationForm} onSubmit={handleSubmit}>
                 <label>Почта</label>
                 <input
                     type="email"
@@ -45,8 +46,8 @@ const AuthForm: React.FC = () => {
                 />
                 <button type="submit">Войти</button>
                 <div className="formFooter">
-                    <p>Нет аккаунта? <a href="auth/sign-up">Зарегистрироваться</a></p>
-                    <p><a href="/forgot-password">Забыли пароль?</a></p>
+                    <p>Нет аккаунта? <a href="/auth/sign-up">Зарегистрироваться</a></p>
+                    <p><a href="/auth/code">Забыли пароль?</a></p>
                 </div>
             </form>
         </div>

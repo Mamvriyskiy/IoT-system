@@ -10,21 +10,34 @@ const VerificationForm: React.FC = () => {
 
     const handleSubmit = async (event: React.FormEvent) => {
         event.preventDefault();
+
         try {
-            await verificationUser({ code });
-            alert("Регистрация успешна!");
-            navigate("/login");
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.has('token')) {
+                const token = urlParams.get('token') as string; // Утверждение, что token не равен null
+                console.log('JWT Token:', token);
+                localStorage.setItem('jwtToken', token);
+                
+                await verificationUser({ code, token }); // token гарантированно string
+                alert("Верификация пройдена!");
+                navigate("/auth/password");
+            } else {
+                alert('Нет доступа');
+                navigate('/auth/code');
+            }
         } catch (error) {
-            alert("Ошибка регистрации");
+            alert("Ошибка верификации");
+            navigate("/auth/code");
         }
+        
     };
 
     return (
         <div className={globStyles.authContainer}> {}
-            <div className={styles.formHeader}>
+            <div className={globStyles.formHeader}>
                 <h1>Проверка кода</h1>
             </div>
-            <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <form className={globStyles.registrationForm} onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Введите код"

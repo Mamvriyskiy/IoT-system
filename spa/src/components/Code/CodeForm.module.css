@@ -10,21 +10,6 @@ body {
     color: #fff;
 }
 
-.formHeader {
-    text-align: center;
-    margin-bottom: 1.5rem;
-}
-
-.formHeader h1 {
-    margin: 0;
-    font-size: 2rem;
-}
-
-.form-header p {
-    font-size: 1rem;
-    color: #5cdb95;
-}
-
 .registrationForm {
     display: flex;
     flex-direction: column;

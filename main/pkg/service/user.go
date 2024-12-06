@@ -90,7 +90,7 @@ func (s *UserService) SendCode(email pkg.EmailHandler) error {
 	from := "IoT-system@mail.ru"
 	to := []string{email.Email}
 	subject := "Код для восстановления пароля"
-	body := fmt.Sprintf("%d\nhttp://localhost:8000/auth/checkcode?token=%s", safeNum, markerAccess)
+	body := fmt.Sprintf("%d\nhttp://localhost:3000/auth/verification?token=%s", safeNum, markerAccess)
 
 	// Соединяемся с сервером SMTP MailHog
 	auth := smtp.PlainAuth("", "", "", smtpServer)

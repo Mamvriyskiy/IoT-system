@@ -1,115 +1,118 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { passwordUser } from "../../api/authApi";
+import { getListHome, addHome, deleteHome } from "../../api/authApi";
 import styles from "./HomeForm.module.css"; 
 import globStyles from "../../styles/global.module.css"; 
 
-const PasswordForm: React.FC = () => {
-    const [newPassword, setNewPassword] = useState("");
-    const [repeatPassword, setRepeatPassword] = useState("");
+type Home = {
+    name: string;
+    latitude: number;
+    longitude: number;
+    ID: string;
+};
+
+const HomeForm: React.FC = () => {
+    const [homes, setHomes] = useState<Home[]>([]);
+    const [newHomeName, setNewHomeName] = useState("");
     const navigate = useNavigate();
 
-    const handleSubmit = async (event: React.FormEvent) => {
-        event.preventDefault();
+    useEffect(() => {
+        const fetchHomes = async () => {
+            try {
+                const response = await getListHome();
+                setHomes(response); // Assuming response is an array of home objects
+            } catch (error) {
+                console.error("Error fetching homes:", error);
+            }
+        };
+        fetchHomes();
+    }, []);
 
-        if (newPassword !== repeatPassword) {
-            alert("Пароли не совпадают!");
+    const handleSubmitDelete = async (event: React.MouseEvent, homeId: string) => {
+        event.preventDefault(); // Предотвращаем поведение по умолчанию
+        try {
+            console.log(`Удаляем дом: ${homeId}`);
+            await deleteHome({ homeId });
+            const response = await getListHome();
+            setHomes(response);
+        } catch (error) {
+            console.error("Ошибка при удалении дома:", error);
+            alert("Не удалось удалить дом");
+        }
+    };
+
+    // Handle form submission for adding a new home
+    const handleSubmitHome = async (event: React.FormEvent) => {
+        //event.preventDefault();
+
+        if (newHomeName.trim() === "") {
+            alert("Введите имя дома");
             return;
         }
 
         try {
-            await passwordUser({ newPassword, repeatPassword });
-            alert("Регистрация успешна!");
-            navigate("/login");
+            // Call the addHome function to add a new home
+            console.log(newHomeName)
+            await addHome({ name: newHomeName });
+            // Re-fetch the homes after adding a new one
+            const response = await getListHome();
+            setHomes(response);
+            setNewHomeName(""); // Clear the input field
         } catch (error) {
-            alert("Ошибка регистрации");
+            alert("Ошибка добавления дома");
         }
     };
 
     return (
         <div>
-            <h1>Умный дом</h1>
-            <h2>Устройства</h2>
+            <h1>Умные дом</h1>
             <table>
                 <thead>
                     <tr>
-                        <th>Устройство</th>
-                        <th>Статус</th>
-                        <th>Действия</th>
+                        <th>Имя</th>
+                        <th>Широта</th>
+                        <th>Долгота</th>
+                        <th>Действие</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <tr>
-                        <td>Пылесос</td>
-                        <td>On</td>
-                        <td>
-                            <button className={styles.delete}>Удалить</button>
-                            <button className={styles.start}>Запустить</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Чайник</td>
-                        <td>Off</td>
-                        <td>
-                            <button className={styles.delete}>Удалить</button>
-                            <button className={styles.start}>Запустить</button>
-                        </td>
-                    </tr>
+                    {homes.slice(0, 5).map((home, index) => (
+                        <tr key={index}>
+                            <td>
+                                <a href={`/api/homes/${home.ID}`} className={styles.link}>
+                                    {home.name}
+                                </a>
+                            </td>
+                            <td>{home.latitude}</td>
+                            <td>{home.longitude}</td>
+                            <td>
+                                <button className={styles.delete} onClick={(e) => handleSubmitDelete(e, home.ID)}>
+                                    Удалить
+                                </button>
+                            </td>
+                        </tr>
+                    ))}
                 </tbody>
             </table>
             <div style={{ textAlign: "center" }}>
-                <input type="text" placeholder="Имя устройства"/>
-                <button className={styles.addButton}>Добавить</button>
+                <input
+                    type="text"
+                    placeholder="Имя дома"
+                    value={newHomeName}
+                    onChange={(e) => setNewHomeName(e.target.value)}
+                    required
+                />
+                <button className={styles.addButton} onClick={handleSubmitHome}>
+                    Добавить
+                </button>
             </div>
-
-            <h2>Пользователи</h2>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Пользователь</th>
-                        <th>Уровень доступа</th>
-                        <th>Действия</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>mamre@mail.ru</td>
-                        <td>4</td>
-                        <td>
-                            <button className={styles.delete}>Удалить</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>ivan@yandex.ru</td>
-                        <td>
-                            <div className={styles.dropdown}>
-                                <button>Выберите элементы</button>
-                                <div className={styles.dropdownContent}>
-                                    <label>
-                                        <input type="checkbox" name="option1" value="1"/> Опция 1
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="option2" value="2"/> Опция 2
-                                    </label>
-                                    <label>
-                                        <input type="checkbox" name="option3" value="3"/> Опция 3
-                                    </label>
-                                </div>
-                            </div>
-                        </td>
-                        <td>
-                            <button className={styles.delete}>Удалить</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <div style={{ textAlign: "center" }}>
-                <input type="email" placeholder="Почта"/>
-                <input type="number" placeholder="Доступ"/>
-                <button className={styles.addButton}>Добавить</button>
-            </div>
+            {homes.length > 5 && (
+                <div style={{ textAlign: "center", marginTop: "10px" }}>
+                    <button onClick={() => setHomes(homes.slice(0, 5))}>Показать еще</button>
+                </div>
+            )}
         </div>
     );
 };
 
-export default PasswordForm;
+export default HomeForm;

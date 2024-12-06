@@ -15,7 +15,7 @@ const RegistrationForm: React.FC = () => {
         try {
             await registerUser({ login, email, password });
             alert("Регистрация успешна!");
-            navigate("/login");
+            navigate("/auth/sign-in");
         } catch (error) {
             alert("Ошибка регистрации");
         }
@@ -23,11 +23,11 @@ const RegistrationForm: React.FC = () => {
 
     return (
         <div className={globStyles.authContainer}> {}
-            <div className={styles.formHeader}>
+            <div className={globStyles.formHeader}>
                 <h1>Регистрация</h1>
                 <p>Создайте учетную запись для управления вашим умным домом</p>
             </div>
-            <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <form className={globStyles.registrationForm} onSubmit={handleSubmit}>
                 <label>Логин</label>
                 <input
                     type="text"

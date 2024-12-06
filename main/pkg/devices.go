@@ -14,14 +14,15 @@ type DevicesInfo struct {
 	Brand      string `db:"brand" json:"brand"`
 }
 
-type DevicesService struct {
-	Devices
-	DevicesInfo
-}
-
 type DevicesData struct {
 	Devices
 	ID     string `db:"deviceid"`
 	HomeID string `db:"homeid"`
 	DevicesInfo
 }
+
+type DevicesService struct {
+	Devices
+	DevicesInfo
+}
+

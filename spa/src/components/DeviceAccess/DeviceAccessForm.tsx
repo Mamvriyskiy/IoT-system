@@ -18,7 +18,7 @@ const PasswordForm: React.FC = () => {
         }
 
         try {
-            await passwordUser({ newPassword, repeatPassword });
+            // await passwordUser({ newPassword, repeatPassword });
             alert("Регистрация успешна!");
             navigate("/login");
         } catch (error) {

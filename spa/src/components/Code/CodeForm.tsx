@@ -12,19 +12,19 @@ const CodeForm: React.FC = () => {
         event.preventDefault();
         try {
             await codeUser({ email });
-            alert("Регистрация успешна!");
+            alert("Код отправлен на почту!");
             navigate("/login");
         } catch (error) {
-            alert("Ошибка регистрации");
+            alert("Ошибка отправки кода");
         }
     };
 
     return (
         <div className={globStyles.authContainer}> {}
-            <div className={styles.formHeader}>
+            <div className={globStyles.formHeader}>
                 <h1>Восстановление пароля</h1>
             </div>
-            <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <form className={globStyles.registrationForm} onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Введите вашу почту"

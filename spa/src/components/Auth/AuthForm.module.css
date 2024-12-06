@@ -9,17 +9,6 @@ body {
     height: 100vh;
     color: #fff;
 }
-/* 
-.loginContainer {
-    background-color: #fff;
-    color: #05386b;
-    border-radius: 10px;
-    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-    padding: 2rem;
-    width: 90%;
-    max-width: 400px;
-    box-sizing: border-box;
-} */
 
 .formHeader {
     text-align: center;

@@ -3,7 +3,7 @@ import axios from "axios";
 const API_URL = "http://localhost:8000/";
 
 export const loginUser = async (data: { email: string; password: string }) => {
-    const response = await axios.post(`${API_URL}/sign-in`, data);
+    const response = await axios.post(`${API_URL}auth/sign-in`, data);
     return response.data;
 };
 
@@ -17,12 +17,64 @@ export const codeUser = async (data: { email: string }) => {
     return response.data;
 };
 
-export const verificationUser = async (data: { code: string }) => {
+export const verificationUser = async (data: { code: string; token: string }) => {
     const response = await axios.post(`${API_URL}auth/verification`, data);
     return response.data;
 };
 
-export const passwordUser = async (data: { newPassword: string; repeatPassword: string }) => {
+export const passwordUser = async (data: { newPassword: string; token: string }) => {
     const response = await axios.put(`${API_URL}auth/password`, data);
+    return response.data;
+};
+
+export const getListHome = async () => {
+    const token = localStorage.getItem('jwt');
+    console.log(token)
+    console.log("=====")
+
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const response = await axios.get(`${API_URL}api/homes/`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+    console.log(response.data)
+    return response.data;
+};
+
+export const addHome = async (data: { name: string }) => {
+    const token = localStorage.getItem('jwt');
+    console.log(token)
+    console.log("=====")
+
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const response = await axios.post(`${API_URL}api/homes/`, data, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+    return response.data;
+};
+
+export const deleteHome = async ({ homeId }: { homeId: string }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const response = await axios.delete(`${API_URL}api/homes/${homeId}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
     return response.data;
 };

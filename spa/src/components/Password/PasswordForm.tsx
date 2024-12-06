@@ -18,20 +18,29 @@ const PasswordForm: React.FC = () => {
         }
 
         try {
-            await passwordUser({ newPassword, repeatPassword });
-            alert("Регистрация успешна!");
-            navigate("/login");
+            const token = localStorage.getItem('jwtToken');
+            if (token) {
+                console.log('JWT Token:', token);
+                localStorage.setItem('jwtToken', token);
+                
+                console.log(newPassword, token);
+                await passwordUser({ newPassword, token });
+                alert("Пароль успешно сменен!");
+                navigate("/auth/sign-in");
+            } else {
+                alert("Ошибка смены пароля");
+            }
         } catch (error) {
-            alert("Ошибка регистрации");
+            alert("Ошибка смены пароля");
         }
     };
 
     return (
         <div className={globStyles.authContainer}> {}
-            <div className={styles.formHeader}>
-                <h2>Смена пароля</h2>
+            <div className={globStyles.formHeader}>
+                <h1>Смена пароля</h1>
             </div>
-            <form className={styles.registrationForm} onSubmit={handleSubmit}>
+            <form className={globStyles.registrationForm} onSubmit={handleSubmit}>
                 <input
                     type="text"
                     placeholder="Введите новый пароль"

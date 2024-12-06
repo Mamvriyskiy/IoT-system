@@ -11,8 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/swaggo/files"
 	"github.com/swaggo/gin-swagger"
-	"go.uber.org/zap"
-	"time"
+	"github.com/gin-contrib/cors"
 )
 
 const signingKey = "jaskljfkdfndnznmckmdkaf3124kfdlsf"
@@ -37,6 +36,7 @@ func AuthMiddleware() gin.HandlerFunc {
 
 		// Получить токен из заголовка запроса или из куки
 		tokenString := c.GetHeader("Authorization")
+		fmt.Println("Token:", tokenString)
 		var err error
 		if tokenString == "" {
 			// Если токен не найден в заголовке, попробуйте из куки
@@ -60,6 +60,7 @@ func AuthMiddleware() gin.HandlerFunc {
 			return []byte(signingKey), nil
 		})
 		
+		fmt.Println(err) 
 		// Проверить наличие ошибок при парсинге токена
 		if err != nil {
 			c.JSON(http.StatusUnauthorized, gin.H{"error": "Unauthorized", "detail:": err.Error()})
@@ -67,8 +68,10 @@ func AuthMiddleware() gin.HandlerFunc {
 			return
 		}
 
+		fmt.Println("+")
 		// Добавить данные из токена в контекст запроса
 		if claims, ok := token.Claims.(jwt.MapClaims); ok && token.Valid {
+			fmt.Println("+")
 			c.Set("userId", claims["userId"])
 			c.Next()
 		} else {
@@ -79,45 +82,29 @@ func AuthMiddleware() gin.HandlerFunc {
 	}
 }
 
-func TrafficLoggingMiddleware() gin.HandlerFunc {
-    return func(c *gin.Context) {
-        start := time.Now()
-
-        // Логируем запрос
-        zap.L().Info("Incoming request",
-            zap.String("method", c.Request.Method),
-            zap.String("url", c.Request.URL.String()),
-            zap.String("client_ip", c.ClientIP()),
-            zap.Any("headers", c.Request.Header),
-        )
-
-        // Выполняем запрос
-        c.Next()
-
-        // Логируем ответ
-        zap.L().Info("Outgoing response",
-            zap.Int("status", c.Writer.Status()),
-            zap.Duration("latency", time.Since(start)),
-            zap.String("client_ip", c.ClientIP()),
-        )
-    }
-}
-
 // @title     Gingo Bookstore API
 func (h *Handler) InitRouters() *gin.Engine {
 	router := gin.New()
 	fmt.Println("+")
+
+	router.Use(cors.New(cors.Config{
+        AllowOrigins:     []string{"http://localhost:3000"}, // Разрешенные источники
+        AllowMethods:     []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"},
+        AllowHeaders: []string{"Origin", "Content-Type", "Authorization"},
+        ExposeHeaders:    []string{"Content-Length"},
+        AllowCredentials: true,
+    }))
+
 	router.Use(func(ctx *gin.Context) {
         fmt.Println("Requested URL:", ctx.Request.URL.String()) // Логируем URL запроса
+		fmt.Println("Request Method:", ctx.Request.Method) 
         ctx.Next() // Продолжаем обработку запроса
     })
-	
-	router.Use(TrafficLoggingMiddleware())
 
-	//router.Use(AuthMiddleware())
+	router.Use(AuthMiddleware())
 
-	router.Static("/css", "./templates/css")
-	router.LoadHTMLGlob("templates/*.html")
+	// router.Static("/css", "./templates/css")
+	// router.LoadHTMLGlob("templates/*.html")
 
 	router.Static("/docs", "./docs")
 
@@ -126,44 +113,43 @@ func (h *Handler) InitRouters() *gin.Engine {
     router.GET("/v1/swagger/*any", ginSwagger.WrapHandler(swaggerFiles.Handler,
         ginSwagger.URL("/docs/swagger.yaml")))
 
-	app := router.Group("/app")
-	app.GET("/menu", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "menu.html", nil)
-	})
+	// app := router.Group("/app")
+	// app.GET("/menu", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "menu.html", nil)
+	// })
 
-	app.GET("/home", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "home.html", nil)
-	})
+	// app.GET("/home", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "home.html", nil)
+	// })
 
-	app.GET("/access", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "access.html", nil)
-	})
+	// app.GET("/access", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "access.html", nil)
+	// })
 
-	app.GET("/device", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "device.html", nil)
-	})
+	// app.GET("/device", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "device.html", nil)
+	// })
+	// auth.GET("/sign-up", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "registr.html", nil)
+	// })
 
+	// auth.GET("/sign-in", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "auth.html", nil)
+	// })
+
+	// auth.GET("/reset-password", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "send.html", nil)
+	// })
+
+	// auth.GET("/verification", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "checkcode.html", nil)
+	// })
+
+	// auth.GET("/password", func(ctx *gin.Context) {
+	// 	ctx.HTML(http.StatusOK, "changepswrd.html", nil)
+	// })
+	
 	auth := router.Group("/auth")
-	auth.GET("/sign-up", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "registr.html", nil)
-	})
-
-	auth.GET("/sign-in", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "auth.html", nil)
-	})
-
-	auth.GET("/reset-password", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "send.html", nil)
-	})
-
-	auth.GET("/verification", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "checkcode.html", nil)
-	})
-
-	auth.GET("/password", func(ctx *gin.Context) {
-		ctx.HTML(http.StatusOK, "changepswrd.html", nil)
-	})
-
 	auth.POST("/sign-up", h.SignUp)
 	auth.POST("/sign-in", h.signIn)
 	auth.PUT("/password", h.changePassword)

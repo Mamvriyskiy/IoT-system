@@ -1,7 +1,7 @@
 package pkg
 
 type UpdatePassword struct {
-	Password string `db:"password" json:"password"`
+	Password string `db:"password" json:"newPassword"`
 	Token    string `db:"token" json:"token"`
 }
 
