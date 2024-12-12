@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { getListHome, addHome, deleteHome } from "../../api/authApi";
 import styles from "./HomeForm.module.css"; 
 import globStyles from "../../styles/global.module.css"; 
@@ -76,23 +76,40 @@ const HomeForm: React.FC = () => {
                     </tr>
                 </thead>
                 <tbody>
-                    {homes.slice(0, 5).map((home, index) => (
-                        <tr key={index}>
-                            <td>
-                                <a href={`/api/homes/${home.ID}`} className={styles.link}>
-                                    {home.name}
-                                </a>
-                            </td>
-                            <td>{home.latitude}</td>
-                            <td>{home.longitude}</td>
-                            <td>
-                                <button className={styles.delete} onClick={(e) => handleSubmitDelete(e, home.ID)}>
-                                    Удалить
-                                </button>
+                    {homes && homes.length > 0 ? (
+                        homes.slice(0, 5).map((home, index) => (
+                            <tr key={index}>
+                                <td>
+                                    <Link 
+                                            to={{
+                                                pathname: `/api/homes/${home.ID}`,
+                                            }}
+                                            state={{ nameHome: home.name }}
+                                            className={styles.link}
+                                        >
+                                            {home.name}
+                                    </Link>
+                                    {/* <a href={`/api/homes/${home.ID}`} className={styles.link}>
+                                        {home.name}
+                                    </a> */}
+                                </td>
+                                <td>{home.latitude}</td>
+                                <td>{home.longitude}</td>
+                                <td>
+                                    <button className={styles.delete} onClick={(e) => handleSubmitDelete(e, home.ID)}>
+                                        Удалить
+                                    </button>
+                                </td>
+                            </tr>
+                        ))
+                    ) : (
+                        <tr>
+                            <td colSpan={4} style={{ textAlign: 'center' }}>
+                                Список домов пуст
                             </td>
                         </tr>
-                    ))}
-                </tbody>
+                    )}
+                </tbody>  
             </table>
             <div style={{ textAlign: "center" }}>
                 <input
@@ -106,11 +123,6 @@ const HomeForm: React.FC = () => {
                     Добавить
                 </button>
             </div>
-            {homes.length > 5 && (
-                <div style={{ textAlign: "center", marginTop: "10px" }}>
-                    <button onClick={() => setHomes(homes.slice(0, 5))}>Показать еще</button>
-                </div>
-            )}
         </div>
     );
 };

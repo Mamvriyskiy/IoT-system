@@ -1,7 +1,7 @@
 package pkg
 
 type Devices struct {
-	Name string `db:"name" json:"name"`
+	Name string `db:"name" json:"Name"`
 }
 
 type DevicesHandler struct {
@@ -9,9 +9,9 @@ type DevicesHandler struct {
 }
 
 type DevicesInfo struct {
-	TypeDevice string `db:"typedevice" json:"typedevice"`
-	Status     string `db:"status" json:"status"`
-	Brand      string `db:"brand" json:"brand"`
+	TypeDevice string `db:"typedevice" json:"TypeDevice"`
+	Status     string `db:"status" json:"Status"`
+	Brand      string `db:"brand" json:"Brand"`
 }
 
 type DevicesData struct {

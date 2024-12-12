@@ -14,7 +14,7 @@ body {
     display: none;
     position: absolute;
     background-color: #f9f9f9;
-    width: 200px; /* Фиксированная ширина */
+    width: 300px; /* Фиксированная ширина */
     box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
     z-index: 1;
     white-space: nowrap; /* Предотвращает перенос текста */
@@ -45,7 +45,7 @@ table {
     background-color: #f9f9f9;
 }
 th, td {
-    min-width: 250px; /* Уменьшена минимальная ширина */
+    min-width: 200px; /* Уменьшена минимальная ширина */
     border: 1px solid #ccc;
     padding: 10px;
     text-align: center;
@@ -85,5 +85,5 @@ input[type="text"], input[type="email"], input[type="number"] {
 }
 
 label {
-    width: 10px;
+    width: 40px;
 }

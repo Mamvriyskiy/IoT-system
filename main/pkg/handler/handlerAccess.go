@@ -47,6 +47,7 @@ func (h *Handler) addUser(c *gin.Context) {
 		return
 	}
 
+	access.AccessLevel = 2
 	accessID, err := h.services.IAccessHome.AddUser(homeID, access)
 	if err != nil {
 		logger.Log("Error", "AddUser", "Error create access:",

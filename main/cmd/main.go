@@ -58,7 +58,6 @@ func main() {
 	// 		logger.Log("Error", "MigrationsDataBaseDown", "Error migrations:", err, "")
 	// 	}
 	// }()
-	
 
 	repos := repository.NewRepository(db)
 	services := service.NewServicesPsql(repos)

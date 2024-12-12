@@ -19,7 +19,7 @@ const App: React.FC = () => {
                 <Route path="/auth/verification" element={<Verification />} />
                 <Route path="/auth/password" element={<PasswordForm />} />
                 <Route path="/api/homes/:homeId" element={<DeviceAccess />} />
-                <Route path="/api/homes/devices" element={<Device />} />
+                <Route path="/api/homes/:homeId/devices/:deviceId" element={<Device />} />
                 <Route path="/api/homes" element={<Home />} />
             </Routes>
         </Router>

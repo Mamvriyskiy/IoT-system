@@ -3,6 +3,7 @@ package handler
 import (
 	"errors"
 	"net/http"
+	"fmt"
 
 	"github.com/Mamvriyskiy/database_course/main/logger"
 	"github.com/Mamvriyskiy/database_course/main/pkg"
@@ -51,7 +52,7 @@ func (h *Handler) createDevice(c *gin.Context) {
 	}
 	
 	homeID := c.Param("homeID")
-
+	fmt.Println("===", homeID, "===")
 	accessLevel, err := h.services.IUser.GetAccessLevel(userID, homeID)
 	if accessLevel != 4 || err != nil {
 		c.JSON(http.StatusForbidden, map[string]string{
