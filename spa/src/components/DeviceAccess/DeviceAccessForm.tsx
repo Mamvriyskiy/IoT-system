@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link, useLocation } from "react-router-dom";
-import { addDevice, getListDevice, deleteDevice, addClient, getListClient, deleteClient } from "../../api/authApi";
+import { addDevice, getListDevice, deleteDevice, addClient, getListClient, deleteClient, startDevice } from "../../api/authApi";
 import styles from "./DeviceAccessForm.module.css"; 
-import globStyles from "../../styles/global.module.css"; 
+// impor globStyles from "../../styles/global.module.css"; 
 
 
 // Типы данных
@@ -32,7 +32,7 @@ const DeviceAccessForm: React.FC = () => {
     const [addClientEmail, setAddClientEmail] = useState("");
     const [devices, setDevices] = useState<DevicesData[]>([]); // Массив устройств
     const [clients, setClients] = useState<ClientHome[]>([]); // Массив пользователей
-    const navigate = useNavigate();
+    // const navigate = useNavigate();
     const { homeId } = useParams();
 
     const location = useLocation();
@@ -56,6 +56,25 @@ const DeviceAccessForm: React.FC = () => {
         };
         fetchDevices();
     }, [homeId]); // Делаем зависимость от homeId
+
+    const handleSubmitStartDevice = async (event: React.MouseEvent, deviceID: string) => {
+        event.preventDefault(); // Предотвращаем поведение по умолчанию
+
+        if (!homeId) {
+            alert("Ошибка: homeId не найден в URL");
+            return;
+        }
+
+        try {
+            console.log(`Запускаем устройство: ${deviceID}`);
+            await startDevice({ deviceID, homeId });
+            const response = await getListDevice(homeId);
+            setDevices(response);
+        } catch (error) {
+            console.error("Ошибка при запуске устройства:", error);
+            alert("Не удалось запустить устройство");
+        }
+    };
 
     useEffect(() => {
         if (!homeId) {
@@ -190,7 +209,7 @@ const DeviceAccessForm: React.FC = () => {
                     </thead>
                     <tbody>
                         {devices && devices.length > 0 ? (
-                            devices.slice(0, 4).map((device) => (
+                            devices.slice(0, 3).map((device) => (
                                 <tr key={device.ID}>
                                     <td>
                                         <Link 
@@ -215,7 +234,9 @@ const DeviceAccessForm: React.FC = () => {
                                         <button className={styles.delete} onClick={(e) => handleSubmitDeleteDevice(e, device.ID)}>
                                             Удалить
                                         </button>
-                                        <button className={styles.start}>Запустить</button>
+                                        <button className={styles.start} onClick={(e) => handleSubmitStartDevice(e, device.ID)}>
+                                            Запустить
+                                        </button>
                                     </td>
                                 </tr>
                             ))
@@ -255,7 +276,7 @@ const DeviceAccessForm: React.FC = () => {
                     </thead>
                     <tbody>
                         {clients && clients.length > 0 ? (
-                            clients.slice(0, 4).map((client, index) => (
+                            clients.slice(0, 3).map((client, index) => (
                                 <tr key={index}>
                                     <td>{client.email}</td>
                                     <td>{client.login}</td>

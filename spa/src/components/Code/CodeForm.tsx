@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { codeUser } from "../../api/authApi";
-import styles from "./CodeForm.module.css"; 
+// import styles from "./CodeForm.module.css"; 
 import globStyles from "../../styles/global.module.css"; 
 
 const CodeForm: React.FC = () => {

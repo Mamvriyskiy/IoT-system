@@ -457,3 +457,477 @@
 {"level":"info","ts":1734023679.970182,"msg":"event: A device has been created"}
 {"level":"info","ts":1734023680.0011892,"msg":"event: Error get list devices:"}
 {"level":"info","ts":1734023680.0212522,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024860.2244391,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024860.2377758,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024860.248924,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024860.273249,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024860.293033,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024860.326751,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024896.218496,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024896.2198982,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024896.2427142,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024901.677354,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024901.692992,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024901.7131898,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024906.160257,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024906.175227,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024906.183792,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024911.2071218,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024911.220603,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024911.229088,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024913.0715,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024913.08687,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024913.093167,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024922.329162,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024922.341495,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024922.351657,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024924.4489338,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024924.4489331,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024924.471195,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024955.641453,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024955.6556952,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024955.663813,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024965.6097112,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024965.6097522,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024965.667073,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024969.3531678,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024969.3662772,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024969.374138,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024974.299212,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024974.313836,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024974.32144,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024977.310563,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024977.310584,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024977.352771,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734024983.48869,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734024983.4989219,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734024983.510968,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025006.4060311,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025006.420876,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025006.427948,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025010.0695932,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025010.083981,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025010.0905,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025011.81503,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025011.8300328,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025011.837211,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025138.707084,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025138.707071,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025138.728839,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025145.894065,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025145.9067452,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025145.9165912,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025148.2500281,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025148.263492,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025148.2755048,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734025167.8454258,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734025167.84545,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734025167.866949,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734026537.4389389,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734026537.447933,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734026537.470958,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734026548.325361,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027362.555649,"msg":"event: User a@mail.ru ganied access"}
+{"level":"info","ts":1734027362.610198,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027362.645718,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027364.006885,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027364.041815,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027366.545717,"msg":"event: A device has been created"}
+{"level":"info","ts":1734027366.576389,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027366.596319,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027367.421477,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027422.925979,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027422.926207,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027422.949706,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027424.816643,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027424.829313,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027424.838766,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027426.9456158,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027426.960565,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027426.96542,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027428.92993,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027428.930068,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027428.9693599,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027434.021651,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027473.0495,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027473.066864,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027473.072798,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027492.429673,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027492.444523,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027492.452748,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027547.80413,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027547.8196511,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027547.824246,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027550.972319,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027566.17682,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027566.1957839,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027566.199488,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027576.511905,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027907.9963572,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734027911.6840441,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027911.694838,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027919.5091782,"msg":"event: User a@mail.ru ganied access"}
+{"level":"info","ts":1734027919.5741398,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027919.585957,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027920.5980532,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027920.5998862,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027920.6916459,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027920.698077,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027920.6981592,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027920.7174442,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027923.2065868,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027925.785689,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734027928.676041,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027928.6761768,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027932.2501702,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027932.3114429,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027935.801811,"msg":"event: A device has been created"}
+{"level":"info","ts":1734027935.8584619,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027935.881693,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027937.6300302,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027937.644995,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027937.652461,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734027937.660973,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734027937.690551,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027937.694964,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734027940.250983,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734027942.434756,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734027950.6194391,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734027950.684594,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027952.092436,"msg":"event: The user's access was deleted"}
+{"level":"info","ts":1734027952.126653,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734027980.770989,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028015.9319391,"msg":"event: The list of users has been received"}
+{"level":"error","ts":1734028039.55651,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028046.013095,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028053.878442,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028135.383939,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028135.452029,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028148.6239831,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028149.739938,"msg":"event: A device has been created"}
+{"level":"info","ts":1734028149.7765791,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028149.796294,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028151.54765,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028154.8855,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028154.954327,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028170.3364658,"msg":"event: A device has been created"}
+{"level":"info","ts":1734028170.3674471,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028170.3869681,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028171.372761,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028173.8711329,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028173.885236,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028173.8928452,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028173.9055061,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028173.914474,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028173.914058,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028274.770708,"msg":"event: InitConfig"}
+{"level":"info","ts":1734028274.794084,"msg":"event: Load env"}
+{"level":"info","ts":1734028274.8714721,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1734028274.891925,"msg":"event: Create router"}
+{"level":"error","ts":1734028280.704014,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028342.921727,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028366.8843148,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028366.92049,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028367.773031,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028367.786793,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028370.893355,"msg":"event: A device has been created"}
+{"level":"info","ts":1734028370.931158,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028370.936403,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028373.049342,"msg":"event: A device has been created"}
+{"level":"info","ts":1734028373.0805728,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028373.1018429,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028374.756264,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028374.787786,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028374.8077571,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028378.990904,"msg":"event: A device has been created"}
+{"level":"info","ts":1734028379.023942,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028379.060235,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028380.8496451,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028451.3077528,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028451.318251,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028451.3224268,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028453.846604,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028653.606529,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028653.606539,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028653.6378229,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028653.648662,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028653.648662,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028653.6525598,"msg":"event: The list of users has been received"}
+{"level":"error","ts":1734028655.5410528,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028714.699908,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028714.7143838,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028714.7219589,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028717.7835279,"msg":"event: A device has been deleted"}
+{"level":"info","ts":1734028717.8249779,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028717.844724,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028727.863678,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028727.8785448,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028727.889355,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028729.970786,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028787.424402,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028787.4583738,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028787.458473,"msg":"event: The list of users has been received"}
+{"level":"error","ts":1734028789.9454348,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028807.1486888,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028807.162514,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028807.17033,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028808.975222,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028832.37744,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028832.3774521,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028832.415117,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028836.867041,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028836.883981,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028836.909787,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028905.422507,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028905.436773,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028905.451992,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028911.440885,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028911.451753,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028911.46426,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028915.05544,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"error","ts":1734028951.554386,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734028964.0302,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028964.044467,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028964.052324,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734028990.344407,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734028990.3763158,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734028990.412402,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734028992.946168,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734029044.432694,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734029044.432935,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734029044.458951,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734029045.426592,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734029045.426691,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734029045.450992,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734029046.4251242,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734029046.440425,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734029046.446754,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734029048.418615,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734029048.433486,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734029048.437556,"msg":"event: The history of the device was obtained"}
+{"level":"error","ts":1734029066.24388,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734031591.382036,"msg":"event: InitConfig"}
+{"level":"info","ts":1734031591.421542,"msg":"event: Load env"}
+{"level":"info","ts":1734031591.511759,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1734031591.532182,"msg":"event: Create router"}
+{"level":"error","ts":1734031627.459429,"msg":"http: named cookie not present","event: ":"Error","func":"c.Cookie(jwt)","param":["jwt"]}
+{"level":"info","ts":1734031637.9579709,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031637.980793,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031637.982193,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031638.002848,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031638.0211232,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031638.02279,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031665.543,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031665.5654888,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031665.568164,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031676.027083,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031676.0422158,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031676.06791,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031678.5958028,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031678.6097028,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031678.615166,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031682.919782,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031682.938071,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031682.95379,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031686.167169,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031686.177245,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031686.2056909,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031690.957587,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031690.9576042,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031690.9975958,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031693.840297,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031693.855807,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031693.861912,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031725.325459,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031725.32547,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031725.370991,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031726.321738,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031726.336341,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734031726.343752,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734031728.754997,"msg":"event: The device's history has been created"}
+{"level":"info","ts":1734031728.785001,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734031728.807543,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033252.441675,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033252.461013,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033255.3439412,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033255.370174,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033271.94567,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033274.3663108,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033279.3940969,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033282.265684,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033284.9076622,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033290.613575,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033292.411677,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033293.899841,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033296.5535538,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033299.063104,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033304.019625,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033304.036431,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033445.716918,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033446.25783,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033447.745654,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033578.351413,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033581.6757991,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033581.689224,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033606.1486661,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033606.165417,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734033606.1695738,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033606.186561,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033606.1865711,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734033606.241749,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033608.3319292,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033608.3319292,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033609.0974872,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033609.097507,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033609.126474,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734033609.1481862,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033609.148372,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033609.1481862,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734033611.1760662,"msg":"event: The device's history has been created"}
+{"level":"info","ts":1734033611.224282,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033611.2799911,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033612.3568609,"msg":"event: The device's history has been created"}
+{"level":"info","ts":1734033612.3929899,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033612.413019,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033613.7617989,"msg":"event: The device's history has been created"}
+{"level":"info","ts":1734033613.801277,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734033613.8220642,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033615.8443258,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033615.854483,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033619.9157271,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033619.9157271,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033651.5390851,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033652.928668,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033654.469001,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033654.4822989,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033666.083213,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033678.0788531,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033681.164765,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033681.179104,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033780.980931,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033783.70199,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033783.716683,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033807.8801332,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033812.676903,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033814.155339,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734033820.997856,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034175.834974,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034179.7535832,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034179.768606,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034194.579073,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034196.340138,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034203.28464,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034207.521427,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034215.490488,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034218.7389572,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034218.753769,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034317.240958,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034321.387661,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034324.7615628,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034329.4249039,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034332.967442,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034332.9812639,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034403.009572,"msg":"event: InitConfig"}
+{"level":"info","ts":1734034403.0327191,"msg":"event: Load env"}
+{"level":"info","ts":1734034403.085854,"msg":"event: The connection to the database is established"}
+{"level":"info","ts":1734034403.10721,"msg":"event: Create router"}
+{"level":"info","ts":1734034407.8292868,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034407.880393,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034893.476855,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034894.353587,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034905.362672,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734034911.464245,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035032.110572,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035032.1238248,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035038.106889,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035039.1095612,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035042.112381,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035061.1293051,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035061.140908,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035066.107939,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035068.102916,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035069.212461,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035087.3585842,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035087.37266,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035100.075247,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035100.0868092,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035100.099252,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035100.102892,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035100.11845,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035100.118454,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035109.9133692,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035109.971432,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035111.050427,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035111.061336,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035111.071468,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035111.0862222,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035111.130573,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035111.130576,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035124.725099,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035124.743707,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035133.3569338,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035158.679751,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035167.793895,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035170.3787851,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035245.117671,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035254.106613,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035257.102347,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035258.099991,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035261.1021461,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035263.2752619,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035263.285758,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035263.297824,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035263.349825,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035263.3498292,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035263.423536,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035269.533914,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035269.5833652,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035272.044148,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035272.059576,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035272.066059,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035272.112573,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035272.118336,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035272.150474,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035288.084927,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035288.118239,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035288.140175,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035289.4083588,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035289.441658,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035289.461519,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035290.691869,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035290.724122,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035290.759357,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035292.110799,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035292.1440058,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035292.165287,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035296.036988,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035296.069076,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035296.088876,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035314.394372,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734035314.429296,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035316.1367528,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734035316.1684349,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035318.2296221,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734035318.262284,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035322.118123,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734035322.1528,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035328.4597728,"msg":"event: The user has been granted access"}
+{"level":"info","ts":1734035328.530165,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035404.101869,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035404.103153,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035404.125694,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035408.097095,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035408.110589,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035408.137353,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035413.3737018,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035413.383552,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035413.383765,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035413.4279501,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035413.440635,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035413.443452,"msg":"event: The list of users has been received"}
+{"level":"info","ts":1734035418.382218,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035418.41118,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035418.447258,"msg":"event: The history of the device was obtained"}
+{"level":"info","ts":1734035422.109365,"msg":"event: A device has been created"}
+{"level":"info","ts":1734035422.139044,"msg":"event: Error get list devices:"}
+{"level":"info","ts":1734035422.164393,"msg":"event: The history of the device was obtained"}

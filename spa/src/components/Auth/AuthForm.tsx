@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { loginUser } from "../../api/authApi";
-import styles from "./AuthForm.module.css"; 
+// import styles from "./AuthForm.module.css"; 
 import globStyles from "../../styles/global.module.css"; 
 
 const AuthForm: React.FC = () => {

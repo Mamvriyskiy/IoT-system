@@ -87,3 +87,21 @@ input[type="text"], input[type="email"], input[type="number"] {
 label {
     width: 10px;
 }
+
+.centeredButton {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+    text-align: center;
+}
+
+.centeredButton:hover {
+    background-color: #0056b3;
+    transform: scale(1.05);
+}

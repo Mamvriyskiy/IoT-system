@@ -115,21 +115,6 @@ export const getListDevice = async (homeID: string) => {
     return response.data;
 };
 
-export const deleteDevice = async ({ deviceID, homeId }: { deviceID: string; homeId: string }) => {
-    const token = localStorage.getItem('jwt');
-    if (!token) {
-        throw new Error('Token not found');
-    }
-
-    const response = await axios.delete(`${API_URL}api/homes/${homeId}/devices/${deviceID}`, {
-        headers: {
-            'Content-Type': 'application/json',
-            'Authorization': token
-        }
-    });
-    return response.data;
-};
-
 export const addClient = async (data: { email: string; homeID: string }) => {
     const token = localStorage.getItem('jwt');
     console.log(token)
@@ -178,5 +163,58 @@ export const deleteClient= async ({ accessID, homeId }: { accessID: string; home
             'Authorization': token
         }
     });
+    return response.data;
+};
+
+export const deleteDevice = async ({ deviceID, homeId }: { deviceID: string; homeId: string }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const response = await axios.delete(`${API_URL}api/homes/${homeId}/devices/${deviceID}`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+
+    return response.data;
+};
+
+export const startDevice= async ({ deviceID, homeId }: { deviceID: string; homeId: string }) => {
+    const token = localStorage.getItem('jwt');
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    console.log(token)
+    const response = await axios.post(`${API_URL}api/homes/${homeId}/devices/${deviceID}/status`, null, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+    
+    console.log('Response headers:', response.headers);
+
+    return response.data;
+};
+
+export const getListHistory = async (homeID: string, deviceID: string) => {
+    const token = localStorage.getItem('jwt');
+    console.log(token)
+
+    if (!token) {
+        throw new Error('Token not found');
+    }
+
+    const response = await axios.get(`${API_URL}api/homes/${homeID}/devices/${deviceID}/history`, {
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': token
+        }
+    });
+    console.log(response.data)
     return response.data;
 };
