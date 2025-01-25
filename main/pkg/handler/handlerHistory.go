@@ -59,22 +59,20 @@ func (h *Handler) getDeviceHistory(c *gin.Context) {
 		return
 	}
 
-	// device, err := h.services.IDevice.GetDeviceByID(deviceID)
-	// if err != nil {
-	// 	c.JSON(http.StatusInternalServerError, map[string]interface{}{
-	// 		"errors": "Ошибка получения истории",
-	// 	})
-	// 	logger.Log("Error", "GetDeviceHistory", "Error get history:", err, deviceID)
-	// 	return
-	// }
+	device, err := h.services.IDevice.GetDeviceByID(deviceID)
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, map[string]interface{}{
+			"errors": "Ошибка получения истории",
+		})
+		logger.Log("Error", "GetDeviceHistory", "Error get history:", err, deviceID)
+		return
+	}
 
 
-	// c.JSON(http.StatusOK, map[string]interface{}{
-	// 	"name": device.Name,
-	// 	"history": historyList,
-	// })
-
-	c.JSON(http.StatusOK, historyList)
+	c.JSON(http.StatusOK, map[string]interface{}{
+		"name": device.Name,
+		"history": historyList,
+	})
 
 	logger.Log("Info", "", "The history of the device was obtained", nil)
 }
